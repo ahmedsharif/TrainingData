@@ -19,14 +19,12 @@ window.onload = function() {
         var data = document.getElementByTagName('p').innerHTML('data');
         }
 
-        var p = document.createElement("p");
-        var text =document.createTextNode("new p div");
-        p.appendChild(text);
-        document.body.appendChild(p);
 
         var b = document.querySelector("button");
-        b.setAttribute("name","helloButton");
-        b.setAttribute("disabled","");
+       // b.setAttribute("name","helloButton");
+       // b.setAttribute("disabled","");
 
         var div1 = document.getElementById("para");
         alert(div1);
+
+        //window.dump("ddddddd");
