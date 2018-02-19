@@ -1,89 +1,44 @@
 import scrapy
 
+global counter
+counter = 0
+result = {}
+data = {}
+
 
 class DoctorsDataItem(scrapy.Spider):
     name = 'doctor-spider'
     login_url = 'https://www.nwh.org/find-a-doctor/ContentPage.aspx?nd=847'
+    url2 = 'https://www.nwh.org/find-a-doctor/find-a-doctor-home?type=1'
     start_urls = [login_url]
 
     def parse(self, response):
-
-        special = response.css('#ctl00_cphContent_ctl01_ddlResultsSpecialties > option::attr(value)').extract_first()
-        token = response.css('input[name="__VIEWSTATEGENERATOR"]::attr(value)').extract_first()
-        data = {}
-
-        input_value = response.css('.search-results-physician > input::attr(value)').extract()
-        for i in range(50):
-            if i <= 9:
-                key = 'ctl00$cphContent$ctl01$rptResults$ctl0' + str(i) + '$hdnPhysicianID'
-            else:
-                key = 'ctl00$cphContent$ctl01$rptResults$ctl' + str(i) + '$hdnPhysicianID'
-            data[key] = input_value or ""
-        print(input_value)
-
-        data.update({
-            'ctl00$cphContent$ctl01$ddlResultsSpecialties': special,
-            'ctl00$cphContent$ctl01$ddlPublished': "False",
-            '__VIEWSTATEGENERATOR': token,
-            '__EVENTTARGET': 'ctl00$cphContent$ctl01$lnkSeachResults',
-            'ctl00$cphContent$ctl01$ddlResultsPerPage': "50",
-            'ctl00$header$searchRdoBtn': "0",
-            'ctl00$header$hdnHoverLocationId': "1",
-            'ctl00$header$rptLocation$ctl00$hdnLocationId': "1",
-            'ctl00$header$rptLocation$ctl01$hdnLocationId': "2",
-            'ctl00$header$rptLocation$ctl02$hdnLocationId': "3",
-            'ctl00$header$rptLocation$ctl03$hdnLocationId': "4",
-            'ctl00$header$rptLocation$ctl04$hdnLocationId': "5",
-            'ctl00$header$rptLocation$ctl05$hdnLocationId': "6",
-            'ctl00$header$rptLocation$ctl06$hdnLocationId': "7",
-            'ctl00$header$rptLocation$ctl07$hdnLocationId': "8",
-            'ctl00$cphContent$ctl01$ddlPhysicianRefferalRequired': "-1",
-            'ctl00$cphContent$ctl01$ddlAcceptNewPatients': "-1",
-            'ctl00$cphContent$ctl01$ddlConcierge': "-1",
-        })
-        print("previous data is ", data)
-
-        yield scrapy.FormRequest(url=self.login_url, formdata=data, callback=self.parse_detail)
-
-    def parse_detail(self, response):
-        url = 'https://www.nwh.org/find-a-doctor/find-a-doctor-profile/'
-
-        for q in response.css('.search-results-col2.find-a-doctor-results'):
-            yield {
-                'doctor_name': q.css('h1.h1name::text').extract()
-            }
-            # for name getter
-            post_request = response.css('a.link-name-profile::attr(href)').extract_first()
-            post_request = post_request.replace('__doPostBack(', "")
-            post_request = post_request.replace(",'')", "")
-
-
-            # for next page
-            page = response.css('#ctl00_cphContent_ctl01_lbResultsNext::attr(href)').extract_first()
-            page = page.replace('__doPostBack(', "")
-            page = page.replace(",'')", "")
-            print(page)
+        global counter
+        for i in range(1):
+            special = response.css(
+                '#ctl00_cphContent_ctl01_ddlResultsSpecialties > option::attr(value)').extract_first()
             token = response.css('input[name="__VIEWSTATEGENERATOR"]::attr(value)').extract_first()
-            data = {}
-
             input_value = response.css('.search-results-physician > input::attr(value)').extract()
             for i in range(50):
                 if i <= 9:
                     key = 'ctl00$cphContent$ctl01$rptResults$ctl0' + str(i) + '$hdnPhysicianID'
                 else:
                     key = 'ctl00$cphContent$ctl01$rptResults$ctl' + str(i) + '$hdnPhysicianID'
-                data[key] = input_value[i] or ""
+                data[key] = input_value or ""
+            if counter == 0:
+                event_target = 'ctl00$cphContent$ctl01$lnkSeachResults'
+            else:
+                event_target = 'ctl00$cphContent$ctl01$lbResultsNext'
 
-            # print(response.css('.search-results-physician > input').extract())
-            special = response.css(
-                '#ctl00_cphContent_ctl01_ddlResultsSpecialties > option::attr(value)').extract_first()
-            token = response.css('input[name="__VIEWSTATEGENERATOR"]::attr(value)').extract_first()
+            state = response.css('input[name="__VIEWSTATE"]::attr(value)').extract_first()
+            counter = counter + 1
+            # ctl00$cphContent$ctl01$lnkSeachResults
             data.update({
                 'ctl00$cphContent$ctl01$ddlResultsSpecialties': special,
                 'ctl00$cphContent$ctl01$ddlPublished': "False",
+                '__VIEWSTATE': state,
                 '__VIEWSTATEGENERATOR': token,
-                '__EVENTARGUMENT': "",
-                '__EVENTTARGET': 'ctl00$cphContent$ctl01$lbResultsNext',
+                '__EVENTTARGET': event_target,
                 'ctl00$cphContent$ctl01$ddlResultsPerPage': "50",
                 'ctl00$header$searchRdoBtn': "0",
                 'ctl00$header$hdnHoverLocationId': "1",
@@ -98,17 +53,114 @@ class DoctorsDataItem(scrapy.Spider):
                 'ctl00$cphContent$ctl01$ddlPhysicianRefferalRequired': "-1",
                 'ctl00$cphContent$ctl01$ddlAcceptNewPatients': "-1",
                 'ctl00$cphContent$ctl01$ddlConcierge': "-1",
-
             })
-            print(data)
+            # print("previous data is ", data)
 
-            yield scrapy.FormRequest(url=self.login_url, formdata=data, callback=self.testing)
+            yield scrapy.FormRequest(url=self.login_url, formdata=data, callback=self.parse_detail)
+
+    def parse_detail(self, response):
+        global counter
+        url = 'https://www.nwh.org/find-a-doctor/find-a-doctor-profile/'
+        doctor_data = {}
+        for q in response.css('.search-results-col2.find-a-doctor-results'):
+            temp = q.css('h1.h1name::text').extract()
+            # gettting individual doctor profile
+            post_request = response.css('a.link-name-profile::attr(href)').extract_first()
+            post_request = post_request[25:-5]
+            #print("post request is ", post_request)
+
+            special = response.css(
+                '#ctl00_cphContent_ctl01_ddlResultsSpecialties > option::attr(value)').extract_first()
+            token = response.css('input[name="__VIEWSTATEGENERATOR"]::attr(value)').extract_first()
+            state = response.css('input[name="__VIEWSTATE"]::attr(value)').extract_first()
+            content = response.css('meta[name="og:url"]::attr(content)').extract_first()
+            input_value = response.css('.search-results-physician > input::attr(value)').extract()
+
+            for i in range(50):
+                if i <= 9:
+                    key = 'ctl00$cphContent$ctl01$rptResults$ctl0' + str(i) + '$hdnPhysicianID'
+                else:
+                    key = 'ctl00$cphContent$ctl01$rptResults$ctl' + str(i) + '$hdnPhysicianID'
+                doctor_data[key] = input_value or ""
+
+            for k in range(50):
+                doctor_id = (doctor_data.values())[k]
+                doctor_data.update({
+                    'ctl00$cphContent$ctl01$ddlResultsSpecialties': special,
+                    'ctl00$cphContent$ctl01$ddlPublished': "False",
+                    '__VIEWSTATE': state,
+                    '__VIEWSTATEGENERATOR': token,
+                    '__EVENTTARGET': post_request,
+                    'ctl00$header$searchRdoBtn': "0",
+                    'ctl00$header$hdnHoverLocationId': "1",
+                    'ctl00$header$rptLocation$ctl00$hdnLocationId': "1",
+                    'ctl00$header$rptLocation$ctl01$hdnLocationId': "2",
+                    'ctl00$header$rptLocation$ctl02$hdnLocationId': "3",
+                    'ctl00$header$rptLocation$ctl03$hdnLocationId': "4",
+                    'ctl00$header$rptLocation$ctl04$hdnLocationId': "5",
+                    'ctl00$header$rptLocation$ctl05$hdnLocationId': "6",
+                    'ctl00$header$rptLocation$ctl06$hdnLocationId': "7",
+                    'ctl00$header$rptLocation$ctl07$hdnLocationId': "8",
+                    'ctl00$cphContent$ctl01$hdnDoctorId': doctor_id,
+
+                })
+                yield scrapy.FormRequest(url=self.login_url, formdata=doctor_data, callback=self.individual_detail,
+                                         dont_filter=True)
+
+            result.update({
+                'doctor_name': temp
+            })
+            # for name getter
+        print("after first request", result)
+        for i in range(1):
+            special = response.css(
+                '#ctl00_cphContent_ctl01_ddlResultsSpecialties > option::attr(value)').extract_first()
+            token = response.css('input[name="__VIEWSTATEGENERATOR"]::attr(value)').extract_first()
+            input_value = response.css('.search-results-physician > input::attr(value)').extract()
+            for i in range(50):
+                if i <= 9:
+                    key = 'ctl00$cphContent$ctl01$rptResults$ctl0' + str(i) + '$hdnPhysicianID'
+                else:
+                    key = 'ctl00$cphContent$ctl01$rptResults$ctl' + str(i) + '$hdnPhysicianID'
+                data[key] = input_value or ""
+            if counter == 0:
+                event_target = 'ctl00$cphContent$ctl01$lnkSeachResults'
+            else:
+                event_target = 'ctl00$cphContent$ctl01$lbResultsNext'
+
+            #    print("input value", input_value)
+            state = response.css('input[name="__VIEWSTATE"]::attr(value)').extract_first()
+            # ctl00$cphContent$ctl01$lnkSeachResults
+            data.update({
+                'ctl00$cphContent$ctl01$ddlResultsSpecialties': special,
+                'ctl00$cphContent$ctl01$ddlPublished': "False",
+                '__VIEWSTATE': state,
+                '__VIEWSTATEGENERATOR': token,
+                '__EVENTTARGET': event_target,
+                'ctl00$cphContent$ctl01$ddlResultsPerPage': "50",
+                'ctl00$header$searchRdoBtn': "0",
+                'ctl00$header$hdnHoverLocationId': "1",
+                'ctl00$header$rptLocation$ctl00$hdnLocationId': "1",
+                'ctl00$header$rptLocation$ctl01$hdnLocationId': "2",
+                'ctl00$header$rptLocation$ctl02$hdnLocationId': "3",
+                'ctl00$header$rptLocation$ctl03$hdnLocationId': "4",
+                'ctl00$header$rptLocation$ctl04$hdnLocationId': "5",
+                'ctl00$header$rptLocation$ctl05$hdnLocationId': "6",
+                'ctl00$header$rptLocation$ctl06$hdnLocationId': "7",
+                'ctl00$header$rptLocation$ctl07$hdnLocationId': "8",
+                'ctl00$cphContent$ctl01$ddlPhysicianRefferalRequired': "-1",
+                'ctl00$cphContent$ctl01$ddlAcceptNewPatients': "-1",
+                'ctl00$cphContent$ctl01$ddlConcierge': "-1",
+            })
+
+            yield scrapy.FormRequest(url=self.login_url, formdata=data, callback=self.testing, dont_filter=True)
 
     def testing(self, response):
         for q in response.css('.search-results-col2.find-a-doctor-results'):
-            yield {
+            result.update({
                 'doctor_name': q.css('h1.h1name::text').extract()
-            }
+            })
+        print(result)
 
     def individual_detail(self, response):
         for quote in response.css('div.pnl-doctor-contact-info'):
