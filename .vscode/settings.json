@@ -1,0 +1,4 @@
+{
+    "python.linting.pylintPath": "/home/ahmadsharif/workspace/django-env/bin/pylint",
+    "python.linting.pep8Path": "/home/ahmadsharif/workspace/django-env/bin/autopep8"
+}
