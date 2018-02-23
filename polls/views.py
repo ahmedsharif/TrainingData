@@ -5,7 +5,9 @@ from django.shortcuts import Http404, render,get_object_or_404
 from django.utils import timezone
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
+from django.contrib.auth import views as auth_views
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
 
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
@@ -49,3 +51,19 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+def LoginView(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        # Redirect to a success page.
+        return HttpResponseRedirect(reverse('polls:login'))
+    else:
+        # Return an 'invalid login' error message.
+        print ("user doesn't exist")
+
+def logout_view(request):
+    logout(request)
+    # Redirect to a success page.

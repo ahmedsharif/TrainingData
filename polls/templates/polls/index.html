@@ -1,7 +1,12 @@
 {%  load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />
+<div id="right">
+    <a href="{% url 'login'%}">Logout.</a>
+</div>
+<br />
 
 
+<form method="post" action="{% url 'login' %}">
 {% if latest_question_list %}
     <ul>
     {% for question in latest_question_list %}
@@ -10,4 +15,7 @@
     </ul>
 {% else %}
     <p>No polls are available.</p>
+
 {% endif %}
+<p><a href="{% url 'password_change' %}">Change Password</a></p>
+</form>

@@ -5,3 +5,8 @@ li a {
 body {
     background: white url("background.jpeg") no-repeat right bottom;
 }
+
+#right a {
+    float: right;
+    margin-left:15px;
+}
