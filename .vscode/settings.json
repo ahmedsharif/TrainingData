@@ -1,0 +1,4 @@
+{
+    "python.linting.pylintPath": "/home/ahmadsharif/workspace/music-env/bin/pylint",
+    "python.formatting.autopep8Path": "/home/ahmadsharif/workspace/music-env/bin/autopep8"
+}
