@@ -1,4 +1,7 @@
 {
-    "python.linting.pylintPath": "/home/ahmadsharif/workspace/music-env/bin/pylint",
-    "python.formatting.autopep8Path": "/home/ahmadsharif/workspace/music-env/bin/autopep8"
+    "python.formatting.autopep8Path": "/home/ahmadsharif/workspace/music-env/bin/autopep8",
+    "python.pythonPath": "/home/ahmadsharif/workspace/music-env/bin/python3",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.pylintPath": "/home/ahmadsharif/workspace/music-env/bin/pylint"
 }
