@@ -1,6 +1,5 @@
 from django.dispatch import receiver
 
-from .views import SnippetList
 from .signals import fire_signal
 
 
