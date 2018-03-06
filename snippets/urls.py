@@ -5,6 +5,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework.routers import DefaultRouter
 from snippets import views
 
+
 snippet_list = SnippetViewSet.as_view({
     'get': 'list',
     'post': 'create'
@@ -43,5 +44,5 @@ router.register(r'snippets', views.SnippetViewSet)
 router.register(r'users',views.UserViewSet)
 
 urlpatterns = [
-    url(r'^', include(router.urls))
+    url(r'^', include(router.urls)),
 ]
