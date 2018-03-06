@@ -3,7 +3,6 @@ import os.path
 from termcolor import colored
 import argparse
 
-
 month_list = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
               'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -52,8 +51,7 @@ class WeatherData:
             table_data = 0
             return file_exist, table_data
 
-    def find_by_year(self,year):
-
+    def find_by_year(self, year):
         for month in range(len(month_list)):
             file_exist, table_data = self.read_files(year, month_list[month])
 
@@ -75,6 +73,7 @@ class WeatherData:
         print("Humid %d on %s" % (self.max_humidity, self.max_humidity_index))
 
     def find_by_month(self, month):
+        print("month ", month)
         for year in range(1996, 2011):
             file_exist, table_data = self.read_files(str(year), month)
 
@@ -135,30 +134,34 @@ class WeatherData:
                       (table_data['Min TemperatureC'][row], table_data['Max TemperatureC'][row]))
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-m', '--month', help='Find temperature values by month')
     parser.add_argument('-y', '--year', help='Find temperature by year')
     parser.add_argument('-c', '--one_month', help="get one month data")
-    parser.add_argument('-charts', '--detail_charts', help="get one month charts in one line")
+    parser.add_argument('-b', '--detail_charts', help="get one month charts in one line")
 
     args = parser.parse_args()
     print(args)
-    obj = WeatherData
+    obj = WeatherData()
 
     if args.month:
         month = args.month
         obj.find_by_month(month)
 
     elif args.year:
-        year = int(args.year)
-        WeatherData.find_by_year(year)
+        year = args.year
+        print("year is", year)
+        obj.find_by_year(year)
 
     elif args.one_month:
-        year, month = args.one_month
-        WeatherData.one_month_data(year, month)
+        year, month = args.one_month.split(' ')
+        obj.one_month_data(year, month)
 
     elif args.detail_charts:
-        year, month = args.detail_charts
-        WeatherData.one_month_data_single_line_print(year, month)
+        year, month = args.detail_charts.split(' ')
+        obj.one_month_data_single_line_print(year, month)
 
+
+if __name__ == "__main__":
+    main()
