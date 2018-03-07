@@ -12,7 +12,7 @@ class AlbumForm(forms.ModelForm):
 
 
 class SongForm(forms.ModelForm):
-
+    song_title = forms.CharField(widget=forms.Textarea())
     class Meta:
         model = Song
         fields = ['song_title', 'audio_file']
