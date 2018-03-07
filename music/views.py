@@ -1,13 +1,13 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
-from django.db.models import Q
+from rest_framework import generics
+
+from music.serializers import AlbumSerializers, SongSerializers
 from .forms import AlbumForm, SongForm, UserForm
 from .models import Album, Song
-from rest_framework import generics
-from music.serializers import AlbumSerializers, SongSerializers
-
 
 # Create your views here.
 IMG_File_Type = ['jpg', 'png', 'jpeg']
@@ -214,19 +214,22 @@ def songs(request, filter_by):
             'filter_by': filter_by,
         })
 
+
 class AlbumList(generics.ListCreateAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializers
+
 
 class AlbumDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializers
 
+
 class SongList(generics.ListCreateAPIView):
     queryset = Song.objects.all()
     serializer_class = SongSerializers
 
+
 class SongDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Song.objects.all()
     serializer_class = SongSerializers
-
