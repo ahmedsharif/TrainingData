@@ -1,12 +1,15 @@
-class SongsList(object):
+from datetime import datetime
 
+
+class UserTimestampLog(object):
 
     def __init__(self, get_response):
-        self.get_response = self.get_response
-    
-    def __call__(self, request):
-        file = open(“song_file.txt”,”w”)
-        file.write('Album Title %s,|| Song Title %s\n'% (request.album.album_title, request.song.song_title))
-        response =self.get_response(request)
-        return response
+        self.get_response = get_response
 
+    def __call__(self, request):
+        with open('userlog.txt', 'a') as f:
+            f.write('User: %s | Time: %s\n' % (
+                request.user, datetime.now()
+            ))
+        response = self.get_response(request)
+        return response
