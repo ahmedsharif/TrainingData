@@ -48,7 +48,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'website.middleware.UserTimestampLog',
+    'music.middleware.StackOverflowMiddleware',
 ]
 
 ROOT_URLCONF = 'website.urls'

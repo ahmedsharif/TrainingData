@@ -3,9 +3,9 @@ from django.contrib.auth import logout
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
-from rest_framework import generics
-
+from rest_framework import generics,permissions
 from music.serializers import AlbumSerializers, SongSerializers
+from music.permissions import IsOwnerOrReadOnly
 from .forms import AlbumForm, SongForm, UserForm
 from .models import Album, Song
 
@@ -110,38 +110,41 @@ def create_album(request):
 
 
 def create_song(request, album_id):
-    form = SongForm(request.POST or None, request.FILES or None)
-    album = get_object_or_404(Album, pk=album_id)
-    if form.is_valid():
-        albums_songs = album.song_set.all()
-        for s in albums_songs:
-            if s.song_title == form.cleaned_data.get("song_title"):
+    if not request.user.is_authenticated():
+        return render(request, 'music/login.html')
+    else:
+        form = SongForm(request.POST or None, request.FILES or None)
+        album = get_object_or_404(Album, pk=album_id)
+        if form.is_valid():
+            albums_songs = album.song_set.all()
+            for s in albums_songs:
+                if s.song_title == form.cleaned_data.get("song_title"):
+                    context = {
+                        'album': album,
+                        'form': form,
+                        'error_message': 'You already added that song',
+                    }
+                    return render(request, 'music/create_song.html', context)
+            song = form.save(commit=False)
+            song.album = album
+            song.audio_file = request.FILES['audio_file']
+            file_type = song.audio_file.url.split('.')[-1]
+            file_type = file_type.lower()
+            if file_type not in Audio_File_Type:
                 context = {
                     'album': album,
                     'form': form,
-                    'error_message': 'You already added that song',
+                    'error_message': 'Audio file must be WAV, MP3, or OGG',
                 }
                 return render(request, 'music/create_song.html', context)
-        song = form.save(commit=False)
-        song.album = album
-        song.audio_file = request.FILES['audio_file']
-        file_type = song.audio_file.url.split('.')[-1]
-        file_type = file_type.lower()
-        if file_type not in Audio_File_Type:
-            context = {
-                'album': album,
-                'form': form,
-                'error_message': 'Audio file must be WAV, MP3, or OGG',
-            }
-            return render(request, 'music/create_song.html', context)
 
-        song.save()
-        return render(request, 'music/detail.html', {'album': album})
-    context = {
-        'album': album,
-        'form': form,
-    }
-    return render(request, 'music/create_song.html', context)
+            song.save()
+            return render(request, 'music/detail.html', {'album': album})
+        context = {
+            'album': album,
+            'form': form,
+        }
+        return render(request, 'music/create_song.html', context)
 
 
 def delete_song(request, album_id, song_id):
@@ -218,6 +221,10 @@ def songs(request, filter_by):
 class AlbumList(generics.ListCreateAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializers
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly,)
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 
 class AlbumDetail(generics.RetrieveUpdateDestroyAPIView):
