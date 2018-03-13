@@ -1,11 +1,12 @@
 from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
-
+from rest_framework_jwt.views import obtain_jwt_token
 from . import views
 
 app_name = 'music'
 
 urlpatterns = [
+    url(r'^login/', obtain_jwt_token),
     url(r'^$', views.index, name='index'),
     url(r'^register/$', views.register, name='register'),
     url(r'^login_user/$', views.login_user, name='login_user'),
@@ -26,6 +27,7 @@ urlpatterns = [
     # for rest API urls
     url(r'^album_list/$', views.AlbumList.as_view(), name='album_list'),
     url(r'^song_list/$', views.SongList.as_view(), name='song_list'),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

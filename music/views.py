@@ -8,6 +8,9 @@ from music.serializers import AlbumSerializers, SongSerializers
 from music.permissions import IsOwnerOrReadOnly
 from .forms import AlbumForm, SongForm, UserForm
 from .models import Album, Song
+import jwt
+from django.http import HttpResponse
+
 
 # Create your views here.
 IMG_File_Type = ['jpg', 'png', 'jpeg']
@@ -46,7 +49,12 @@ def login_user(request):
             if user.is_active:
                 login(request, user)
                 albums = Album.objects.filter(user=request.user)
-                return render(request, 'music/index.html', {'albums': albums})
+                response = render(request, 'music/index.html', {'albums': albums})
+                
+                # encrypt credentials into JWT 
+                encoded = jwt.encode({'username': username, 'password':password}, 'secret', algorithm='HS256')
+                response.set_cookie('key', encoded)            
+                return response
             else:
                 return render(request, 'music/login.html', {'error_message': 'Your account has been disabled'})
         else:
@@ -54,13 +62,17 @@ def login_user(request):
     return render(request, 'music/login.html')
 
 
+
 def logout_user(request):
     logout(request)
     form = UserForm(request.POST or None)
+      
     context = {
         "form": form,
     }
-    return render(request, 'music/login.html', context)
+    response = render(request, 'music/login.html', context)
+    response.delete_cookie('key')
+    return response
 
 
 def register(request):
@@ -84,6 +96,10 @@ def register(request):
 
 
 def create_album(request):
+    if 'key' in request.COOKIES:
+        value = request.COOKIES['key']
+        result = jwt.decode(value, 'secret', algorithms=['HS256'])
+
     if not request.user.is_authenticated():
         return render(request, 'music/login.html')
     else:
@@ -221,8 +237,7 @@ def songs(request, filter_by):
 class AlbumList(generics.ListCreateAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializers
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                          IsOwnerOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated,)
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
