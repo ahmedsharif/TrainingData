@@ -49,19 +49,28 @@ def login_user(request):
             if user.is_active:
                 login(request, user)
                 albums = Album.objects.filter(user=request.user)
-                response = render(request, 'music/index.html', {'albums': albums})
+                return render(request, 'music/index.html', {'albums': albums})
                 
-                # encrypt credentials into JWT 
-                encoded = jwt.encode({'username': username, 'password':password}, 'secret', algorithm='HS256')
-                response.set_cookie('key', encoded)            
-                return response
+                # encrypt credentials into JWT l
+                #encoded = jwt.encode({'username': username, 'password':password}, 'secret', algorithm='HS256')
+                #response.set_cookie('key', encoded)            
+                #return response
             else:
                 return render(request, 'music/login.html', {'error_message': 'Your account has been disabled'})
         else:
             return render(request, 'music/login.html', {'error_message': 'Invalid login'})
     return render(request, 'music/login.html')
 
-
+# def get_token(request,username,password):
+#     if request.method == "POST":
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         user = authenticate(username=username, password=password)
+#         dict = {
+#             'username':username,
+#             'password':password,
+#         }
+#         return response
 
 def logout_user(request):
     logout(request)
