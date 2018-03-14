@@ -27,7 +27,7 @@ urlpatterns = [
     # for rest API urls
     url(r'^album_list/$', views.AlbumList.as_view(), name='album_list'),
     url(r'^song_list/$', views.SongList.as_view(), name='song_list'),
-
+    #url(r'^login_user/$', views.LoginView.as_view(), name='login_user'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

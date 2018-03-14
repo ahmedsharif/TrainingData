@@ -10,7 +10,10 @@ from .forms import AlbumForm, SongForm, UserForm
 from .models import Album, Song
 import jwt
 from django.http import HttpResponse
-
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.response import Response
 
 # Create your views here.
 IMG_File_Type = ['jpg', 'png', 'jpeg']
@@ -38,7 +41,20 @@ def index(request):
             })
         else:
             return render(request, 'music/index.html', {'albums': albums})
+'''
+class LoginView(APIView):
+    authentication_classes = (SessionAuthentication, BasicAuthentication)
+    permission_classes = (IsAuthenticated,)
 
+    
+    def post(self, request, format=None):
+        content = {
+            'user': request.user,  # `django.contrib.auth.User` instance.
+            'auth': request.auth,  # None
+        }
+        #render(request, 'music/index.html', content)
+        return Response(content)
+'''
 
 def login_user(request):
     if request.method == "POST":
@@ -60,6 +76,7 @@ def login_user(request):
         else:
             return render(request, 'music/login.html', {'error_message': 'Invalid login'})
     return render(request, 'music/login.html')
+
 
 # def get_token(request,username,password):
 #     if request.method == "POST":
