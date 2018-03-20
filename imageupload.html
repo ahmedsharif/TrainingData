@@ -1,0 +1,28 @@
+<html>
+<head>
+    <script src="js/load-image.all.min.js"></script>
+</head>
+<title>
+    image upload page
+</title>
+<body>
+<input type="file" name="file-input" id="file-input" />
+</body>
+    <script>
+        document.getElementById('file-input').onchange = function (e) {
+            loadImage(
+                e.target.files[0],
+                function (img) {
+                    document.body.appendChild(img);
+                },
+                {   maxWidth: 600,
+                    maxHeight: 300,
+                    minWidth: 100,
+                    minHeight: 50,
+                    canvas: true
+                }, // Options
+            );
+        };
+    </script>
+</html>
+
