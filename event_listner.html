@@ -1,0 +1,25 @@
+<html>
+    <head></head>
+    <body>
+        <table id="outside">
+            <tr><td id="t1"> one</td></tr>
+            <tr><td id="t2"> three</td></tr>
+        </table>
+    </body>
+<script>
+    // Function to change the content of t2
+function modifyText(new_text) {
+    var t2 = document.getElementById("t2");
+    if (t2.firstChild.nodeValue == "three") {
+      t2.firstChild.nodeValue = new_text;
+    } else {
+      t2.firstChild.nodeValue = new_text;
+    }
+  }
+  
+  // add event listener to table
+  var el = document.getElementById("outside");
+  el.addEventListener("click", () => {modifyText("six");}, false);
+</script>
+
+</html>
