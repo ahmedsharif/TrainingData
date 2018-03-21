@@ -10,7 +10,8 @@ text_validator = RegexValidator(
 
 
 class Album(models.Model):
-    user = models.ForeignKey(User, default=1,related_name='album', on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, default=1, related_name='album', on_delete=models.CASCADE)
     artist = models.CharField(max_length=250, validators=[
         text_validator
     ])

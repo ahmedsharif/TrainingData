@@ -18,7 +18,7 @@ myApp.controller('UserCtrl', function ($scope, $http, $window) {
 });    
 */
 $(document).ready(function () {
-    var url = 'http://127.0.0.1:8000/login/';
+    var url = 'http://127.0.0.1:8000/login_user/';
     var data = { username: 'ali', password: 'arbisoft' };
 
     fetch(url, {
