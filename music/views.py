@@ -3,7 +3,7 @@ from django.contrib.auth import logout
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
-from rest_framework import generics,permissions
+from rest_framework import generics, permissions
 from music.serializers import AlbumSerializers, SongSerializers
 from music.permissions import IsOwnerOrReadOnly
 from .forms import AlbumForm, SongForm, UserForm
@@ -41,6 +41,8 @@ def index(request):
             })
         else:
             return render(request, 'music/index.html', {'albums': albums})
+
+
 '''
 class LoginView(APIView):
     authentication_classes = (SessionAuthentication, BasicAuthentication)
@@ -56,6 +58,7 @@ class LoginView(APIView):
         return Response(content)
 '''
 
+
 def login_user(request):
     if request.method == "POST":
         username = request.POST['username']
@@ -66,11 +69,11 @@ def login_user(request):
                 login(request, user)
                 albums = Album.objects.filter(user=request.user)
                 return render(request, 'music/index.html', {'albums': albums})
-                
+
                 # encrypt credentials into JWT l
                 #encoded = jwt.encode({'username': username, 'password':password}, 'secret', algorithm='HS256')
-                #response.set_cookie('key', encoded)            
-                #return response
+                #response.set_cookie('key', encoded)
+                # return response
             else:
                 return render(request, 'music/login.html', {'error_message': 'Your account has been disabled'})
         else:
@@ -92,7 +95,7 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     form = UserForm(request.POST or None)
-      
+
     context = {
         "form": form,
     }
@@ -122,9 +125,9 @@ def register(request):
 
 
 def create_album(request):
-    if 'key' in request.COOKIES:
-        value = request.COOKIES['key']
-        result = jwt.decode(value, 'secret', algorithms=['HS256'])
+    # if 'key' in request.COOKIES:
+    #     value = request.COOKIES['key']
+        # result = jwt.decode(value, 'secret', algorithms=['HS256'])
 
     if not request.user.is_authenticated():
         return render(request, 'music/login.html')
@@ -264,6 +267,7 @@ class AlbumList(generics.ListCreateAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializers
     permission_classes = (permissions.IsAuthenticated,)
+
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 

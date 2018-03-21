@@ -14,7 +14,8 @@ class SlugField(CharField):
 class AlbumForm(forms.ModelForm):
     artist = forms.CharField(validators=[validators.validate_slug])
     genre = forms.CharField(validators=[validators.validate_slug])
-    album_title = forms.CharField(max_length=250, validators=[validators.validate_slug])
+    album_title = forms.CharField(max_length=250, validators=[
+                                  validators.validate_slug])
 
     class Meta:
         model = Album
