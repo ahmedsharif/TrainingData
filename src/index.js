@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
+import { Throttle } from "react-throttle";
+import Debounce from "react-throttle/lib/components/Debounce";
 
 ReactDOM.render(<App />, document.getElementById("container"));
 registerServiceWorker();
@@ -62,15 +64,17 @@ class ProductTable extends React.Component {
       lastCategory = product.category;
     });
     return (
-      <table>
-        <thead>
-          <tr>
-            <th>Name </th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </table>
+      <Debounce time="10000">
+        <table>
+          <thead>
+            <tr>
+              <th>Name </th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>{rows}</tbody>
+        </table>
+      </Debounce>
     );
   }
 }
@@ -83,6 +87,7 @@ class SearchBar extends React.Component {
   }
   handleFilterTextChange(e) {
     this.props.onFilterTextChange(e.target.value);
+    console.log("hello");
   }
   handleInStockChange(e) {
     this.props.onInStockChange(e.target.checked);
@@ -90,12 +95,14 @@ class SearchBar extends React.Component {
   render() {
     return (
       <form>
-        <input
-          type="text"
-          placeholder="Search...."
-          value={this.props.filterText}
-          onChange={this.handleFilterTextChange}
-        />
+        <Throttle time="2000" handler="onChange">
+          <input
+            type="text"
+            placeholder="Search...."
+            value={this.props.filterText}
+            onChange={this.handleFilterTextChange}
+          />
+        </Throttle>
         <p>
           <input
             type="checkbox"
