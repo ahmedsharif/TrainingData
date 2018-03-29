@@ -1,0 +1,23 @@
+.player {
+    height: 100%;
+    width: 100%;
+    box-shadow: 0 0px 5px grey;
+    display: block;
+    margin: 20px 40px;
+    cursor: pointer;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+}
+
+.backlink {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    display: block; 
+}
+

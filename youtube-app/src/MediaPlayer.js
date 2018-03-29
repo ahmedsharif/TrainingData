@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 import PropTypes from "prop-types";
-//import "./MediaPlayer.css"; 
+import "./MediaPlayer.css"; 
 
 
 class MediaPlayer extends Component {

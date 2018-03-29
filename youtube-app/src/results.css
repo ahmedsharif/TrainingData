@@ -1,0 +1,33 @@
+.result {
+    box-shadow: 0 0px 5px grey;
+    display: flex;
+    margin: 10px;
+    width: 854px;
+    cursor: pointer;
+}
+
+.thumbnail {
+    box-sizing: border-box;
+    padding: 5px;
+    display: block;
+    min-width: 320px;
+    height: 180px;
+}
+
+.detail {
+    display: block;
+    padding: 10px;
+}
+
+.detail .title {
+    font-size: 20px;
+    margin: 5px 0;
+    color: blue;
+    font-weight: normal;
+}
+
+.detail .description {
+    font-size: 15px;
+    color: #767676;
+    margin: 10px 0;
+}

@@ -1,0 +1,34 @@
+.search-container {
+    padding-left: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.search-form {
+    display: block;
+    width: 100%;
+    height: 28px;
+}
+
+.search-input {
+    box-sizing: border-box;
+    display: inline-block;
+    width: 65%;
+    padding: 5px;
+    border: 1px solid lightgray;
+}
+
+.search-button {
+    box-sizing: border-box;
+    color: gray;
+    display: inline-block;
+    background-color: #eeeeee;
+    border: 1px solid grey;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: lightgreen;
+}

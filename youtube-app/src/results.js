@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-//import "./Result.css"
+import "./results.css"
 
 class Result extends React.Component {
   constructor() {

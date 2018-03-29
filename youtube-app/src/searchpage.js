@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Link } from "react-router-dom";
 import PropTypes from "prop-types";
-//import "./searchpage.css";
+import "./searchpage.css";
 
 class Search extends Component {
   constructor() {
@@ -62,3 +62,5 @@ class Search extends Component {
 }
 
 export default Search;
+
+
