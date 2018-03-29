@@ -49,7 +49,7 @@ class Search extends Component {
           <Link to="/search">
             <button
               type="submit"
-              onclick={this.handleSubmit}
+              onClick={this.handleSubmit}
               className="search-button"
             >
               Search

@@ -56,6 +56,7 @@ class Main extends Component {
           )}
         />
         <Route
+          exact
           path="/video"
           render={() =>
             this.state.videoPlayFlag && (

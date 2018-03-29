@@ -1,93 +1,64 @@
 import React, { Component } from "react";
 import { Route, Link } from "react-router-dom";
-import "./App.css";
-import SearchForm from "./SearchForm.js";
-import Result from "./Result.js";
-import VideoPlayer from "./VideoPlayer.js";
+import PropTypes from "prop-types";
+import "./SearchForm.css";
 
-import * as youtube from "./youtubeapi.js";
-
-class App extends Component {
+class SearchForm extends Component {
   constructor() {
     super();
-    this.searchYoutube = this.searchYoutube.bind(this);
-    this.playVideo = this.playVideo.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
-      playVid: false,
-      vidId: "",
-      results: []
+      query: ""
     };
   }
 
-  playVideo(vidId) {
+  static propTypes = {
+    searchHandler: PropTypes.func
+  };
+
+  handleChange(query) {
     this.setState({
-      playVid: true,
-      vidId
+      query
     });
   }
 
-  componentDidMount() {
-    this.searchYoutube("");
-  }
-
-  searchYoutube(query) {
-    youtube.search(jsonData => {
-      this.setState({
-        results: jsonData.items
-      });
-    }, query);
+  handleSubmit(evt) {
+    this.props.searchHandler(this.state.query);
   }
 
   render() {
     return (
-      <div className="App">
-        <Route
-          path="/"
-          render={() => (
-            <div className="App-header">
-              <SearchForm searchHandler={this.searchYoutube} />
-            </div>
-          )}
-        />
-
-        <Route
-          exact
-          path="/video"
-          render={() =>
-            this.state.playVid && (
-              <div className="player-container">
-                <VideoPlayer vidId={this.state.vidId} />
-              </div>
-            )
-          }
-        />
-
-        <Route
-          exact
-          path="/search"
-          render={() => (
-            <div className="result-container">
-              {this.state.results.length !== 0 ? (
-                this.state.results.map(item => (
-                  <Link key={item.etag} to="/video">
-                    <Result
-                      imgurl={item.snippet.thumbnails.medium.url}
-                      title={item.snippet.title}
-                      description={item.snippet.description}
-                      vidId={item.id.videoId}
-                      play={this.playVideo}
-                    />
-                  </Link>
-                ))
-              ) : (
-                <h1>Sorry, There are no results to display</h1>
-              )}
-            </div>
-          )}
-        />
+      <div className="search-container">
+        <form id="search-form" className="search-form">
+          <Route
+            exact
+            path="/video"
+            render={() => (
+              <Link to="/search">
+                <button className="search-button">Go Back</button>
+              </Link>
+            )}
+          />
+          <input
+            onChange={evt => this.handleChange(evt.target.value)}
+            className="search-input"
+            type="text"
+            placeholder="Search"
+          />
+          <Link to="/search">
+            <button
+              type="submit"
+              onClick={this.handleSubmit}
+              className="search-button"
+            >
+              Search
+            </button>
+          </Link>
+        </form>
       </div>
     );
   }
 }
 
-export default App;
+export default SearchForm;
