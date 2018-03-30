@@ -4,10 +4,10 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from rest_framework import generics, permissions
-from music.serializers import AlbumSerializers, SongSerializers
+from music.serializers import AlbumSerializers, SongSerializers, UserSerializers
 from music.permissions import IsOwnerOrReadOnly
 from .forms import AlbumForm, SongForm, UserForm
-from .models import Album, Song
+from .models import Album, Song, User
 import jwt
 from django.http import HttpResponse
 from rest_framework.views import APIView
@@ -81,7 +81,7 @@ def login_user(request):
     return render(request, 'music/login.html')
 
 
-# def get_token(request,username,password):
+# def get_token(request):
 #     if request.method == "POST":
 #         username = request.POST['username']
 #         password = request.POST['password']
@@ -90,17 +90,18 @@ def login_user(request):
 #             'username':username,
 #             'password':password,
 #         }
+#         response = render(request,'music/index.html',dict)
 #         return response
 
 def logout_user(request):
     logout(request)
     form = UserForm(request.POST or None)
-
+    
     context = {
         "form": form,
     }
     response = render(request, 'music/login.html', context)
-    response.delete_cookie('key')
+    # response.delete_cookie('key')
     return response
 
 
@@ -285,3 +286,8 @@ class SongList(generics.ListCreateAPIView):
 class SongDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Song.objects.all()
     serializer_class = SongSerializers
+
+
+class UserDetail(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializers

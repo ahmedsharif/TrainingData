@@ -1,3 +1,7 @@
+var current_url = window.location.href;
+if (current_url == 'http://127.0.0.1:8000/logout_user/') {
+	localStorage.clear();
+}
 
 var AlbumsListPage = {
 	init: function() {
