@@ -29,7 +29,7 @@ class AlbumForm(forms.ModelForm):
         # if album name doesn't match with list 
         if album_title not in albums:
             raise ValidationError({
-                'album_title': ValidationError(('Invalid Album name use', albums), code='invalid'),
+                'album_title': ValidationError(('Invalid Album name ', albums), code='invalid'),
                 'artist': ValidationError(('Invalid Artist name.'), code='invalid'),
             })
 
