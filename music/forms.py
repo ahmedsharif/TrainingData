@@ -26,6 +26,7 @@ class AlbumForm(forms.ModelForm):
         clean_data = super(AlbumForm, self).clean()
         album_title = clean_data.get('album_title')
 
+        # if album name doesn't match with list 
         if album_title not in albums:
             raise ValidationError({
                 'album_title': ValidationError(('Invalid Album name use', albums), code='invalid'),

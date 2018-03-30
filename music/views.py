@@ -276,18 +276,22 @@ class AlbumList(generics.ListCreateAPIView):
 class AlbumDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializers
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class SongList(generics.ListCreateAPIView):
     queryset = Song.objects.all()
     serializer_class = SongSerializers
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class SongDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Song.objects.all()
     serializer_class = SongSerializers
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class UserDetail(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializers
+    permission_classes = (permissions.IsAuthenticated,)
