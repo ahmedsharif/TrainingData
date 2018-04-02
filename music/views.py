@@ -15,6 +15,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
 
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+
 # Create your views here.
 IMG_File_Type = ['jpg', 'png', 'jpeg']
 Audio_File_Type = ['wav', 'mp3', 'ogg']
@@ -43,20 +45,20 @@ def index(request):
             return render(request, 'music/index.html', {'albums': albums})
 
 
-'''
-class LoginView(APIView):
-    authentication_classes = (SessionAuthentication, BasicAuthentication)
-    permission_classes = (IsAuthenticated,)
+
+# class LoginView(APIView):
+#     authentication_classes = (SessionAuthentication, BasicAuthentication)
+#     permission_classes = (IsAuthenticated,)
 
     
-    def post(self, request, format=None):
-        content = {
-            'user': request.user,  # `django.contrib.auth.User` instance.
-            'auth': request.auth,  # None
-        }
-        #render(request, 'music/index.html', content)
-        return Response(content)
-'''
+#     def post(self, request, format=None):
+#         content = {
+#             'user': request.user,  # `django.contrib.auth.User` instance.
+#             'auth': request.auth,  # None
+#         }
+#         # render(request, 'music/index.html', content)
+#         return Response(content)
+
 
 
 def login_user(request):
