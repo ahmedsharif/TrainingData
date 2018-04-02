@@ -8,6 +8,7 @@ from music.serializers import AlbumSerializers, SongSerializers, UserSerializers
 from music.permissions import IsOwnerOrReadOnly
 from .forms import AlbumForm, SongForm, UserForm
 from .models import Album, Song, User
+from django.views import generic, View
 import jwt
 from django.http import HttpResponse
 from rest_framework.views import APIView
@@ -82,6 +83,10 @@ def login_user(request):
             return render(request, 'music/login.html', {'error_message': 'Invalid login'})
     return render(request, 'music/login.html')
 
+# class UserLogin(request):
+#     queryset = Song.objects.all()
+#     serializer_class = SongSerializers
+#     permission_classes = (permissions.IsAuthenticated,)
 
 # def get_token(request):
 #     if request.method == "POST":
@@ -265,8 +270,15 @@ def songs(request, filter_by):
             'filter_by': filter_by,
         })
 
+# class SongView(LoginRequiredMixin, generics.ListCreateAPIView):
+#     template_name = 'music/songs.html'
+#     context_object_name = 'songs'
 
-class AlbumList(generics.ListCreateAPIView):
+#     def get_songs_list(self):
+#         if self.request.user.has
+
+
+class AlbumList(LoginRequiredMixin,generics.ListCreateAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializers
     permission_classes = (permissions.IsAuthenticated,)
