@@ -1,0 +1,30 @@
+{% load static %}
+
+
+<h1>Todo application</h1>
+<table>
+    <tr>
+        <th>Description</th>
+        <th>Date Created</th>
+        <th>Status</th>
+    </tr> 
+        {% for song in test %}
+            <tr>
+                <td>{{ song.albums.genre }}</td>
+                <td>{{ song.genre }}</td>
+            </tr>
+        {% endfor %} 
+</table>
+
+<br />
+
+<h2>Add item</h2>
+<form action="add_item/" method="post">
+    {% csrf_token %}
+    <input type="text" name="description" placeholder="What to do?" required="required"/>
+    <input type="hidden" name="user" value="{{ user.id }}" required="required" />
+    <button type="submit">Add</button>
+</form>
+
+fields = ['id', 'user', 'artist', 'album_title',
+'genre', 'album_logo', 'is_favorite']

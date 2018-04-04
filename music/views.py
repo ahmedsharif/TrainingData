@@ -15,21 +15,49 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
-
+from rest_framework import status
+from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+
+from rest_framework.renderers import TemplateHTMLRenderer
 
 # Create your views here.
 IMG_File_Type = ['jpg', 'png', 'jpeg']
 Audio_File_Type = ['wav', 'mp3', 'ogg']
 
 
-def index(request):
-    if not request.user.is_authenticated():
-        return render(request, 'music/login.html')
-    else:
-        albums = Album.objects.filter(user=request.user)
+# def index(request):
+#     if not request.user.is_authenticated():
+#         return render(request, 'music/login.html')
+#     else:
+#         albums = Album.objects.filter(user=request.user)
+#         song_results = Song.objects.all()
+#         query = request.GET.get("q")
+#         if query:
+#             albums = albums.filter(
+#                 Q(album_title__icontains=query) |
+#                 Q(artist__icontains=query)
+#             ).distinct()
+#             song_results = song_results.filter(
+#                 Q(song_title__icontains=query)
+#             ).distinct()
+#             return render(request, 'music/index.html', {
+#                 'albums': albums,
+#                 'songs': song_results,
+#             })
+#         else:
+#             return render(request, 'music/index.html', {'albums': albums})
+
+
+class IndexPage(LoginRequiredMixin, generic.ListView):
+    template_name = 'music/index.html'
+    context_object_name = 'albums'
+
+    def get_queryset(self):
+        albums = Album.objects.filter(user=self.request.user)
         song_results = Song.objects.all()
-        query = request.GET.get("q")
+        data = {}
+        query = self.request.GET.get("q")
         if query:
             albums = albums.filter(
                 Q(album_title__icontains=query) |
@@ -38,28 +66,30 @@ def index(request):
             song_results = song_results.filter(
                 Q(song_title__icontains=query)
             ).distinct()
-            return render(request, 'music/index.html', {
-                'albums': albums,
-                'songs': song_results,
-            })
-        else:
-            return render(request, 'music/index.html', {'albums': albums})
+            data['albums'].append(albums)
+            data['songs'].append(song_results)
+        return albums
 
 
 
-# class LoginView(APIView):
-#     authentication_classes = (SessionAuthentication, BasicAuthentication)
-#     permission_classes = (IsAuthenticated,)
+class LoginView(APIView):
+    serializer_class = UserSerializers
 
-    
-#     def post(self, request, format=None):
-#         content = {
-#             'user': request.user,  # `django.contrib.auth.User` instance.
-#             'auth': request.auth,  # None
-#         }
-#         # render(request, 'music/index.html', content)
-#         return Response(content)
+    template_name = 'music/login.html'
 
+
+    def get(self,request):
+        serializers = UserSerializers()
+        return Response({'serializers':serializers}, status = status.HTTP_200_OK)
+
+
+    def post(self, request):
+        serializers = UserSerializers(data=request.data)
+        if serializers.is_valid():
+            # response = redirect('music/index.html')
+            new_data = serializers.data
+            return Response(new_data,status=status.HTTP_200_OK)
+        return Response({'serializers': serializers,'errors': 'Invalid input' }, status= status.HTTP_400_BAD_REQUEST)
 
 
 def login_user(request):
@@ -83,6 +113,9 @@ def login_user(request):
             return render(request, 'music/login.html', {'error_message': 'Invalid login'})
     return render(request, 'music/login.html')
 
+
+            
+
 # class UserLogin(request):
 #     queryset = Song.objects.all()
 #     serializer_class = SongSerializers
@@ -99,6 +132,9 @@ def login_user(request):
 #         }
 #         response = render(request,'music/index.html',dict)
 #         return response
+
+
+
 
 def logout_user(request):
     logout(request)
@@ -277,14 +313,46 @@ def songs(request, filter_by):
 #     def get_songs_list(self):
 #         if self.request.user.has
 
-
-class AlbumList(LoginRequiredMixin,generics.ListCreateAPIView):
-    queryset = Album.objects.all()
-    serializer_class = AlbumSerializers
+class SummarySongs(generics.RetrieveUpdateDestroyAPIView):
+    # template_name = 'music/detail.html'
+    queryset = Song.objects.all()
+    renderer_classes = (TemplateHTMLRenderer,)
     permission_classes = (permissions.IsAuthenticated,)
+    serializer = SongSerializers()
+    
+    def get(self, request):    
+        return Response(template_name='music/detail.html')   
+        # return render(request, self.template_name, queryset)
 
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+
+
+
+
+# class AlbumList(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Album.objects.all()
+#     # serializer_class = AlbumSerializers
+#     # renderer_classes = [TemplateHTMLRenderer]
+#     # template_name = 'music/detail.html'
+#     # permission_classes = (permissions.IsAuthenticated,)
+
+
+#     # def get(self, request, *args, **kwargs):
+#     #     item = get_object_or_404(Album.objects.all(), pk=kwargs['pk']) 
+#     #     # return render(request, self.template_name, context)
+#     #     return render(request, self.template_name, item)
+
+#     serializer_class = AlbumSerializers
+#     permission_classes = (permissions.is_authenticated,)
+
+class AlbumList(LoginRequiredMixin, generic.ListView):
+    template_name = 'music/test.html'
+    context_object_name = 'test'
+
+    def get_queryset(self):
+        return Album.objects.all()
+
+
+
 
 
 class AlbumDetail(generics.RetrieveUpdateDestroyAPIView):

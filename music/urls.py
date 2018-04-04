@@ -6,8 +6,10 @@ from . import views
 app_name = 'music'
 
 urlpatterns = [
-    url(r'^login/', obtain_jwt_token),
-    url(r'^$', views.index, name='index'),
+    
+    # url(r'^$', views.index, name='index'),
+    url(r'^index_page/$', views.IndexPage.as_view(), name='index_page'),
+
     url(r'^register/$', views.register, name='register'),
     url(r'^login_user/$', views.login_user, name='login_user'),
     url(r'^logout_user/$', views.logout_user, name='logout_user'),
@@ -25,9 +27,14 @@ urlpatterns = [
     url(r'^songs/(?P<filter_by>[a-zA_Z]+)/$', views.songs, name='songs'),
 
     # for rest API urls
+    
+
+
     url(r'^album_list/$', views.AlbumList.as_view(), name='album_list'),
     url(r'^song_list/$', views.SongList.as_view(), name='song_list'),
     url(r'^user_detail/$', views.UserDetail.as_view(), name='user_detail'),
+    url(r'^login/$', views.LoginView.as_view(), name='rest_login'),
+    
     
     # url(r'^get_token/$', views.get_token, name='get_token'),
         #url(r'^login_user/$', views.LoginView.as_view(), name='login_user'),
