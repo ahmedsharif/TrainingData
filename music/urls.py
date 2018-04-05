@@ -1,17 +1,19 @@
 from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework_jwt.views import obtain_jwt_token
+from rest_framework import routers
 from . import views
 
+
 app_name = 'music'
+
 
 urlpatterns = [
     
     # url(r'^$', views.index, name='index'),
     url(r'^index_page/$', views.IndexPage.as_view(), name='index_page'),
-
     url(r'^register/$', views.register, name='register'),
-    url(r'^login_user/$', views.login_user, name='login_user'),
+    # url(r'^login_user/$', views.login_user, name='login_user'),
     url(r'^logout_user/$', views.logout_user, name='logout_user'),
     url(r'^create_album/$', views.create_album, name='create_album'),
     url(r'^(?P<album_id>[0-9]+)/create_song/$',
@@ -33,7 +35,7 @@ urlpatterns = [
     url(r'^album_list/$', views.AlbumList.as_view(), name='album_list'),
     url(r'^song_list/$', views.SongList.as_view(), name='song_list'),
     url(r'^user_detail/$', views.UserDetail.as_view(), name='user_detail'),
-    url(r'^login/$', views.LoginView.as_view(), name='rest_login'),
+    url(r'^login_user/$', views.LoginView.as_view(), name='login_user'),
     
     
     # url(r'^get_token/$', views.get_token, name='get_token'),

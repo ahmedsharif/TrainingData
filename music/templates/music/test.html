@@ -1,5 +1,5 @@
 {% load static %}
-
+{% load rest_framework %}
 
 <h1>Todo application</h1>
 <table>
@@ -13,18 +13,18 @@
                 <td>{{ song.albums.genre }}</td>
                 <td>{{ song.genre }}</td>
             </tr>
-        {% endfor %} 
+        {% endfor %}
 </table>
 
 <br />
 
 <h2>Add item</h2>
-<form action="add_item/" method="post">
+<form action="" method="post">
     {% csrf_token %}
-    <input type="text" name="description" placeholder="What to do?" required="required"/>
+    {% render_form serializers %} 
+    <!-- <input type="text" name="description" placeholder="What to do?" required="required"/>
     <input type="hidden" name="user" value="{{ user.id }}" required="required" />
-    <button type="submit">Add</button>
-</form>
+    -->
+    <button type="submit" name="submit">Add</button>
 
-fields = ['id', 'user', 'artist', 'album_title',
-'genre', 'album_logo', 'is_favorite']
+</form>

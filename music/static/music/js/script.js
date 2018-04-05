@@ -17,22 +17,22 @@ myApp.controller('UserCtrl', function ($scope, $http, $window) {
       };
 });    
 */
-$(document).ready(function() {
-  var url = "http://127.0.0.1:8000/login_user/";
-  var data = { username: "ali", password: "arbisoft" };
-  console.log(current_url);
-  fetch(url, {
-    method: "POST", // or 'PUT'
-    body: JSON.stringify(data),
-    headers: new Headers({
-      "Content-Type": "application/json"
-    })
-  })
-    .then(res => res.json())
-    .catch(error => console.error("Error:", error))
-    .then(response => {
-      localStorage.setItem("key", response["token"]);
-      window.location = ".";
-    });
-  // .then(response => console.log('Success:', response['token']));
-});
+// $(document).ready(function() {
+//   var url = "http://127.0.0.1:8000/login_user/";
+//   var data = { username: "ali", password: "arbisoft" };
+//   console.log(current_url);
+//   fetch(url, {
+//     method: "POST", // or 'PUT'
+//     body: JSON.stringify(data),
+//     headers: new Headers({
+//       "Content-Type": "application/json"
+//     })
+//   })
+//     .then(res => res.json())
+//     .catch(error => console.error("Error:", error))
+//     .then(response => {
+//       localStorage.setItem("key", response["token"]);
+//       window.location = ".";
+//     });
+//   // .then(response => console.log('Success:', response['token']));
+// });

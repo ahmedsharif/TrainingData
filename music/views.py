@@ -16,7 +16,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
 from rest_framework import status
-from django.shortcuts import redirect
+from django.shortcuts import redirect, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -49,72 +49,88 @@ Audio_File_Type = ['wav', 'mp3', 'ogg']
 #             return render(request, 'music/index.html', {'albums': albums})
 
 
-class IndexPage(LoginRequiredMixin, generic.ListView):
+class IndexPage(generic.ListView):
     template_name = 'music/index.html'
     context_object_name = 'albums'
 
     def get_queryset(self):
-        albums = Album.objects.filter(user=self.request.user)
-        song_results = Song.objects.all()
-        data = {}
-        query = self.request.GET.get("q")
-        if query:
-            albums = albums.filter(
-                Q(album_title__icontains=query) |
-                Q(artist__icontains=query)
-            ).distinct()
-            song_results = song_results.filter(
-                Q(song_title__icontains=query)
-            ).distinct()
-            data['albums'].append(albums)
-            data['songs'].append(song_results)
-        return albums
+        if self.request.COOKIES["token"]:
+            cookie_data = self.request.COOKIES["token"]
+            data = jwt.decode(cookie_data, 'secret', algorithms=['HS256'])
 
+            albums = Album.objects.filter(user=self.request.user)
+            song_results = Song.objects.all()
+            data = {}
+            query = self.request.GET.get("q")
+            if query:
+                albums = albums.filter(
+                    Q(album_title__icontains=query) |
+                    Q(artist__icontains=query)
+                ).distinct()
+                song_results = song_results.filter(
+                    Q(song_title__icontains=query)
+                ).distinct()
+                data['albums'].append(albums)
+                data['songs'].append(song_results)
+            return albums
+        else:
+            response = redirect('music:login_user')
+            return response
 
 
 class LoginView(APIView):
     serializer_class = UserSerializers
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'music/test.html'
+    context_object_name = 'abc'
 
-    template_name = 'music/login.html'
-
-
-    def get(self,request):
+    def get(self, request):
         serializers = UserSerializers()
-        return Response({'serializers':serializers}, status = status.HTTP_200_OK)
-
+        return Response({'serializers': serializers}, status=status.HTTP_200_OK)
 
     def post(self, request):
         serializers = UserSerializers(data=request.data)
         if serializers.is_valid():
             # response = redirect('music/index.html')
-            new_data = serializers.data
-            return Response(new_data,status=status.HTTP_200_OK)
-        return Response({'serializers': serializers,'errors': 'Invalid input' }, status= status.HTTP_400_BAD_REQUEST)
-
-
-def login_user(request):
-    if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
+            username = serializers.validated_data.get('username')
+            password = serializers.validated_data.get('password')
+            data = {
+                "username": username, "password": password
+            }
+            user = authenticate(username=serializers.validated_data.get('username'),
+                                password=serializers.validated_data.get('password'))
+            if user and user.is_active:
+                print(reverse('music:index_page'))
+                response = redirect('music:index_page')
+                token = jwt.encode(data, "secret")
+                response.set_cookie("token", token)
                 login(request, user)
-                albums = Album.objects.filter(user=request.user)
-                return render(request, 'music/index.html', {'albums': albums})
-
-                # encrypt credentials into JWT l
-                #encoded = jwt.encode({'username': username, 'password':password}, 'secret', algorithm='HS256')
-                #response.set_cookie('key', encoded)
-                # return response
-            else:
-                return render(request, 'music/login.html', {'error_message': 'Your account has been disabled'})
-        else:
-            return render(request, 'music/login.html', {'error_message': 'Invalid login'})
-    return render(request, 'music/login.html')
+                return response
+            return Response({'serializers': serializers, 'errors': 'Invalid Credentials'}, status=status.HTTP_200_OK)
+        return Response({'serializers': serializers}, status=status.HTTP_400_BAD_REQUEST)
 
 
-            
+# def login_user(request):
+#     if request.method == "POST":
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         user = authenticate(username=username, password=password)
+#         if user is not None:
+#             if user.is_active:
+#                 login(request, user)
+#                 albums = Album.objects.filter(user=request.user)
+#                 return render(request, 'music/index.html', {'albums': albums})
+
+#                 # encrypt credentials into JWT l
+#                 #encoded = jwt.encode({'username': username, 'password':password}, 'secret', algorithm='HS256')
+#                 #response.set_cookie('key', encoded)
+#                 # return response
+#             else:
+#                 return render(request, 'music/login.html', {'error_message': 'Your account has been disabled'})
+#         else:
+#             return render(request, 'music/login.html', {'error_message': 'Invalid login'})
+#     return render(request, 'music/login.html')
+
 
 # class UserLogin(request):
 #     queryset = Song.objects.all()
@@ -132,8 +148,6 @@ def login_user(request):
 #         }
 #         response = render(request,'music/index.html',dict)
 #         return response
-
-
 
 
 def logout_user(request):
@@ -171,7 +185,7 @@ def register(request):
 def create_album(request):
     # if 'key' in request.COOKIES:
     #     value = request.COOKIES['key']
-        # result = jwt.decode(value, 'secret', algorithms=['HS256'])
+    # result = jwt.decode(value, 'secret', algorithms=['HS256'])
 
     if not request.user.is_authenticated():
         return render(request, 'music/login.html')
@@ -306,6 +320,7 @@ def songs(request, filter_by):
             'filter_by': filter_by,
         })
 
+
 # class SongView(LoginRequiredMixin, generics.ListCreateAPIView):
 #     template_name = 'music/songs.html'
 #     context_object_name = 'songs'
@@ -319,13 +334,10 @@ class SummarySongs(generics.RetrieveUpdateDestroyAPIView):
     renderer_classes = (TemplateHTMLRenderer,)
     permission_classes = (permissions.IsAuthenticated,)
     serializer = SongSerializers()
-    
-    def get(self, request):    
-        return Response(template_name='music/detail.html')   
+
+    def get(self, request):
+        return Response(template_name='music/detail.html')
         # return render(request, self.template_name, queryset)
-
-
-
 
 
 # class AlbumList(generics.RetrieveUpdateDestroyAPIView):
@@ -350,9 +362,6 @@ class AlbumList(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return Album.objects.all()
-
-
-
 
 
 class AlbumDetail(generics.RetrieveUpdateDestroyAPIView):

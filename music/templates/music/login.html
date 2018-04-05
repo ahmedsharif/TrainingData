@@ -1,6 +1,7 @@
 {% extends 'music/base_visitor.html' %} {% block title %}Log In{% endblock %} {% block login_active %}active{% endblock %}
 {% block body %}
-
+{% load static %}
+{% load rest_framework %}
 <div class="container-fluid">
 
     <div class="row">
@@ -13,9 +14,10 @@
                         <strong>{{ error_message }}</strong>
                     </p>
                     {% endif %}
-                    <form class="form-horizontal " role="form" action="{% url 'music:login_user' %}" method="post" enctype="multipart/form-data">
+                    <form class="form-horizontal " role="form" action="" method="post">
                         {% csrf_token %}
-                        <div class="form-group">
+                        {% render_form serializers %}
+                        {% comment %} <div class="form-group">
                      
                             <label class="control-label col-sm-2" for="id_username">
                                 Username:
@@ -31,13 +33,16 @@
                             <div class="col-sm-10">
                                 <input id="id_password" maxlength="30" name="password" type="password">
                             </div>
-                        </div>
+                        </div> 
+                       
                     
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 <button type="submit" class="btn btn-success">Submit</button>
                             </div>
                         </div>
+                        {% endcomment %}
+                        <button type="submit" class="btn btn-success">Submit</button>
                     </form>
                 </div>
                 <div class="panel-footer">

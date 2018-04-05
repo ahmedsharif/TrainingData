@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^music/', include('music.urls')),
     url(r'^', include('music.urls')),
     # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    # url(r'^accounts/', include('django.contrib.auth.urls')),
+    # url(r'/', include('django.contrib.auth.urls')),
 
 ]
 
