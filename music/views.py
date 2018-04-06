@@ -1,24 +1,19 @@
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from rest_framework import generics, permissions
 from music.serializers import AlbumSerializers, SongSerializers, UserSerializers
-from music.permissions import IsOwnerOrReadOnly
 from .forms import AlbumForm, SongForm, UserForm
 from .models import Album, Song, User
 from django.views import generic, View
 import jwt
 from django.http import HttpResponse
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import redirect, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-
 from rest_framework.renderers import TemplateHTMLRenderer
 
 # Create your views here.
@@ -54,9 +49,10 @@ class IndexPage(generic.ListView):
     context_object_name = 'albums'
 
     def get_queryset(self):
-        if self.request.COOKIES["token"]:
+        # if self.request.COOKIES["token"]:
+        if self.request.COOKIES.get("token", None):
             cookie_data = self.request.COOKIES["token"]
-            data = jwt.decode(cookie_data, 'secret', algorithms=['HS256'])
+            token = jwt.decode(cookie_data, 'secret', algorithms=['HS256'])
 
             albums = Album.objects.filter(user=self.request.user)
             song_results = Song.objects.all()
@@ -72,7 +68,7 @@ class IndexPage(generic.ListView):
                 ).distinct()
                 data['albums'].append(albums)
                 data['songs'].append(song_results)
-            return albums
+            return data
         else:
             response = redirect('music:login_user')
             return response
@@ -81,7 +77,7 @@ class IndexPage(generic.ListView):
 class LoginView(APIView):
     serializer_class = UserSerializers
     renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'music/test.html'
+    template_name = 'music/login.html'
     context_object_name = 'abc'
 
     def get(self, request):
@@ -108,6 +104,49 @@ class LoginView(APIView):
                 return response
             return Response({'serializers': serializers, 'errors': 'Invalid Credentials'}, status=status.HTTP_200_OK)
         return Response({'serializers': serializers}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class Logout(APIView):
+    def post(self, request):
+        response = HttpResponse("works")
+        response.delete_cookie("token")
+        response = redirect('music:login_user')
+        logout(request)
+        # return Response(status=status.HTTP_200_OK)
+        return response
+
+
+# class Logout(APIView):
+#     queryset = User.objects.all()
+#     renderer_classes = [TemplateHTMLRenderer]
+#     template_name = 'music/login.html'
+#     context_object_name = 'abc'
+#
+#     def get(self, request):
+#         # simply delete the token to force a login
+#         if 'token' in request.COOKIES:
+#             response = HttpResponse("works")
+#             response.delete_cookie('token')
+#             logout(request)
+#             return Response(status=status.HTTP_200_OK)
+#
+#     def post(self, request):
+#         if 'token' in request.COOKIES:
+#             logout(request)
+#             response = HttpResponse("works")
+#             response.delete_cookie('token')
+#             return Response(status=status.HTTP_200_OK)
+
+
+# class Logout(APIView):
+#     renderer_classes = [TemplateHTMLRenderer]
+#     template_name = 'music/test.html'
+#     context_object_name = 'abc'
+#
+#     def post(self, request):
+#         queryset = User.objects.all()
+#         response = redirect('music:login_user')
+#         return response
 
 
 # def login_user(request):
@@ -150,16 +189,16 @@ class LoginView(APIView):
 #         return response
 
 
-def logout_user(request):
-    logout(request)
-    form = UserForm(request.POST or None)
-
-    context = {
-        "form": form,
-    }
-    response = render(request, 'music/login.html', context)
-    # response.delete_cookie('key')
-    return response
+# def logout_user(request):
+#     logout(request)
+#     form = UserForm(request.POST or None)
+#
+#     context = {
+#         "form": form,
+#     }
+#     response = render(request, 'music/login.html', context)
+#     response.delete_cookie('token')
+#     return response
 
 
 def register(request):

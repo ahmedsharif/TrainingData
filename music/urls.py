@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^index_page/$', views.IndexPage.as_view(), name='index_page'),
     url(r'^register/$', views.register, name='register'),
     # url(r'^login_user/$', views.login_user, name='login_user'),
-    url(r'^logout_user/$', views.logout_user, name='logout_user'),
+    # url(r'^logout_user/$', views.logout_user, name='logout_user'),
     url(r'^create_album/$', views.create_album, name='create_album'),
     url(r'^(?P<album_id>[0-9]+)/create_song/$',
         views.create_song, name='create_song'),
@@ -31,7 +31,7 @@ urlpatterns = [
     # for rest API urls
     
 
-
+    url(r'^logout_user/$', views.Logout.as_view(), name='logout_user'),
     url(r'^album_list/$', views.AlbumList.as_view(), name='album_list'),
     url(r'^song_list/$', views.SongList.as_view(), name='song_list'),
     url(r'^user_detail/$', views.UserDetail.as_view(), name='user_detail'),

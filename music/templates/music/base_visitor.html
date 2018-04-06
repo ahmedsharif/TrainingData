@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'music/style.css' %}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="{% static 'music/js/main.js' %}"></script>
+    <<script src="{% static 'music/js/main.js' %}"></script>
     <script src="{% static 'music/js/script.js' %}"></script>
 </head>
 
@@ -36,7 +36,7 @@
                         <a href="{% url 'music:register' %}">Register</a>
                     </li>
                     <li class="{% block login_active %}{% endblock %}">
-                        <a href="{% url 'music:LoginView' %}">Log In</a>
+                        <a href="{% url 'music:login_user' %}">Log In</a>
                     </li>
                 </ul>
             </div>
