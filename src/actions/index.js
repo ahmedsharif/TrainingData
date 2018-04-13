@@ -10,7 +10,7 @@ function getRequestHeader() {
 
 const updateStoreState = (store, newsJson) => {
   if (Array.isArray(newsJson)) {
-    newsJson.forEach((news) => {
+    newsJson.forEach(news => {
       store.dispatch(addNews(news));
     });
   } else {
@@ -29,9 +29,27 @@ const loadNewsFromAPI = (store, id) => {
     .then(newsJson => {
       updateStoreState(store, newsJson);
     })
-    .catch((error) => {
-        console.error(error);
+    .catch(error => {
+      console.error(error);
     });
 };
 
-export {loadNewsFromAPI, updateStoreState}
+const addNewsInAPI = (news, redirect) => {
+  const link = domain + '/news';
+  let data = new FormData();
+  data.append('title', news.title);
+  data.append('content', news.content);
+  data.append('image', news.image);
+  fetch(link, {
+    method: 'POST',
+    headers: {
+      Authorization: 'Token' + localStorage.authToken,
+    },
+    body: data,
+  }).then(response => {
+    if (response.ok) redirect('/');
+    else alert(repsonse.statusText + '\nTry again');
+  });
+};
+
+export { getRequestHeader, loadNewsFromAPI, addNewsInAPI };

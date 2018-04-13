@@ -1,4 +1,4 @@
-const domain = "http://127.0.0.1:8000/"
+const domain = "http://127.0.0.1:8000/index"
 
 const actions = {
     ADD_NEWS: "ADD_NEWS",
@@ -16,4 +16,10 @@ const filters = {
     SHOW_BY_ID: "SHOW_BY_ID",
 }
 
-export {domain, actions, filters};
+const events = {
+    LOGIN: 1,
+    ADD_NEWS: 2,
+    LOGOUT: 2.3,
+};
+
+export {domain, actions, filters, events};

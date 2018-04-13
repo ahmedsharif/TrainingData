@@ -23,4 +23,8 @@ class Home extends React.Component {
   }
 }
 
+Home.contentTypes = {
+  store: PropTypes.object,
+};
+
 export default Home;
