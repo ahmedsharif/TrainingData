@@ -23,7 +23,7 @@ class Home extends React.Component {
   }
 }
 
-Home.contentTypes = {
+Home.contextTypes = {
   store: PropTypes.object,
 };
 

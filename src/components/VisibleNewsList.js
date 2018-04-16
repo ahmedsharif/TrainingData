@@ -11,7 +11,7 @@ const getVisibleNews = ({
   switch (visibilityFilter) {
     case filters.SHOW_BY_SEARCH:
       searchText = searchText.toLowerCase();
-      return news.filters(n => {
+      return news.filter(n => {
         const title = n.title.toLowerCase();
         return title.includes(searchText);
       });
@@ -30,7 +30,7 @@ const mapStateToProps = state => {
   };
 };
 
-const VisibleNewsList = connet(mapStateToProps, null)(NewsList);
+const VisibleNewsList = connect(mapStateToProps, null)(NewsList);
 
 
 export default VisibleNewsList;

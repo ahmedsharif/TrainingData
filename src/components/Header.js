@@ -37,12 +37,12 @@ let Header = props => {
 
   return (
     <Navbar inverse collapseOnSelect>
-      <Navbar.header>
+      <Navbar.Header>
         <Navbar.Brand>
           <Link to="/">News</Link>
         </Navbar.Brand>
         <Navbar.Toggle />
-      </Navbar.header>
+      </Navbar.Header>
       <Navbar.Collapse>{authOrNonAuthNav}</Navbar.Collapse>
     </Navbar>
   );

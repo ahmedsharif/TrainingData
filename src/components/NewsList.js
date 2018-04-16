@@ -5,10 +5,10 @@ const NewsList = props => {
   return (
     <div>
       <div>
-        {props.newsList.map(news => <NewsCard key={news.id} news={news} />)};
+        {props.newsList.map(news => <NewsCard key={news.id} news={news} />)}
       </div>
     </div>
   );
 };
 
-export default { NewsList };
+export default NewsList;

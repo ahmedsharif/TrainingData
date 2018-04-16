@@ -28,14 +28,14 @@ class LoginForm extends React.Component {
       store.dispatch(setUser(username, token));
       this.props.history.push('/');
     } else {
-      alert('username and password is incorrect');
+      alert('username or password is incorrect');
     }
   };
 
   handleSubmit = event => {
     const username = event.target.elements.username.value;
     const password = event.target.elements.password.value;
-    fetch(domain + '/news/auth', {
+    fetch(domain + '/news/auth/', {
       method: 'POST',
       headers: getRequestHeader(),
       body: JSON.stringify({
@@ -43,7 +43,7 @@ class LoginForm extends React.Component {
         password,
       }),
     })
-      .then(repsonse => response.json())
+      .then(response => response.json())
       .then(responseJson => {
         this.tryLogin(username, responseJson.token);
       })
@@ -56,7 +56,7 @@ class LoginForm extends React.Component {
 
   render() {
     return (
-      <div name="LoginForm" className="loginForm">
+      <div name="loginForm" className="loginForm">
         <h2> Please Login </h2>
         <form onSubmit={this.handleSubmit}>
           <input type="text" name="username" placeholder="enter username" />

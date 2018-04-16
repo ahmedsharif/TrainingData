@@ -34,11 +34,11 @@ const addNews = news => {
   };
 };
 
-const setUser = (username, password) => {
+const setUser = (username, token) => {
   return {
     type: actions.SET_USER,
     username,
-    password,
+    token,
   };
 };
 

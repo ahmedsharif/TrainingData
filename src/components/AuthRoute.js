@@ -23,7 +23,7 @@ const AuthRoute = ({ component, ...props }) => {
   }
 };
 
-AuthRoute.PropTypes = {
+AuthRoute.propTypes = {
   component: PropTypes.oneOfType([
     PropTypes.element,
     PropTypes.func

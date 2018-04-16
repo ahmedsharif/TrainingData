@@ -4,7 +4,7 @@ import { addNews } from './storeAction';
 function getRequestHeader() {
   return {
     Accept: 'application/json',
-    'Content-type': 'application/json',
+    'Content-Type': 'application/json',
   };
 }
 
@@ -35,7 +35,7 @@ const loadNewsFromAPI = (store, id) => {
 };
 
 const addNewsInAPI = (news, redirect) => {
-  const link = domain + '/news';
+  const link = domain + '/news/';
   let data = new FormData();
   data.append('title', news.title);
   data.append('content', news.content);
@@ -48,7 +48,7 @@ const addNewsInAPI = (news, redirect) => {
     body: data,
   }).then(response => {
     if (response.ok) redirect('/');
-    else alert(repsonse.statusText + '\nTry again');
+    else alert(response.statusText + '\nTry again');
   });
 };
 

@@ -11,7 +11,7 @@ const NewsCard = props => {
         <Media.Left>
           <img src={news.image_url} alt="News" />
         </Media.Left>
-        <Media.body>
+        <Media.Body>
           <Media.Heading>
             <Link to={/news/ + news.id}>{news.title}</Link>
           </Media.Heading>
@@ -19,11 +19,11 @@ const NewsCard = props => {
             dangerouslySetInnerHTML={{
               __html: news.content.slice(0, 350) + '...',
             }}
-          />}
+          />
           <p className="pub_date">
             <Moment fromNow>{news.pub_date}</Moment>
           </p>
-        </Media.body>
+        </Media.Body>
       </Media>
       <div>
         <hr />
