@@ -5,7 +5,7 @@ import VisibleNewsList from './VisibleNewsList';
 import { refreshState, setUser } from '../actions/storeAction';
 
 class Home extends React.Component {
-  isPrivate = false;
+  static isPrivate = false;
 
   componentWillMount = () => {
     const { store } = this.context;
