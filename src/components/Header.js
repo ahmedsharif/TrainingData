@@ -69,6 +69,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           return;
         case events.ADD_NEWS:
           ownProps.history.push('/addNews');
+          return;
+        default:
+          ownProps.history.push('/');
+          return;
       }
     },
     handleSearchBar: searchText => {

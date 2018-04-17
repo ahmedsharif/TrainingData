@@ -31,7 +31,7 @@ class FileInput extends React.Component {
     return (
       <Dropzone onDrop={this.onChange} {...this.props}>
         {this.state.imageFile ? (
-          <img className={'addNews'} src={this.state.imageFile.preview} />
+          <img className={'addNews'} src={this.state.imageFile.preview} alt="news"/>
         ) : (
           <p
             style={{

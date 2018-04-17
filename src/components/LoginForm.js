@@ -35,23 +35,27 @@ class LoginForm extends React.Component {
   handleSubmit = event => {
     const username = event.target.elements.username.value;
     const password = event.target.elements.password.value;
-    fetch(domain + '/news/auth/', {
+    const propRequired = {
       method: 'POST',
       headers: getRequestHeader(),
       body: JSON.stringify({
-        username,
-        password,
+        username: username,
+        token: password,
       }),
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        this.tryLogIn(username, responseJson.token);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    };
+    new Promise((resolve, reject) => {
+      fetch(domain + '/news/auth/', propRequired)
+        .then(response => response.json())
+        .then(responseJson => {
+          this.tryLogIn(username, responseJson.token);
+          resolve(responseJson);
+        })
+        .catch(error => {
+          console.log(error);
+        });
 
-    event.preventDefault();
+      event.preventDefault();
+    });
   };
 
   render() {
@@ -61,7 +65,9 @@ class LoginForm extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <input type="text" name="username" placeholder="enter username" />
           <br />
+          <br />
           <input type="password" name="password" placeholder="enter password" />
+          <br />
           <br />
           <input type="submit" value="submit" />
         </form>
