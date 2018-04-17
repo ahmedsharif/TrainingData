@@ -14,20 +14,16 @@ const AuthRoute = ({ component, ...props }) => {
       return <Redirect to={HOME_ROOT} />;
     }
     return <Route {...props} component={component} />;
-  }
-  else {
+  } else {
     if (isPrivate === true) {
-      return <Redirect to={PUBLIC_ROOT} />
+      return <Redirect to={PUBLIC_ROOT} />;
     }
-    return <Route {...props} component = { component } />;
+    return <Route {...props} component={component} />;
   }
 };
 
 AuthRoute.propTypes = {
-  component: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.func
-  ])
+  component: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
 };
 
 export default AuthRoute;

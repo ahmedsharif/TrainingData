@@ -19,7 +19,7 @@ class LoginForm extends React.Component {
     this.unsubscribe();
   };
 
-  tryLogin = (username, token) => {
+  tryLogIn = (username, token) => {
     const { store } = this.context;
 
     if (token) {
@@ -45,7 +45,7 @@ class LoginForm extends React.Component {
     })
       .then(response => response.json())
       .then(responseJson => {
-        this.tryLogin(username, responseJson.token);
+        this.tryLogIn(username, responseJson.token);
       })
       .catch(error => {
         console.log(error);

@@ -1,4 +1,4 @@
-const domain = "http://127.0.0.1:8000/index"
+const domain = "http://127.0.0.1:8000/api"
 
 const actions = {
     ADD_NEWS: "ADD_NEWS",

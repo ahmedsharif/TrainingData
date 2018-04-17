@@ -13,24 +13,10 @@ const setVisibilityFilter = visibilityFilter => {
   };
 };
 
-const setDetailedNewsId = id => {
-  return {
-    type: actions.SET_DETAILED_NEWS_ID,
-    id,
-  };
-};
-
-const setSearchText = search => {
+const setSearchText = searchText => {
   return {
     type: actions.SET_SEARCH_TEXT,
-    search,
-  };
-};
-
-const addNews = news => {
-  return {
-    type: actions.ADD_NEWS,
-    ...news,
+    searchText,
   };
 };
 
@@ -42,11 +28,24 @@ const setUser = (username, token) => {
   };
 };
 
+const setDetailedNewsId = id => {
+  return {
+    type: actions.SET_DETAILED_NEWS_ID,
+    id,
+  };
+};
+const addNews = news => {
+  return {
+    type: actions.ADD_NEWS,
+    ...news,
+  };
+};
+
 export {
   refreshState,
-  setSearchText,
   addNews,
+  setVisibilityFilter,
+  setSearchText,
   setUser,
   setDetailedNewsId,
-  setVisibilityFilter,
 };

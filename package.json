@@ -3,17 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "moment": "^2.22.1",
     "prop-types": "^15.6.1",
     "react": "^16.3.1",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.3.1",
+    "react-dropzone": "^4.2.9",
     "react-moment": "^0.7.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
     "react-search-input": "^0.11.3",
     "redux": "^3.7.2",
-    "redux-form": "^7.3.0"
+    "redux-form": "^7.3.0",
+    "redux-form-dropzone": "0.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

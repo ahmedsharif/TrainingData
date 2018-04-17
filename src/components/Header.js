@@ -36,14 +36,14 @@ let Header = props => {
   );
 
   return (
-    <Navbar inverse collapseOnSelect>
+    // <Navbar inverse collapseOnSelect>
+    <Navbar>
       <Navbar.Header>
         <Navbar.Brand>
           <Link to="/">News</Link>
         </Navbar.Brand>
-        <Navbar.Toggle />
       </Navbar.Header>
-      <Navbar.Collapse>{authOrNonAuthNav}</Navbar.Collapse>
+      {authOrNonAuthNav}
     </Navbar>
   );
 };

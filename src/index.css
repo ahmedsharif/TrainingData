@@ -3,3 +3,42 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+body {
+  margin: 10px;
+  font-family: sans-serif;
+}
+
+div.loginForm {
+  text-align: center;
+}
+
+div.loginForm input {
+  border-radius: 25px;
+}
+
+h1,
+h2 {
+  text-align: center;
+}
+
+div.news-card {
+  margin-right: 10%;
+  margin-left: 10%;
+}
+div.news-card img {
+  width: 300px;
+  height: 150px;
+}
+div.search-input {
+  color: black;
+}
+
+p.pub_date {
+  color: red;
+}
+
+img.addNews {
+  height: inherit;
+  width: inherit;
+  border-radius: inherit;
+}
