@@ -69,7 +69,7 @@ class AlexanderWangSpider(CrawlSpider):
             return
 
         self.ids_seen.append(retailer_sku)
-        product = LiujoItem()
+        product = items
         product['retailer_sku'] = retailer_sku
         product['name'] = self.product_name(response)
         product['brand'] = self.product_brand(response)
