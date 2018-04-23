@@ -1,7 +1,7 @@
 import json
 import re
-import scrapy
-from scrapy.spiders import CrawlSpiders, Rule
+
+from scrapy.spiders import Rule, CrawlSpider
 from scrapy.linkextractor import LinkExtractor
 from liujo.items import LiujoItem
 
@@ -9,7 +9,7 @@ from w3lib.url import url_query_cleaner
 from scrapy import Request
 
 
-class LiujoCrawler(CrawlSpiders):
+class LiujoCrawler(CrawlSpider):
 
     name = "liujo"
     allowed_domain = ['www.liujo.com']
@@ -37,33 +37,39 @@ class LiujoCrawler(CrawlSpiders):
         product['name'] = self.product_name(response)
         product['price'] = self.product_price(response)
         product['images'] = self.product_images(response)
-        
-
+        product['description'] = self.product_description(response)
 
     @staticmethod
     def product_retailer_sku(response):
-        return response.css('p.product-ids::text()').re(r'^X')
+        return response.css('p.product-ids::attr(data-sku)').extract_first()
 
     @staticmethod
     def product_name(response):
-        name = response.css('div.product-name h1').extract_first()
+        name = response.css('div.product-name h1::text').extract_first()
         return clean(name.title())
-    
+
     @staticmethod
     def product_price(response):
-        price = response.css('div.price-box span.price').extract_first()
+        price = response.css('div.price-box span.price::text').extract_first()
         return price
 
     @staticmethod
     def product_description(response):
-        description = response.css('div.short-description-value::text()').extract()
+        description = response.css(
+            'div.short-description-value::text').extract()
         return clean(description)
-    
+
     @staticmethod
     def product_images(response):
-        img = response.css('div.product-media-gallery-inner img::attr(src)').extract()
+        img = response.css(
+            'div.product-media-gallery-inner img::attr(src)').extract()
         return img
-    
+
+    @staticmethod
+    def product_detail(response):
+        detail = response.css('div.detail-value p::text').extract()
+        return detail
+
 
 def clean(formatted):
 

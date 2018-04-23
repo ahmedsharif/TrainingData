@@ -7,7 +7,7 @@ from scrapy import Request
 from scrapy.spiders import Rule, CrawlSpider
 from scrapy.linkextractors import LinkExtractor
 
-from alexanderwang_scrapy.items import Product
+# from alexanderwang_scrapy.items import Product
 
 
 class AlexanderWangSpider(CrawlSpider):
@@ -69,7 +69,7 @@ class AlexanderWangSpider(CrawlSpider):
             return
 
         self.ids_seen.append(retailer_sku)
-        product = Product()
+        product = LiujoItem()
         product['retailer_sku'] = retailer_sku
         product['name'] = self.product_name(response)
         product['brand'] = self.product_brand(response)
