@@ -1,4 +1,3 @@
-import json
 import re
 
 from scrapy.spiders import Rule, CrawlSpider
@@ -10,23 +9,23 @@ from scrapy import Request
 
 
 class LiujoCrawler(CrawlSpider):
-
     name = "liujo"
     allowed_domain = ['www.liujo.com']
-    start_urls = ['http://www.liujo.com/fr/abito-jersey-t-unita-135.html']
+    start_urls = ['http://www.liujo.com/fr']
 
-    # listing_css = ['ul.main-level']  # for pagniation
-    # products_css = ['div.main col1-layout']
-    # already_parsed = []
-    # test = ['.product-view']
+    listing_css = ['ul.main-level']  # for pagniation
+    # div.main col1-layout
+    products_css = ['.product-name a']
+    already_parsed = []
+    test = ['.product-view']
+    allowed = ['robes']
 
-    # rules = (
-    #     Rule(LinkExtractor(restrict_css=test,), callback="parse_product"),
-    #     Rule(LinkExtractor(restrict_css=listing_css,),
-    #          callback="pagination", follow=True),
-    # )
+    rules = (
+        Rule(LinkExtractor(restrict_css=listing_css, allow=allowed), callback="pagination", follow=True),
+        Rule(LinkExtractor(restrict_css=products_css, ), callback="parse_product"),
+    )
 
-    def parse(self, response):
+    def parse_product(self, response):
         full_id = self.product_retailer_sku(response)
         retailer_sku = full_id
 
@@ -47,11 +46,11 @@ class LiujoCrawler(CrawlSpider):
         product['currency'] = self.product_currency(response)
         product['care'] = self.product_care(response)
 
-        return product
+        yield product
 
     def pagination(self, response):
 
-        total_products = response.css('p.amount::text').re_first(r'(\d+) ')
+        total_products = response.css('div.breadcrumbs li::text').re_first(r'(\d+)')
 
         if not total_products:
             return
@@ -60,11 +59,8 @@ class LiujoCrawler(CrawlSpider):
         products_per_page = 12
         starting = 0
 
-        if total_products <= products_per_page:
-            return
-
         while total_products > starting:
-            products_page = response.urljoin('?start={}'.format(starting))
+            products_page = response.urljoin('?p={}'.format(starting))
             yield Request(products_page, callback=self.parse)
             starting += products_per_page
 
@@ -118,28 +114,28 @@ class LiujoCrawler(CrawlSpider):
             'div.price-box span.price::text').extract_first()
         currency = re.sub(r"\d+", "", currency)
         return currency
-    
+
     @staticmethod
     def product_care(response):
         care = response.css('.side-popup-content-inside li::text').extract()
         return clean(care)
-    
+
     # @staticmethod
     # def product_color_title(response):
     #     title = response.css('#configurable_swatch_color li::attr(class)').extract()
     #     re_pattern = r'\b(?:selected)\b'
-        
+
     #     for t in range(len(title)):
     #         flag = re.findall(re_pattern,title[t])
     #         if flag:
     #             t = title[t]
     #             return flag
     #     #         name = title[t]
-        # return name 
+    # return name
     # @staticmethod
     # def product_brand(response):
-    
-    def product_skus(self,response):
+
+    def product_skus(self, response):
         sizes = response.css('#configurable_swatch_liujo_size span.swatch-label::text').re(r'(\d+)')
         sizes = clean(sizes)
         skus = []
@@ -151,13 +147,22 @@ class LiujoCrawler(CrawlSpider):
             sku['sku_id'] = self.product_retailer_sku(response)
             sku['currency'] = self.product_currency(response)
             sku['price'] = self.product_price(response)
-            #sku['sku_color'] = self.product_color_title(response) 
+            # sku['sku_color'] = self.product_color_title(response)
             skus.append(sku)
         return skus
 
+    def additional_color(self, response):
+        additional_color_urls = response.css('ul#configurable_swatch_color a::attr(onclick)')
+        request_queue = []
+
+        for color_url in additional_color_urls:
+            request = Request(color_url, callback=self.product_skus)
+            request_queue.append(request)
+
+        return request_queue
+
 
 def clean(formatted):
-
     if not formatted:
         return formatted
 

@@ -62,7 +62,7 @@ class FatFaceSpider(CrawlSpider):
             products_page = response.urljoin('?start={}'.format(starting))
             yield Request(products_page, callback=self.parse)
             starting += products_per_page
-
+            
     def parse_product(self, response):
 
         retailer_sku = self.product_retailer_sku(response)
