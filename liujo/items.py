@@ -11,4 +11,14 @@ import scrapy
 class LiujoItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
+    retailer_sku = scrapy.Field()
+    name = scrapy.Field()
+    images = scrapy.Field()
+    description = scrapy.Field()
+    color = scrapy.Field()
+    category = scrapy.Field()
+    currency = scrapy.Field()
+    price = scrapy.Field()
+    skus = scrapy.Field()
+
     pass
