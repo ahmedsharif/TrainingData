@@ -20,5 +20,6 @@ class LiujoItem(scrapy.Item):
     currency = scrapy.Field()
     price = scrapy.Field()
     skus = scrapy.Field()
+    care = scrapy.Field()
 
     pass

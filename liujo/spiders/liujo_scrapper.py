@@ -22,8 +22,8 @@ class LiujoCrawler(CrawlSpider):
 
     # rules = (
     #     Rule(LinkExtractor(restrict_css=test,), callback="parse_product"),
-    #     # Rule(LinkExtractor(restrict_css=listing_css,),
-    #     #      callback="pagination", follow=True),
+    #     Rule(LinkExtractor(restrict_css=listing_css,),
+    #          callback="pagination", follow=True),
     # )
 
     def parse(self, response):
@@ -45,6 +45,8 @@ class LiujoCrawler(CrawlSpider):
         product['color'] = self.product_color(response)
         product['category'] = self.product_category(response)
         product['currency'] = self.product_currency(response)
+        product['care'] = self.product_care(response)
+
         return product
 
     def pagination(self, response):
@@ -117,6 +119,11 @@ class LiujoCrawler(CrawlSpider):
         currency = re.sub(r"\d+", "", currency)
         return currency
     
+    @staticmethod
+    def product_care(response):
+        care = response.css('.side-popup-content-inside li::text').extract()
+        return clean(care)
+    
     # @staticmethod
     # def product_color_title(response):
     #     title = response.css('#configurable_swatch_color li::attr(class)').extract()
@@ -137,14 +144,15 @@ class LiujoCrawler(CrawlSpider):
         sizes = clean(sizes)
         skus = []
 
-        for size in range(5):
+        for size in range(len(sizes)):
             sku = {}
             sku['colour'] = self.product_color(response)
             sku['size'] = sizes[size]
             sku['sku_id'] = self.product_retailer_sku(response)
+            sku['currency'] = self.product_currency(response)
+            sku['price'] = self.product_price(response)
             #sku['sku_color'] = self.product_color_title(response) 
             skus.append(sku)
-
         return skus
 
 
