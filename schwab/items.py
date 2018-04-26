@@ -19,4 +19,9 @@ class SchwabItem(Item):
     product_images = Field()
     product_retailer_sku = Field()
     product_description = Field()
+    product_url_origin = Field()
+    retailer = Field()
+    trail = Field()
+    category = Field()
+    color = Field()
     pass

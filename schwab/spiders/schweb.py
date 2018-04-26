@@ -33,8 +33,11 @@ class SchwebCralwer(CrawlSpider):
         product['product_images'] = self.product_images(response)
         product['product_retailer_sku'] = self.product_retailer_sku(response)
         product['product_description'] = self.product_description(response)
-        product['product_url'] = self.product_url_origin(response)
+        product['product_url_origin'] = self.product_url_origin(response)
         product['retailer'] = "schwab" 
+        product['trail'] = self.product_trail(response)
+        product['category'] = self.product_category(response)
+        product['color'] = self.product_color(response)
 
         return product
 
@@ -104,4 +107,7 @@ class SchwebCralwer(CrawlSpider):
         
         return category_dict
     
+    def product_color(self,response):
+        color = response.css('.js-current-color-name::attr(value)').re_first(r'(\w+)')
+        return color
     
