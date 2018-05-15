@@ -1,0 +1,6 @@
+{
+    "python.pythonPath": "/home/ahmadsharif/workspace/scrapy-env/bin/python3.5",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.pylintPath": "/home/ahmadsharif/workspace/scrapy-env/bin/pylint",
+}
