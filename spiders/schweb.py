@@ -46,52 +46,42 @@ class SchwabParserSpider(Spider):
 
         requests = []
         requests += self.color_requests(response)
-        if not requests:
-            requests += self.stock_request(response)
-            requests += self.size_request(response)
 
         return self.extract_requests(requests, product)
 
     def product_skus(self, response):
         sizes = self.product_size(response)
-        # additional sizes used for dropdown sizes
-        addl_sizes = self.product_additional_sizes(response)
+
+        request_sizes = self.product_additional_sizes(response)
         previous_price = self.product_previous_price(response)
-        addl_sizes.insert(0, "None")
+        request_sizes.insert(0, "None")
 
         total_skus = {}
-
         sku = {}
 
         if previous_price:
             sku['previous_prices'] = previous_price
 
+        if self.size_counter >= len(request_sizes):
+            self.size_counter = 0
+
+        sku["price"] = self.product_price(response)
+        sku["currency"] = self.product_currency(response)
+        sku["color"] = self.product_color(response)
+
         if sizes:
             for size in sizes:
-                sku = {}
                 sku["size"] = size
-                sku["price"] = self.product_price(response)
-                sku["currency"] = self.product_currency(response)
-                sku["color"] = self.product_color(response)
-                sku_id = self.product_retailer_sku(response)
-                if sku['color'] and sku['price']:
-                    sku_id = sku_id + '|' + sku['color'] + '|' + sku['size']
-                else:
-                    sku_id = sku_id + '|' + sku['size']
+                sku_id = (sku['color'] or '') + '|' + sku['size']
                 total_skus[sku_id] = sku
 
-        elif addl_sizes:
-            if self.size_counter >= len(addl_sizes):
-                self.size_counter = 0
+        elif request_sizes:
             sku["price"] = self.product_price(response)
-            sku["currency"] = self.product_currency(response)
-            sku["color"] = self.product_color(response)
-            sku_id = self.product_retailer_sku(response)
-            sku['size'] = addl_sizes[self.size_counter]
-
-            self.size_counter = self.size_counter + 1
-            sku_id = sku_id + '|' + (sku['color'] or '') + '|' + sku['price']
+            sku['size'] = request_sizes[self.size_counter]
+            sku_id = (sku['color'] or '') + '|' + sku['size']
             total_skus.update({sku_id: sku})
+            self.size_counter = self.size_counter + 1
+
         return total_skus
 
     def color_requests(self, response):
@@ -100,8 +90,13 @@ class SchwabParserSpider(Spider):
 
         for color in colors:
             url = add_or_replace_parameter(response.url, "color", color)
+            color_requests += [Request(url=url, callback=self.parse_color, dont_filter=True)]
+
+        # For handling those requests which doesn't has color_requests
+        if not colors:
             color_requests += self.stock_request(response)
-            color_requests += [Request(url=url, callback=self.parse_images, dont_filter=True)]
+            color_requests += self.size_request(response)
+
         return color_requests
 
     def stock_request(self, response):
@@ -111,12 +106,6 @@ class SchwabParserSpider(Spider):
             'items': item_number
         }
         return [FormRequest(url=self.stock_url[0], formdata=items, callback=self.parse_stock, dont_filter=True)]
-
-    # def get_sizes(self, response):
-    #     sizes_requests = []
-    #     sizes_requests += self.size_request(response)
-    #
-    #     return sizes_requests
 
     def size_request(self, response):
         params = {}
@@ -173,31 +162,32 @@ class SchwabParserSpider(Spider):
         sold_out = ['lieferbar innerhalb 3 Wochen', 'ausverkauft', 'lieferbar bis Mitte  Juli']
 
         for item in product['skus']:
-            sku_id = item.split('|')
-            product_id = sku_id[0]
+            product_id = product['retailer_sku']
 
             if product['skus'][item]['size']:
-                size = sku_id[2]
+                size = product['skus'][item]['size']
 
+                # stock_status is a json object and we need
+                # to find out_of_stock status
                 if (size in stock_status[product_id]) and (stock_status[product_id][size] in sold_out):
                     product['skus'][item]['out_of_stock'] = True
                 elif size not in stock_status[product_id]:
                     product['skus'][item]['out_of_stock'] = True
+
             elif stock_status[product_id] in sold_out:
                 product['skus'][item]['out_of_stock'] = True
 
         return self.extract_requests(requests, product)
 
-    def parse_images(self, response):
-        sizes = self.product_additional_sizes(response)
+    def parse_color(self, response):
         product = response.meta['product']
         requests = response.meta['requests']
 
-        sizes_requests = []
-        sizes_requests += self.size_request(response)
-        requests += sizes_requests
-        if not sizes:
-            product['skus'] += self.product_skus(response)
+        requests += self.size_request(response)
+
+        requests += self.stock_request(response)
+
+        product['skus'].update(self.product_skus(response))
         product['images_urls'] += self.product_images(response)
 
         return self.extract_requests(requests, product)
@@ -282,6 +272,7 @@ class SchwabParserSpider(Spider):
 
     def product_gender(self, response):
         categories = self.product_category(response)
+
         for category in categories:
             if category in self.gender_map:
                 return self.gender_map[category]
@@ -304,7 +295,7 @@ class SchwabCralwer(CrawlSpider):
     allowed_domain = ['https://www.schwab.de/']
     items_per_page = 60
     start_urls = [
-        'https://www.schwab.de/index.php?cl=oxwCategoryTree&jsonly=true&staticContent=true&cacheID=1525066940']
+        'https://www.schwab.de/doppelrollo-planina-my-home-lichtschutz-klemmfix_641285144.html']
 
     spider_parser = SchwabParserSpider()
 
@@ -317,10 +308,8 @@ class SchwabCralwer(CrawlSpider):
 
     def start_requests(self):
         urls = []
-        # https://www.schwab.de/lascana-blusenkleid-inkl-bindeband_594654029.html
         test = [
-            'https://www.schwab.de/seitenzugrollo-themse-uni-my-home-verdunkelnd-energiesparend-klemmfix_596216066.html']
-        # 'https://www.schwab.de/b-c-best-connections-by-heine-kurzarm-poloshirt-_100410529.html?color=rot'
+            'https://www.schwab.de/doppelrollo-planina-my-home-lichtschutz-klemmfix_641285144.html']
         urls.append(Request(test[0], self.spider_parser.parse_product))
         return urls
 
