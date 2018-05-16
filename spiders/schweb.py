@@ -3,6 +3,7 @@ from scrapy.spiders import CrawlSpider, Spider
 from schwab.items import SchwabItem
 from w3lib.url import add_or_replace_parameter, url_query_cleaner
 import json
+import copy
 
 
 class SchwabParserSpider(Spider):
@@ -35,12 +36,11 @@ class SchwabParserSpider(Spider):
         product['url'] = self.product_url_origin(response)
         product['retailer'] = "schwab"
         product['category'] = self.product_category(response)
-        product['trail'] = self.product_trail(response)
+        product['trail'] = response.meta['trail']
         product['gender'] = self.product_gender(response)
         product['skus'] = self.product_skus(response)
         product['care'] = self.product_care(response)
         product['merch_info'] = []
-
         if not product['gender']:
             product['industry'] = "Homeware"
 
@@ -52,7 +52,7 @@ class SchwabParserSpider(Spider):
     def product_skus(self, response):
         sizes = self.product_size(response)
 
-        request_sizes = self.product_additional_sizes(response)
+        request_sizes = self.product_request_sizes(response)
         previous_price = self.product_previous_price(response)
         request_sizes.insert(0, "None")
 
@@ -69,17 +69,15 @@ class SchwabParserSpider(Spider):
         sku["currency"] = self.product_currency(response)
         sku["color"] = self.product_color(response)
 
-        if sizes:
-            for size in sizes:
-                sku["size"] = size
-                sku_id = (sku['color'] or '') + '|' + sku['size']
-                total_skus[sku_id] = sku
+        for size in sizes:
+            sku["size"] = size
+            sku_id = (sku['color'] or '') + '|' + sku['size']
+            total_skus[sku_id] = sku
 
-        elif request_sizes:
-            sku["price"] = self.product_price(response)
+        if request_sizes and not sizes:
             sku['size'] = request_sizes[self.size_counter]
             sku_id = (sku['color'] or '') + '|' + sku['size']
-            total_skus.update({sku_id: sku})
+            total_skus[sku_id] = sku
             self.size_counter = self.size_counter + 1
 
         return total_skus
@@ -147,7 +145,6 @@ class SchwabParserSpider(Spider):
         product = response.meta['product']
         requests = response.meta['requests']
         product['skus'].update(self.product_skus(response))
-
         return self.extract_requests(requests, product)
 
     def parse_stock(self, response):
@@ -214,15 +211,11 @@ class SchwabParserSpider(Spider):
 
     @staticmethod
     def product_previous_price(response):
-        price = response.css('.js-wrong-price::text').extract_first()
-        if price:
-            return price.replace('.', '')
-        return price
+        return response.css('.js-wrong-price::text').extract_first()
 
     @staticmethod
     def product_price(response):
-        price = response.css('.js-detail-price::text').extract_first()
-        return price.replace(',', '')
+        return response.css('.js-detail-price::text').extract_first()
 
     @staticmethod
     def product_currency(response):
@@ -248,7 +241,7 @@ class SchwabParserSpider(Spider):
         return clean_product(desc)
 
     @staticmethod
-    def product_additional_sizes(response):
+    def product_request_sizes(response):
         sizes = response.css('.js-variantSelector option::text').extract()
         if sizes:
             del sizes[0]
@@ -295,27 +288,32 @@ class SchwabCralwer(CrawlSpider):
     allowed_domain = ['https://www.schwab.de/']
     items_per_page = 60
     start_urls = [
-        'https://www.schwab.de/doppelrollo-planina-my-home-lichtschutz-klemmfix_641285144.html']
+        'https://www.schwab.de/index.php?cl=oxwCategoryTree&jsonly=true&staticContent=true&cacheID=1525066940']
 
     spider_parser = SchwabParserSpider()
 
     # def parse_start_url(self, response):
     #     raw_urls = json.loads(response.text)
-    #
+    #     response.meta['trail'] = []
     #     for url in raw_urls:
     #         for inner_cat in url['sCat']:
-    #             yield Request(url=inner_cat['url'], callback=self.parse_pagination)
+    #             response.meta['trail'] = [inner_cat['url']]
+    #             yield Request(url=inner_cat['url'], callback=self.parse_pagination, meta=response.meta)
 
     def start_requests(self):
         urls = []
+        # https://www.schwab.de/lascana-blusenkleid-inkl-bindeband_594654029.html
         test = [
-            'https://www.schwab.de/doppelrollo-planina-my-home-lichtschutz-klemmfix_641285144.html']
-        urls.append(Request(test[0], self.spider_parser.parse_product))
+            'https://www.schwab.de/sommerhighlights/muttertag/']
+        # 'https://www.schwab.de/b-c-best-connections-by-heine-kurzarm-poloshirt-_100410529.html?color=rot'
+        urls.append(Request(test[0], self.parse_pagination))
         return urls
 
     def parse_pagination(self, response):
+        common_meta = {}
+        common_meta['trail'] = ['https://www.schwab.de/']
+        common_meta['trail'] += [response.url]
         total_items = response.css('.pl__headline__count::text').re_first(r'(\d+)')
-
         if not total_items:
             return
 
@@ -323,13 +321,15 @@ class SchwabCralwer(CrawlSpider):
 
         for page in range(1, total_pages):
             url = add_or_replace_parameter(response.url, 'pageNr', page)
-            yield Request(url=url, callback=self.product_requests)
+            meta = copy.deepcopy(common_meta)
+            meta['trail'] += [url]
+            yield Request(url=url, callback=self.product_requests, meta=copy.deepcopy(meta))
 
     def product_requests(self, response):
+        meta = response.meta
         products = response.css('div.product__top a::attr(href)').extract()
-
         for product in products:
-            yield response.follow(url_query_cleaner(product), callback=self.spider_parser.parse_product)
+            yield response.follow(url_query_cleaner(product), callback=self.spider_parser.parse_product, meta=copy.deepcopy(meta))
 
 
 def clean_product(raw_data):
