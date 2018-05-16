@@ -19,4 +19,3 @@ class SchwabItem(Item):
     industry = Field()
     merch_info = Field()
     gender = Field()
-    pass
