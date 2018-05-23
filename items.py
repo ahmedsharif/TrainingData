@@ -16,8 +16,6 @@ class ShoecarnivalItem(Item):
     category = Field()
     skus = Field()
     care = Field()
-    size = Field()
-    pre_price = Field()
     industry = Field()
     merch_info = Field()
     gender = Field()
