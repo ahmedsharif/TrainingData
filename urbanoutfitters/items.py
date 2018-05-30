@@ -4,7 +4,7 @@ from scrapy.item import Item, Field
 class UrbanoutfittersItem(Item):
     product = Field()
     name = Field()
-    product_brand = Field()
+    brand = Field()
     price = Field()
     currency = Field()
     images_urls = Field()
