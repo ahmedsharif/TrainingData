@@ -1,9 +1,13 @@
+import json
+import zlib
+import base64
+import re
+
 from scrapy import Request
 from scrapy.spiders import CrawlSpider, Spider, Rule
 from scrapy.linkextractors import LinkExtractor
 from w3lib.url import add_or_replace_parameter
 from copy import deepcopy
-
 
 from urbanoutfitters.items import UrbanoutfittersItem
 
@@ -23,21 +27,74 @@ class OutFittersParserSpider(OutfittersMixin, Spider):
 
     def product_package(self, response):
         product = UrbanoutfittersItem()
-        product['name'] = self.product_name(response)
-        product['brand'] = self.product_brand(response)
+        data = response.css('script::text').re_first(r"window.productData = '(.+)';").encode()
+
+        raw_data = zlib.decompress(base64.b64decode(data)).decode()
+
+        product_data = json.loads(raw_data)
+
+        data = product_data['product']['product']
+        # family_data = product_data['product']['familyProducts']
+        d = data['longDescription'].split('\n')
+
+        product['brand'] = data['brand']
+        product['description'] = data['longDescription'].split('**Content + Care**  ')[0]
+        product['retailer_sku'] = data['productId']
+        product['gender'] = data['facets']['genders'][0]
+        product['category'] = data['parentCategoryId']
+        product['care'] = data['longDescription'].split('**Content + Care**  ')[1]
+        product['url'] = response.url
+        product['name'] = data['displayName']
         product['price'] = self.product_price(response)
-        product['currency'] = self.product_currency(response)
-        product['images_urls'] = self.product_images(response)
-        product['retailer_sku'] = self.product_retailer_sku(response)
-        product['description'] = self.product_description(response)
-        product['url'] = self.product_url_origin(response)
-        product['retailer'] = "outfitters"
-        product['category'] = self.product_category(response)
+        product['currency'] = product_data['product']['currencyCode']
+
         product['trail'] = response.meta.get('trail', [])
-        product['gender'] = self.product_gender(response)
-        product['care'] = self.product_care(response)
-        product['skus'] = {}
         product['merch_info'] = self.product_merch_info(response)
+        product['images_urls'] = self.product_images(response)
+        product['retailer'] = "outfitters"
+
+        colors = product_data['product']['controlsData']['colorData']
+        color_keys = colors.keys()
+
+        all_skus = {}
+
+        for key, color in zip(color_keys, colors):
+            sizes_sku = colors[key]['fitData']['REGULAR']['sizeData']
+            for size_key in sizes_sku.keys():
+                sku = {}
+                sku['size'] = re.search(r'\d+',sizes_sku[size_key]['commonSizeName']).group()
+                sku['color'] = colors[key]['displayName']
+                sku_id = '{color}|{size}'.format(
+                    color=(sku['color'] or ''), size=sku['size'])
+
+                sku['price'] = self.product_price(response)
+
+                if not sizes_sku[size_key]['inStock']:
+                    sku['out_of_stock'] = True
+
+                all_skus[sku_id] = sku
+
+        product['skus'] = all_skus
+
+
+
+        # sku_id = f'{sku["color"] or ""}|{sku["size"]}'
+
+        # product['name'] = self.product_name(response)
+        # product['brand'] = self.product_brand(response)
+        # product['price'] = self.product_price(response)
+        # product['currency'] = self.product_currency(response)
+        # product['images_urls'] = self.product_images(response)
+        # product['retailer_sku'] = self.product_retailer_sku(response)
+        # product['description'] = self.product_description(response)
+        # product['url'] = self.product_url_origin(response)
+        # product['retailer'] = "outfitters"
+        # product['category'] = self.product_category(response)
+        # product['trail'] = response.meta.get('trail', [])
+        # product['gender'] = self.product_gender(response)
+        # product['care'] = self.product_care(response)
+        # product['skus'] = {}
+        # product['merch_info'] = self.product_merch_info(response)
 
         if not product['gender']:
             product['industry'] = "Homeware"
@@ -48,23 +105,23 @@ class OutFittersParserSpider(OutfittersMixin, Spider):
     def parse_color(self, response):
         product = response.meta['product']
 
-        product['skus'].update(self.product_sku(response))
+        # product['skus'].update(self.product_sku(response))
         product['images_urls'] += self.product_images(response)
 
         return self.extract_requests(response.meta['requests'], product)
 
     def color_requests(self, response):
         colors = response.css('.o-list-swatches a::attr(href)').extract()
-        stocks = self.product_stocks(response)
-        sizes = len(self.product_sizes(response))
+        # stocks = self.product_stocks(response)
+        # sizes = len(self.product_sizes(response))
 
         requests = []
         stock = 0
 
         for color in colors:
-            response.meta['stocks'] = stocks[stock:stock + sizes]
-            stock = stock + sizes
-            requests += [response.follow(url=color, callback=self.parse_color, meta=response.meta, dont_filter=True)]
+            # response.meta['stocks'] = stocks[stock:stock + sizes]
+            # stock = stock + sizes
+            requests += [response.follow(url=color, callback=self.parse_color, dont_filter=True)]
 
         return requests
 
@@ -83,7 +140,7 @@ class OutFittersParserSpider(OutfittersMixin, Spider):
             sku["color"] = self.product_color(response)
             sku['size'] = size
             sku_id = '{color}|{size}'.format(
-                 color=(sku['color'] or ''), size=sku['size'])
+                color=(sku['color'] or ''), size=sku['size'])
 
             # sku_id = f'{sku["color"] or ""}|{sku["size"]}'
 
@@ -193,36 +250,37 @@ class SchwabCralwer(OutfittersMixin, CrawlSpider):
     spider_parser = OutFittersParserSpider()
 
     #
-    rules = (
-        Rule(LinkExtractor(restrict_css='nav a'), callback='parse_pagination'),
-        Rule(LinkExtractor(restrict_css='div.s-category-grid a'),
-             callback=spider_parser.product_package)
-    )
+    # rules = (
+    #     Rule(LinkExtractor(restrict_css='nav a, ul.o-pagination__ul a', allow='mens-shoes')),
+    #     Rule(LinkExtractor(restrict_css='div.s-category-grid a'),
+    #          callback=spider_parser.product_package)
+    #
+    # )
 
-    # def start_requests(self):
-    #     urls = []
-    #     test = [
-    #         'https://www.urbanoutfitters.com/shop/champion-uo-anorak-jacket?category=mens-jackets&color=032']
-    #     urls.append(Request(test[0], self.spider_parser.product_package))
-    #     return urls
+    def start_requests(self):
+        urls = []
+        test = [
+            'https://www.urbanoutfitters.com/shop/birkenstock-arizona-leather-core-sandal?category=mens-shoes&color=023']
+        urls.append(Request(test[0], self.spider_parser.product_package))
+        return urls
 
-    def parse_pagination(self, response):
-        common_meta = {}
-        common_meta['trail'] = [response.url]
-
-        total_items = response.css(
-            'div.c-results-count::text').re_first(r'(\d+)')
-
-        if not total_items:
-            return
-
-        total_pages = (int(total_items) // self.items_per_page) + 1
-
-        for page in range(1, total_pages):
-            url = add_or_replace_parameter(response.url, 'page', page)
-            meta = deepcopy(common_meta)
-
-            yield Request(url=url, callback=self.parse, meta=meta)
+    # def parse_pagination(self, response):
+    #     common_meta = {}
+    #     common_meta['trail'] = [response.url]
+    #
+    #     total_items = response.css(
+    #         'div.c-results-count::text').re_first(r'(\d+)')
+    #
+    #     if not total_items:
+    #         return
+    #
+    #     total_pages = (int(total_items) // self.items_per_page) + 1
+    #
+    #     for page in range(1, total_pages):
+    #         url = add_or_replace_parameter(response.url, 'page', page)
+    #         meta = deepcopy(common_meta)
+    #
+    #         yield Request(url=url, callback=self.parse, meta=meta)
 
     def parse(self, response):
         for request in super().parse(response):
@@ -230,7 +288,7 @@ class SchwabCralwer(OutfittersMixin, CrawlSpider):
             yield request
 
     def add_trail(self, response):
-        return  response.meta.get('trail', []) + [response.url]
+        return response.meta.get('trail', []) + [response.url]
 
 
 def clean_product(raw_data):
