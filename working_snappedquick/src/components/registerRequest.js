@@ -1,18 +1,24 @@
-import Url from "domurl";
 
-var searchurl = new Url(
-    
-    "http://192.168.100.13:8080/snapped_quick_api_and_admin/public/api/users"
-);
+const url = 'http://192.168.100.13:8080/snapped_quick_api_and_admin/public/api/users';
 
-function search(callback, state) {
-  searchurl.state.q = state;
-  
 
-  let request = new Request(searchurl.toString());
-  fetch(request)
-    .then(response => response.json())
-    .then(callback);
-}
+const getUserData = (state) => {
+  let username = state.username;
+  let fname = state.username;
+  let lname = state.username;
+  let email = state.email;
+  let password = state.password;
+  let role = 'client';
+  let device = '12345';
+  let personal_contact = state.phoneNumber;
+  let OS = 2;
+  let device_token = '13259785947';
+  let queryUrl = `${url}?fname=${username}&lname=${username}&email=${email}&password=${password}&role=${role}&device=${device}&personal_contact=${personal_contact}&OS=${OS}&device_token=${device_token}`;
+  return fetch(queryUrl) 
+    .then ( response => {
+      if ( ! response.ok ) { throw response }
+        return response.json();
+    })
+};
 
-export { search };
+export const userData = (state) => getUserData(state);

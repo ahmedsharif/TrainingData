@@ -10,6 +10,7 @@ import "./images/favicon.ico";
 import "./css/font-awesome.min.css";
 import "./css/jquery.mCustomScrollbar.css";
 import "./css/justified.css";
+import "./css/styles.css";
 
 // import "./js/main.min.js";
 // import "./js/lightbox-plus-jquery.min.js";
@@ -18,31 +19,25 @@ import "./css/justified.css";
 // import "./js/justified.min.js";
 // import $ from "./js/custom.js"
 
-// import * as user from "./userRegistration.js";
+import  { getUserData } from "./userRegistration.js";
 
 const byPropKey = (propertyName, value) => () => ({
   [propertyName]: value
 });
 
 
-function search(callback, state) {
-  // searchurl.state.q = state;
-  var searchurl = new Url(
-    "http://192.168.100.13:8080/snapped_quick_api_and_admin/public/api/users"
-  );
-
-  searchurl.query.q = state.target.userName;
-  searchurl.query.q = state.target.dateOfBirth;
-  searchurl.query.q = state.target.email;
-  searchurl.query.q = state.target.password;
-  searchurl.query.q = state.target.confirmPassword;
-  searchurl.query.q = state.target.address;
-  searchurl.query.q = state.target.phoneNumber;
-  let request = new Request(searchurl.toString());
-  fetch(request)
-    .then(response => response.json())
-    .then(callback);
-}
+// function search(callback, state) {
+//   // searchurl.state.q = state;
+//   // var searchurl = new Url(
+//   //   "http://192.168.100.13:8080/snapped_quick_api_and_admin/public/api/users"
+//   // );
+//   var url = "http://192.168.100.13:8080/snapped_quick_api_and_admin/public/api/users"
+//   let queryUrl = `${url}/${type}?q=${city}&units=${units}&cnt=${cnt}&APPID=${API_KEY}`;
+//   let request = new Request(queryUrl.toString());
+//   fetch(request)
+//     .then(response => response.json())
+//     .then(callback);
+// }
 
 class RegisterUser extends Component {
   constructor() {
@@ -74,11 +69,12 @@ class RegisterUser extends Component {
       phoneNumber
     } = this.state;
 
-    search(jsonData => {
-      this.setState({
-        results: jsonData.items
-      });
-    }, this.state);
+    getUserData(this.state);
+    // search(jsonData => {
+    //   this.setState({
+    //     results: jsonData.items
+    //   });
+    // }, this.state);
   };
 
   render() {
