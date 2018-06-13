@@ -6,6 +6,7 @@ import registerServiceWorker from "./registerServiceWorker";
 import RegisterUser from "./components/userRegistration.js";
 import { Route, Link } from "react-router-dom";
 import Login from "./components/Login.js";
+import Check from "./components/Check.js";
 
 registerServiceWorker();
 
@@ -20,9 +21,9 @@ class Main extends Component {
     };
   }
 
-    componentDidMount() {
-        this.registerUser = "";
-    }
+  componentDidMount() {
+    this.registerUser = "";
+  }
 
   register_user() {
     this.setState({
@@ -35,6 +36,7 @@ class Main extends Component {
       <div className="Main">
         <Route
           path="/"
+          exact
           render={() => (
             <div className="App-header">
               <RegisterUser isUserRegistered={this.register_user} />
@@ -43,14 +45,21 @@ class Main extends Component {
         />
         <Route
           exact
-          path="/Login"
-          render={() =>
-            this.state.isUserRegistered && (
-              <div>
-                <Login />
-              </div>
-            )
-          }
+          path="/login"
+          render={() => (
+            <div>
+              <Login />
+            </div>
+          )}
+        />
+        <Route
+          exact
+          path="/check"
+          render={() => (
+            <div>
+              <Check />
+            </div>
+          )}
         />
       </div>
     );

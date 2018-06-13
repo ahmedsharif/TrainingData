@@ -1,45 +1,46 @@
 import React from "react";
-// import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, Redirect } from "react-router-dom";
 // import { connect } from "react-redux";
 // import { compose } from "recompose";
 
-const url =
-  "http://192.168.100.13:8080/snapped_quick_api_and_admin/public/api/users";
+const url = "http://54.213.158.63/snapped_quick_api_and_admin/public/api/users";
 
 const getUserData = state => {
   let username = state.userName;
-  let email = state.email;
   let password = state.password;
-  let role = "client";
-  let device = "12345";
-  let personal_contact = state.phoneNumber;
-  let OS = 2;
-  let device_token = "13259785947";
+  // let role = "client";
+  // let device = "12345";
+  // let personal_contact = state.phoneNumber;
+  // let OS = 2;
+  // let device_token = "13259785947";
 
   fetch(url, {
     method: "POST",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
     },
     body: JSON.stringify({
-      "username": username,
-      "email": email,
-      "password": password,
-      "role": role,
-      "device": device,
-      "personal_contact": personal_contact,
-      "OS": OS,
-      "device_token": device_token
+      username: username,
+      // email: email,
+      password: password
+      // role: role,
+      // device: device,
+      // personal_contact: personal_contact,
+      // OS: OS,
+      // device_token: device_token
     })
-  }).then(response => {
-    if (!response.ok) {
-      console.log(response);
-    }
-    return response.json();
-  });
+  })
+    .then(response => {
+      if (!response.ok) {
+        console.log(response);
+      }
+      return response.json();
+    })
+    .then(json => {
+      console.log(json);
+    });
 };
-
 
 const byPropKey = (propertyName, value) => () => ({
   [propertyName]: value
@@ -56,16 +57,15 @@ class Login extends React.Component {
     super(props);
 
     this.state = { ...INITIAL_STATE };
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   onSubmit = event => {
+    event.preventDefault();
     const { userName, password } = this.state;
-  
-    return getUserData(this.state).then(response => {
-      console.log("fetched", response);
-    });
 
-    
+
+    getUserData({ userName, password });
 
     // if (
     //   username == verifyData["username"] &&
@@ -91,7 +91,7 @@ class Login extends React.Component {
           <div className="tabel-cell">
             <div className="container">
               <div className="form-holder">
-                <form method="">
+                <form method="" onSubmit={this.onSubmit}>
                   <input
                     type="text"
                     name="userName"

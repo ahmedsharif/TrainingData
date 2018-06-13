@@ -17,8 +17,8 @@ const byPropKey = (propertyName, value) => () => ({
   [propertyName]: value
 });
 
-const url =
-  "http://192.168.100.13:8080/snapped_quick_api_and_admin/public/api/users";
+const url = "http://54.213.158.63/snapped_quick_api_and_admin/public/api/users";
+//"http://192.168.100.13:8080/snapped_quick_api_and_admin/public/api/users";
 
 const getUserData = state => {
   let username = state.userName;
@@ -29,45 +29,30 @@ const getUserData = state => {
   let personal_contact = state.phoneNumber;
   let OS = 2;
   let device_token = "13259785947";
-  //  let queryUrl = `${url}?fname=${username}&lname=${username}&username=${username}&email=${email}&password=${password}&role=${role}&device=${device}&personal_contact=${personal_contact}&OS=${OS}&device_token=${device_token}`;
-  //   return fetch(queryUrl, {
-  //     method: "POST",
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json"
-  //     }
-  //   }).then(response => {
-  //     if (!response.ok) {
-  //       throw response;
-  //     }
-  //     return response.json();
-  //   });
-  // };
-
   fetch(url, {
     method: "POST",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+      "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      "username": username,
-      "fname": username,
-      "lname": username,
-      "email": email,
-      "password": password,
-      "role": role,
-      "device": device,
-      "personal_contact": personal_contact,
-      "OS": OS,
-      "device_token": device_token
+      username: username,
+      fname: username,
+      lname: username,
+      email: email,
+      password: password,
+      role: role,
+      device: device,
+      personal_contact: personal_contact,
+      OS: OS,
+      device_token: device_token
     })
-  }).then(response => {
-    if (!response.ok) {
-      console.log(response);
-    }
-    return response.json();
-  });
+  })
+    .then(response => response.json())
+    .catch(error => console.error("Error:", error))
+    .then(json => {
+      console.log(json);
+    });
 };
 
 class RegisterUser extends Component {
@@ -90,6 +75,7 @@ class RegisterUser extends Component {
   };
 
   onSubmit = event => {
+    event.preventDefault();
     const {
       userName,
       dateOfBirth,
@@ -99,10 +85,14 @@ class RegisterUser extends Component {
       address,
       phoneNumber
     } = this.state;
-
-    return getUserData(this.state).then(response => {
-      console.log("fetched", response);
-      this.state.query = response;
+    getUserData({
+      userName,
+      dateOfBirth,
+      email,
+      password,
+      confirmPassword,
+      address,
+      phoneNumber
     });
     // localStorage.setItem("user_data",result)
     // search(jsonData => {
