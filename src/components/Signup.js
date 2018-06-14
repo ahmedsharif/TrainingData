@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route ,Redirect, Link } from "react-router-dom";
+import { Route, Redirect, Link } from "react-router-dom";
 
 import "./css/bootstrap.min.css";
 import "./css/main.min.css";
@@ -9,7 +9,7 @@ import "./css/font-awesome.min.css";
 import "./css/jquery.mCustomScrollbar.css";
 import "./css/justified.css";
 import "./css/styles.css";
-import "./Login.js"
+import "./Login.js";
 
 const byPropKey = (propertyName, value) => () => ({
   [propertyName]: value
@@ -17,10 +17,9 @@ const byPropKey = (propertyName, value) => () => ({
 
 const url = "http://54.213.158.63/snapped_quick_api_and_admin/public/api/users";
 
-function renderRedirect()  {
-    return <Redirect to="/Login" />;
-};
-
+function renderRedirect() {
+  return <Redirect to="/Login" />;
+}
 
 const userRequest = state => {
   fetch(url, {
@@ -62,43 +61,28 @@ class RegisterUser extends Component {
       confirmPassword: "",
       address: "",
       phoneNumber: "",
-      redirect: false,
+      redirect: false
     };
-  }
-
-  componentDidMount() {
-    return <Redirect to="/login" />;
   }
 
   onSubmit = event => {
     event.preventDefault();
     userRequest(this.state);
-    renderRedirect();
-    // {this.state.setRedirect}
-    // {this.renderRedirect()}
-  };
-
-  setRedirect = () => {
     this.setState({
       redirect: true
     });
   };
 
   render() {
-    return (
+    return this.state.redirect ? (
+      <Redirect to="/" />
+    ) : (
       <div className="cover-banner">
         <div className="tabels">
           <div className="tabel-cell">
             <div className="container">
               <div className="form-holder">
                 <form>
-                {/* <Route
-                  exact
-                  path="/login"
-                  render={() => (
-                    <Link to="/login"></Link>
-                  )}
-                /> */}
                   <input
                     onChange={event =>
                       this.setState(byPropKey("userName", event.target.value))
@@ -175,7 +159,7 @@ class RegisterUser extends Component {
                     placeholder="Phone Number"
                     id="phoneNumber"
                   />
-                   <Link to="/login">
+                  <Link to="/login">
                     <button
                       type="submit"
                       value="register"
