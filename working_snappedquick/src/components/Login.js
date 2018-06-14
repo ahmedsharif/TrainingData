@@ -3,6 +3,44 @@ import React from "react";
 // import { connect } from "react-redux";
 // import { compose } from "recompose";
 
+const url =
+  "http://192.168.100.13:8080/snapped_quick_api_and_admin/public/api/users";
+
+const getUserData = state => {
+  let username = state.userName;
+  let email = state.email;
+  let password = state.password;
+  let role = "client";
+  let device = "12345";
+  let personal_contact = state.phoneNumber;
+  let OS = 2;
+  let device_token = "13259785947";
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+    },
+    body: JSON.stringify({
+      "username": username,
+      "email": email,
+      "password": password,
+      "role": role,
+      "device": device,
+      "personal_contact": personal_contact,
+      "OS": OS,
+      "device_token": device_token
+    })
+  }).then(response => {
+    if (!response.ok) {
+      console.log(response);
+    }
+    return response.json();
+  });
+};
+
+
 const byPropKey = (propertyName, value) => () => ({
   [propertyName]: value
 });
@@ -20,24 +58,23 @@ class Login extends React.Component {
     this.state = { ...INITIAL_STATE };
   }
 
-  // onSubmit = event => {
-  //     const { userName, password } = this.state;
+  onSubmit = event => {
+    const { userName, password } = this.state;
+  
+    return getUserData(this.state).then(response => {
+      console.log("fetched", response);
+    });
 
-  //     const { history } = this.props;
+    
 
-  //     auth
-  //         .doSignInWithEmailAndPassword(userName, password)
-  //         .then(user => {
-  //             this.props.setUserInStore(user);
-  //             this.setState(() => ({ ...INITIAL_STATE }));
-  //             history.push(routes.HOME);
-  //         })
-  //         .catch(error => {
-  //             this.setState(byPropKey("error", error));
-  //         });
-
-  //     event.preventDefault();
-  // };
+    // if (
+    //   username == verifyData["username"] &&
+    //   password == verifyData["password"]
+    // ) {
+    // } else {
+    //   this.state.error = "username or password is not correct";
+    // }
+  };
 
   // componentDidMount() {
   //     if (this.props.authUser) {

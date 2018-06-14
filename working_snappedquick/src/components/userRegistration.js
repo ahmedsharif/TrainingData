@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ReactDOM from "react-dom";
-import Url from "domurl";
 
 import "./css/bootstrap.min.css";
 import "./css/main.min.css";
@@ -12,32 +10,65 @@ import "./css/jquery.mCustomScrollbar.css";
 import "./css/justified.css";
 import "./css/styles.css";
 
-// import "./js/main.min.js";
-// import "./js/lightbox-plus-jquery.min.js";
-// import "./js/jquery.mCustomScrollbar.concat.min.js";
-// import "./js/imagesloaded.pkgd.min.js";
-// import "./js/justified.min.js";
-// import $ from "./js/custom.js"
-
-import  { getUserData } from "./userRegistration.js";
+// import  { userData } from "./userRegistration.js";
+// import * as data from "./userRegistration.js";
 
 const byPropKey = (propertyName, value) => () => ({
   [propertyName]: value
 });
 
+const url =
+  "http://192.168.100.13:8080/snapped_quick_api_and_admin/public/api/users";
 
-// function search(callback, state) {
-//   // searchurl.state.q = state;
-//   // var searchurl = new Url(
-//   //   "http://192.168.100.13:8080/snapped_quick_api_and_admin/public/api/users"
-//   // );
-//   var url = "http://192.168.100.13:8080/snapped_quick_api_and_admin/public/api/users"
-//   let queryUrl = `${url}/${type}?q=${city}&units=${units}&cnt=${cnt}&APPID=${API_KEY}`;
-//   let request = new Request(queryUrl.toString());
-//   fetch(request)
-//     .then(response => response.json())
-//     .then(callback);
-// }
+const getUserData = state => {
+  let username = state.userName;
+  let email = state.email;
+  let password = state.password;
+  let role = "client";
+  let device = "12345";
+  let personal_contact = state.phoneNumber;
+  let OS = 2;
+  let device_token = "13259785947";
+  //  let queryUrl = `${url}?fname=${username}&lname=${username}&username=${username}&email=${email}&password=${password}&role=${role}&device=${device}&personal_contact=${personal_contact}&OS=${OS}&device_token=${device_token}`;
+  //   return fetch(queryUrl, {
+  //     method: "POST",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json"
+  //     }
+  //   }).then(response => {
+  //     if (!response.ok) {
+  //       throw response;
+  //     }
+  //     return response.json();
+  //   });
+  // };
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+    },
+    body: JSON.stringify({
+      "username": username,
+      "fname": username,
+      "lname": username,
+      "email": email,
+      "password": password,
+      "role": role,
+      "device": device,
+      "personal_contact": personal_contact,
+      "OS": OS,
+      "device_token": device_token
+    })
+  }).then(response => {
+    if (!response.ok) {
+      console.log(response);
+    }
+    return response.json();
+  });
+};
 
 class RegisterUser extends Component {
   constructor() {
@@ -69,7 +100,11 @@ class RegisterUser extends Component {
       phoneNumber
     } = this.state;
 
-    getUserData(this.state);
+    return getUserData(this.state).then(response => {
+      console.log("fetched", response);
+      this.state.query = response;
+    });
+    // localStorage.setItem("user_data",result)
     // search(jsonData => {
     //   this.setState({
     //     results: jsonData.items
@@ -89,11 +124,11 @@ class RegisterUser extends Component {
       phoneNumber
     } = this.state;
     return (
-      <div class="cover-banner">
-        <div class="tabels">
-          <div class="tabel-cell">
-            <div class="container">
-              <div class="form-holder">
+      <div className="cover-banner">
+        <div className="tabels">
+          <div className="tabel-cell">
+            <div className="container">
+              <div className="form-holder">
                 <form
                   method=""
                   action="dashboard.html"
@@ -177,7 +212,7 @@ class RegisterUser extends Component {
                   />
                   <input type="submit" value="Register" />
                 </form>
-                <p class="forgot">
+                <p className="forgot">
                   Already Have an Account? <a href="login.html">Login Here</a>
                 </p>
               </div>
@@ -190,4 +225,3 @@ class RegisterUser extends Component {
 }
 
 export default RegisterUser;
-// export default {search };
