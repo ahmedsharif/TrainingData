@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { withRouter ,Redirect } from "react-router-dom";
 
 import "./css/bootstrap.min.css";
 import "./css/main.min.css";
@@ -9,26 +9,20 @@ import "./css/font-awesome.min.css";
 import "./css/jquery.mCustomScrollbar.css";
 import "./css/justified.css";
 import "./css/styles.css";
-
-// import  { userData } from "./userRegistration.js";
-// import * as data from "./userRegistration.js";
+import "./Login.js"
 
 const byPropKey = (propertyName, value) => () => ({
   [propertyName]: value
 });
 
 const url = "http://54.213.158.63/snapped_quick_api_and_admin/public/api/users";
-//"http://192.168.100.13:8080/snapped_quick_api_and_admin/public/api/users";
 
-const getUserData = state => {
-  let username = state.userName;
-  let email = state.email;
-  let password = state.password;
-  let role = "client";
-  let device = "12345";
-  let personal_contact = state.phoneNumber;
-  let OS = 2;
-  let device_token = "13259785947";
+function renderRedirect()  {
+    return <Redirect to="/Login" />;
+};
+
+
+const userRequest = state => {
   fetch(url, {
     method: "POST",
     headers: {
@@ -36,16 +30,16 @@ const getUserData = state => {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      username: username,
-      fname: username,
-      lname: username,
-      email: email,
-      password: password,
-      role: role,
-      device: device,
-      personal_contact: personal_contact,
-      OS: OS,
-      device_token: device_token
+      username: state.userName,
+      fname: state.userName,
+      lname: state.userName,
+      email: state.email,
+      password: state.password,
+      role: "client",
+      device: "12345",
+      personal_contact: state.phoneNumber,
+      OS: "2",
+      device_token: "1234568"
     })
   })
     .then(response => response.json())
@@ -53,77 +47,51 @@ const getUserData = state => {
     .then(json => {
       console.log(json);
     });
+  // {this.renderRedirect()}
+  // return <Redirect to="/login" />;
 };
 
 class RegisterUser extends Component {
   constructor() {
     super();
     this.state = {
-      query: "",
       userName: "",
       dateOfBirth: "",
       email: "",
       password: "",
       confirmPassword: "",
       address: "",
-      phoneNumber: ""
+      phoneNumber: "",
+      redirect: false,
     };
   }
 
-  static propTypes = {
-    searchHandler: PropTypes.func
-  };
+  componentDidMount() {
+    return <Redirect to="/login" />;
+  }
 
   onSubmit = event => {
     event.preventDefault();
-    const {
-      userName,
-      dateOfBirth,
-      email,
-      password,
-      confirmPassword,
-      address,
-      phoneNumber
-    } = this.state;
-    getUserData({
-      userName,
-      dateOfBirth,
-      email,
-      password,
-      confirmPassword,
-      address,
-      phoneNumber
+    userRequest(this.state);
+    renderRedirect();
+    // {this.state.setRedirect}
+    // {this.renderRedirect()}
+  };
+
+  setRedirect = () => {
+    this.setState({
+      redirect: true
     });
-    // localStorage.setItem("user_data",result)
-    // search(jsonData => {
-    //   this.setState({
-    //     results: jsonData.items
-    //   });
-    // }, this.state);
   };
 
   render() {
-    const {
-      query,
-      userName,
-      dateOfBirth,
-      email,
-      password,
-      confirmPassword,
-      address,
-      phoneNumber
-    } = this.state;
     return (
       <div className="cover-banner">
         <div className="tabels">
           <div className="tabel-cell">
             <div className="container">
               <div className="form-holder">
-                <form
-                  method=""
-                  action="dashboard.html"
-                  onSubmit={this.onSubmit}
-                >
+                <form onSubmit={this.onSubmit}>
                   <input
                     onChange={event =>
                       this.setState(byPropKey("userName", event.target.value))
@@ -200,7 +168,11 @@ class RegisterUser extends Component {
                     placeholder="Phone Number"
                     id="phoneNumber"
                   />
-                  <input type="submit" value="Register" />
+                  <input
+                    type="submit"
+                    onClick={this.state.setRedirect}
+                    value="Register"
+                  />
                 </form>
                 <p className="forgot">
                   Already Have an Account? <a href="login.html">Login Here</a>

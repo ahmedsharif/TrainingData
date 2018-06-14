@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { BrowserRouter } from "react-router-dom";
 import ReactDOM from "react-dom";
 import registerServiceWorker from "./registerServiceWorker";
-import RegisterUser from "./components/userRegistration.js";
+import RegisterUser from "./components/Signup";
 import { Route, Link } from "react-router-dom";
 import Login from "./components/Login.js";
 import Check from "./components/Check.js";
@@ -16,8 +15,6 @@ class Main extends Component {
     this.registerUser = this.register_user.bind(this);
     this.setState = {
       isUserRegistered: false,
-      result: [],
-      error: ""
     };
   }
 
