@@ -11,6 +11,9 @@ import "./css/justified.css";
 import "./css/styles.css";
 import "./Login.js"
 
+import Form from 'react-validation/build/form';
+import Input from 'react-validation/build/input';
+
 const byPropKey = (propertyName, value) => () => ({
   [propertyName]: value
 });
@@ -121,7 +124,13 @@ class RegisterUser extends Component {
                     placeholder="Date Of Birth"
                     id="dateOfBirth"
                   />
-                  <input
+                   <label>
+                    Email*
+                    <Input  placeholder="Email" name='email'  className="input-field email" id="email"  onChange={event =>
+                      this.setState(byPropKey("email", event.target.value))
+                    } validations={[required, email]}/>
+                </label>
+                  {/* <input
                     onChange={event =>
                       this.setState(byPropKey("email", event.target.value))
                     }
@@ -130,7 +139,7 @@ class RegisterUser extends Component {
                     className="input-field email"
                     placeholder="Email"
                     id="email"
-                  />
+                  /> */}
                   <input
                     onChange={event =>
                       this.setState(byPropKey("password", event.target.value))
