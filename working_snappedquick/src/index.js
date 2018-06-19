@@ -3,9 +3,11 @@ import { BrowserRouter } from "react-router-dom";
 import ReactDOM from "react-dom";
 import registerServiceWorker from "./registerServiceWorker";
 import RegisterUser from "./components/Signup";
-import { Route, Link } from "react-router-dom";
+import { Route } from "react-router-dom";
 import Login from "./components/Login.js";
 import Check from "./components/Check.js";
+import CompanyProfile from "./components/PhotographerProfile";
+
 
 registerServiceWorker();
 
@@ -55,6 +57,15 @@ class Main extends Component {
           render={() => (
             <div>
               <Check />
+            </div>
+          )}
+        />
+        <Route
+          exact
+          path="/companysignup"
+          render={() => (
+            <div>
+              <CompanyProfile />
             </div>
           )}
         />

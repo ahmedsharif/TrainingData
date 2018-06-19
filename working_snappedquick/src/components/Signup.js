@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withRouter ,Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 
 import "./css/bootstrap.min.css";
 import "./css/main.min.css";
@@ -9,18 +9,16 @@ import "./css/font-awesome.min.css";
 import "./css/jquery.mCustomScrollbar.css";
 import "./css/justified.css";
 import "./css/styles.css";
-import "./Login.js"
+import "./Login.js";
+import Form from "react-validation/build/form";
+import Input from "react-validation/build/input";
+import validator from "validator";
 
 const byPropKey = (propertyName, value) => () => ({
   [propertyName]: value
 });
 
 const url = "http://54.213.158.63/snapped_quick_api_and_admin/public/api/users";
-
-function renderRedirect()  {
-    return <Redirect to="/Login" />;
-};
-
 
 const userRequest = state => {
   fetch(url, {
@@ -47,8 +45,37 @@ const userRequest = state => {
     .then(json => {
       console.log(json);
     });
-  // {this.renderRedirect()}
-  // return <Redirect to="/login" />;
+};
+
+const EMAIL = value => {
+  if (!validator.isEmail(value)) {
+    return `${value} is not a valid email.`;
+  }
+};
+
+const required = value => {
+  if (!value.toString().trim().length) {
+    // We can return string or jsx as the 'error' prop for the validated Component
+    return "require";
+  }
+};
+
+const mesasge = value => {
+  return "Field values are not correct";
+}
+
+var initial_password = "";
+const PASSWORD = value => {
+  if (value.toString().trim.length < 6) {
+    return "password should be >=  6 digits";
+  }
+  initial_password = value;
+};
+
+const CONFIRMPASSWORD = value => {
+  if (initial_password !== value) {
+    return "password does not match";
+  }
 };
 
 class RegisterUser extends Component {
@@ -62,118 +89,232 @@ class RegisterUser extends Component {
       confirmPassword: "",
       address: "",
       phoneNumber: "",
-      redirect: false,
+      redirect: false
     };
-  }
-
-  componentDidMount() {
-    return <Redirect to="/login" />;
+    this.handlePasswordInput = this.handlePasswordInput.bind(this);
   }
 
   onSubmit = event => {
     event.preventDefault();
     userRequest(this.state);
-    renderRedirect();
-    // {this.state.setRedirect}
-    // {this.renderRedirect()}
-  };
 
-  setRedirect = () => {
     this.setState({
       redirect: true
     });
   };
 
+  handleSubmit = event => {
+    event.preventDefault();
+    setTimeout(() => {
+      this.form.showErr(this.userInput, <span>API error</span>);
+    }, 1000);
+  };
+
+  removeApiError = () => {
+    this.form.hideError(this.userInput);
+  };
+
+  handlePasswordInput(value) {
+    if (this.state.password === value) {
+      this.setState({
+        comfirmPassword: value
+      });
+    }
+  }
+
   render() {
-    return (
+    const {
+      userName,
+      dateOfBirth,
+      password,
+      confirmPassword,
+      address,
+      phoneNumber,
+  } = this.state;
+
+  const isInvalid =
+            password !== confirmPassword ||
+            password === "" ||
+            userName === "" ||
+            dateOfBirth === "" ||
+            phoneNumber === "" ||
+            address === "";
+
+    return this.state.redirect ? (
+      <Redirect to="/login" />
+    ) : (
       <div className="cover-banner">
         <div className="tabels">
           <div className="tabel-cell">
             <div className="container">
               <div className="form-holder">
-                <form onSubmit={this.onSubmit}>
-                  <input
-                    onChange={event =>
-                      this.setState(byPropKey("userName", event.target.value))
-                    }
-                    type="text"
-                    name="userName"
-                    className="input-field username"
-                    placeholder="Username"
-                    id="userName"
-                  />
-                  <input
-                    onChange={event =>
-                      this.setState(
-                        byPropKey("dateOfBirth", event.target.value)
-                      )
-                    }
-                    type="text"
-                    name="dateOfBirth"
-                    className="input-field dob"
-                    placeholder="Date Of Birth"
-                    id="dateOfBirth"
-                  />
-                  <input
-                    onChange={event =>
-                      this.setState(byPropKey("email", event.target.value))
-                    }
-                    type="email"
-                    name="email"
-                    className="input-field email"
-                    placeholder="Email"
-                    id="email"
-                  />
-                  <input
-                    onChange={event =>
-                      this.setState(byPropKey("password", event.target.value))
-                    }
-                    type="password"
-                    name="password"
-                    className="input-field password"
-                    placeholder="Password"
-                    id="password"
-                  />
-                  <input
-                    onChange={event =>
-                      this.setState(
-                        byPropKey("comfirmPassword", event.target.value)
-                      )
-                    }
-                    type="password"
-                    name="confirmPassword"
-                    className="input-field password"
-                    placeholder="Confirm Password"
-                    id="comfirmPassword"
-                  />
-                  <input
-                    onChange={event =>
-                      this.setState(byPropKey("address", event.target.value))
-                    }
-                    type="text"
-                    name="address"
-                    className="input-field address"
-                    placeholder="Address"
-                    id="address"
-                  />
-                  <input
-                    onChange={event =>
-                      this.setState(
-                        byPropKey("phoneNumber", event.target.value)
-                      )
-                    }
-                    type="text"
-                    name="phoneNumber"
-                    className="input-field phone"
-                    placeholder="Phone Number"
-                    id="phoneNumber"
-                  />
-                  <input
-                    type="submit"
-                    onClick={this.state.setRedirect}
-                    value="Register"
-                  />
-                </form>
+                <Form
+                  ref={c => {
+                    this.form = c;
+                  }}
+                  onSubmit={this.handleSubmit.bind(this)}
+                >
+                  <div>
+                    <label>
+                      <Input required="required"
+                        onChange={event =>
+                          this.setState(
+                            byPropKey("userName", event.target.value)
+                          )
+                        }
+                        onFocus={this.removeApiError}
+                        ref={c => {
+                          this.userInput = c;
+                        }}
+                        placeholder="username"
+                        className="input-field username"
+                        type="text"
+                        name="userName"
+                        id="userName"
+                        validations={[required]}
+                      />
+                    </label>
+                  </div>
+
+                  <div>
+                    <label>
+                      <Input
+                        onChange={event =>
+                          this.setState(
+                            byPropKey("dateOfBirth", event.target.value)
+                          )
+                        }
+                        onFocus={this.removeApiError}
+                        ref={c => {
+                          this.userInput = c;
+                        }}
+                        placeholder="Date Of Birth"
+                        className="input-field dob"
+                        type="text"
+                        name="dateOfBirth"
+                        id="dateOfBirth"
+                        validations={[required]}
+                      />
+                    </label>
+                  </div>
+
+                  <div>
+                    <label>
+                      <Input
+                        onFocus={this.removeApiError}
+                        ref={c => {
+                          this.userInput = c;
+                        }}
+                        placeholder="Email"
+                        name="email"
+                        validations={[required, EMAIL]}
+                        className="input-field email"
+                        id="email"
+                        onChange={event =>
+                          this.setState(byPropKey("email", event.target.value))
+                        }
+                      />
+                    </label>
+                  </div>
+                  <div>
+                    <label>
+                      <Input
+                        onFocus={this.removeApiError}
+                        ref={c => {
+                          this.userInput = c;
+                        }}
+                        placeholder="Password"
+                        name="password"
+                        type="password"
+                        validations={[required, PASSWORD]}
+                        className="input-field password"
+                        id="password"
+                        onChange={event =>
+                          this.setState(
+                            byPropKey("password", event.target.value)
+                          )
+                        }
+                      />
+                    </label>
+                  </div>
+                  <div>
+                    <label>
+                      <Input
+                        onFocus={this.removeApiError}
+                        ref={c => {
+                          this.userInput = c;
+                        }}
+                        placeholder="Comfirm Password"
+                        name="confirmPassword"
+                        type="password"
+                        validations={[required]}
+                        className="input-field password"
+                        id="comfirmPassword"
+                        onChange={event =>
+                          this.setState(
+                            byPropKey("confirmPassword", event.target.value)
+                          )
+                        }
+                      />
+                    </label>
+                  </div>
+
+                  <div>
+                    <label>
+                      <Input
+                        onChange={event =>
+                          this.setState(
+                            byPropKey("address", event.target.value)
+                          )
+                        }
+                        onFocus={this.removeApiError}
+                        ref={c => {
+                          this.userInput = c;
+                        }}
+                        placeholder="Address"
+                        className="input-field address"
+                        type="text"
+                        name="address"
+                        id="address"
+                        validations={[required]}
+                      />
+                    </label>
+                  </div>
+
+                  <div>
+                    <label>
+                      <Input
+                        onChange={event =>
+                          this.setState(
+                            byPropKey("phoneNumber", event.target.value)
+                          )
+                        }
+                        onFocus={this.removeApiError}
+                        ref={c => {
+                          this.userInput = c;
+                        }}
+                        placeholder="Phone Number"
+                        className="input-field phone"
+                        type="text"
+                        name="phoneNumber"
+                        id="phoneNumber"
+                        validations={[required]}
+                      />
+                    </label>
+                  </div>
+                  <Link to="/login">
+                    <button
+                      type="submit"
+                      // disabled={isInvalid}
+                      value="register"
+                      className="register"
+                      onClick={this.onSubmit}
+                      validations={[mesasge]}
+                    >
+                      Search
+                    </button>
+                  </Link>
+                </Form>
                 <p className="forgot">
                   Already Have an Account? <a href="login.html">Login Here</a>
                 </p>
