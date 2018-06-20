@@ -1,12 +1,9 @@
 import React, { Component } from "react";
-import BankForm from "react-payment";
 // import "react-stripe-elements";
 import { byPropKey } from "./Base.js";
-import { Redirect } from "react-router-dom";
-import StripeCheckout from "react-stripe-checkout";
 import Header from "./Header.js";
 import SideBar from "./Sidebar.js";
-import { PaymentMethods } from "react-payment";
+import { Elements, CardElement } from "react-stripe-elements";
 
 const url =
   "http://54.213.158.63/snapped_quick_api_and_admin/public/api/pgs/saveba";
@@ -53,75 +50,30 @@ class MainCentent extends Component {
     };
   }
 
-  // componentWillMount() {
-  //   if (loadedStripe) {
-  //     return;
-  //   }
-
-  //   const script = document.createElement("script");
-  //   script.src = "https://js.stripe.com/v2/";
-  //   script.type = "text/javascript";
-  //   script.async = true;
-  //   script.onload = () => {
-  //     Stripe.setPublishableKey("pk_test_f4YMOFYl5Ingf4q8hruI7TLO");
-  //   };
-  //   document.body.appendChild(script);
-
-  //   loadedStripe = true;
-  // }
-
-  // onSubmit(account) {
-  //   const { name, accountNumber, routingNumber, accountType } = account;
-  //   const account_holder_type =
-  //     accountType === "personal" ? "individual" : "company";
-
-  //   Stripe.bankAccount.createToken(
-  //     {
-  //       country: "US",
-  //       currency: "USD",
-  //       routing_number: routingNumber,
-  //       account_number: accountNumber,
-  //       account_holder_name: name,
-  //       account_holder_type
-  //     },
-  //     (status, response) => {
-  //       if (response.error) {
-  //         alert(
-  //           "Adding bank account failed with error: " + response.error.message
-  //         );
-  //       } else {
-  //         const bankAccountToken = response.id;
-  //         console.log(bankAccountToken);
-  //         // send bankAccountToken to server to be saved under the current user
-  //         // show success message and navigate away from form
-  //       }
-  //     }
-  //   );
-  // }
-
-  // onSubmit(account) {
-  //   const { routingNumber, account_number } = account;
-  //   Stripe.bankAccount.createToken(
-  //     {
-  //       country: "US",
-  //       currency: "USD",
-  //       routing_number: routingNumber,
-  //       account_number: account_number
-  //     },
-  //     (status, response) => {
-  //       if (response.error) {
-  //         alert(
-  //           "Adding bank account failed with error: " + response.error.message
-  //         );
-  //       } else {
-  //         const bankAccountToken = response.id;
-  //         console.log(bankAccountToken);
-  //         // send bankAccountToken to server to be saved under the current user
-  //         // show success message and navigate away from form
-  //       }
-  //     }
-  //   );
-  // }
+  onSubmit = evt => {
+    evt.preventDefault();
+    const { routing_number, account_number } = this.state;
+    window.Stripe.createToken(
+      {
+        country: "US",
+        currency: "USD",
+        routing_number: routing_number,
+        account_number: account_number
+      },
+      (status, response) => {
+        if (response.error) {
+          alert(
+            "Adding bank account failed with error: " + response.error.message
+          );
+        } else {
+          const bankAccountToken = response.id;
+          console.log(bankAccountToken);
+          // send bankAccountToken to server to be saved under the current user
+          // show success message and navigate away from form
+        }
+      }
+    );
+  };
 
   render() {
     return (
@@ -143,7 +95,7 @@ class MainCentent extends Component {
             </div>
             <div className="tabs-content">
               <div id="tab-1" className="tab-content current">
-                <form>
+                <form onSubmit={this.onSubmit}>
                   <div className="row">
                     <div className="col-md-6 col-sm-12">
                       <div className="input-container">

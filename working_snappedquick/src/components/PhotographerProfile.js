@@ -9,9 +9,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import SideBar from "./Sidebar.js";
 import "./Login.js";
 import Header from "./Header.js";
-import "./Payment.js";
-
-// import SetDate from "./Datepicker.js";
 
 const url = "http://54.213.158.63/snapped_quick_api_and_admin/public/api/pgs";
 

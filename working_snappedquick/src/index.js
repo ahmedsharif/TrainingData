@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import ReactDOM from "react-dom";
+import { StripeProvider } from "react-stripe-elements";
 import registerServiceWorker from "./registerServiceWorker";
 
 import "./components/css/bootstrap.min.css";
@@ -16,7 +17,6 @@ import RegisterUser from "./components/Signup";
 import Login from "./components/Login.js";
 import CompanyProfile from "./components/PhotographerProfile";
 import Payment from "./components/Payment";
-
 
 registerServiceWorker();
 

@@ -11,8 +11,6 @@ import "./Login.js";
 import Header from "./Header.js";
 import "./Payment.js";
 
-// import SetDate from "./DatePicker.js";
-
 const url = "http://54.213.158.63/snapped_quick_api_and_admin/public/api/pgs";
 
 const companyRequest = state => {
@@ -21,7 +19,7 @@ const companyRequest = state => {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      mode: 'no-cors',
+      mode: "no-cors"
     },
     body: JSON.stringify({
       user_id: "026",
@@ -86,7 +84,7 @@ const companyRequest = state => {
       sun_work_end_time: state.sun_work_end_time.format("H:mm:ss"),
       is_sun_break_on: state.is_sun_break_on,
       sun_break_start_time: state.sun_break_start_time.format("H:mm:ss"),
-      sun_break_end_time: state.sun_break_end_time.format("H:mm:ss"),
+      sun_break_end_time: state.sun_break_end_time.format("H:mm:ss")
     })
   })
     .then(response => response.json())
@@ -191,7 +189,6 @@ class MainCentent extends Component {
     return this.state.redirect ? (
       <Redirect to="/payment" />
     ) : (
-
       <section className="main-content">
         <div className="header-fixed title-header">
           <h2>Profile Settings</h2>
@@ -653,7 +650,6 @@ class MainCentent extends Component {
                   timeCaption="Time"
                 />
               </section>
-
 
               <div className="custom-btn">
                 <button
