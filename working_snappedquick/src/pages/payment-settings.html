@@ -1,0 +1,350 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+<title>Payment Settings</title>
+
+<!--   Bootstrap CSS   -->
+<link href='css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+
+<!--    Theme CSS   -->
+<link rel="stylesheet" href="css/main.min.css">
+   
+<!--    Font Awesome CSS   -->
+<link href='css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+ 
+<!-- Custom scrollbar stylesheet -->
+<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
+
+<!-- Gallery CSS -->
+<link href="css/justified.css" rel="stylesheet">
+<link rel="stylesheet" href="css/lightbox.min.css">
+
+<!--    Custome CSS   -->
+<link href='css/styles.css' rel='stylesheet' type='text/css'>
+
+<!-- load modernizer -->
+<script src="js/modernizr.js"></script>
+    
+</head>
+
+
+<body>
+
+    <div class="app" data-sidebar="locked">
+        <header class="header header-fixed navbar top-header">
+            <div class="brand">
+                <a href="dashboard.html" class="fa fa-bars off-left visible-xs" data-toggle="off-canvas" data-move="ltr"></a>
+            </div>
+            <ul class="nav navbar-nav navbar-right off-right">
+                <li class="hidden-xs">
+                    <a href="javascript:void(0);">John Deo</a>
+                </li>
+                <li class="notifications dropdown hidden-xs">
+                    <a href="#" data-toggle="dropdown">
+                        <i class="fa fa-envelope-o"></i>
+                        <div class="badge">4</div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right animated slideInRight">
+                        <div class="panel bg-white no-border no-margin">
+                            <div class="panel-heading no-radius">
+                                <small>
+                                    <b>Messages</b>
+                                </small>
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-1.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>just now</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-2.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>2 mins ago</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-3.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>20 mins ago</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-4.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>1 day ago</small>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-footer no-border">
+                            <a href="messages.html">See all Messages</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="notifications dropdown hidden-xs">
+                    <a href="#" data-toggle="dropdown">
+                        <i class="fa fa-bell"></i>
+                        <div class="badge">2</div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right animated slideInRight">
+                        <div class="panel bg-white no-border no-margin">
+                            <div class="panel-heading no-radius">
+                                <small>
+                                    <b>Notifications</b>
+                                </small>
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-5.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>just now</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-6.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>2 mins ago</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-7.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>20 mins ago</small>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-footer no-border">
+                            <a href="notifications.html">See all notifications</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="quickmenu mg-r-md dropdown">
+                    <a href="#" data-toggle="dropdown" class="">
+                        <img src="images/users/img-5.png" class="avatar pull-left img-circle" alt="user" title="user"> 
+                        <i class="caret mg-l-xs hidden-xs no-margin"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right mg-r-xs">
+                        <li>
+                            <a href="login.html">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </header>
+
+        <section class="layout">
+            <aside class="sidebar collapsible canvas-left bg-dark">
+                <div class="small-logo"><a href="dashboard.html"><img src="images/logo@2x.png" alt="logo" /></a></div>
+                <nav class="main-navigation">
+                    <ul>
+                        <li class="active">
+                            <a href="dashboard.html">
+                                <img src="images/home-icon.png" alt="" /><span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="dropdown show-on-hover">
+                            <a href="#" data-toggle="dropdown">
+                                <img src="images/package-icon.png" alt="" /><span>Packages</span>
+                                <i class="toggle-accordion"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="manage-package.html">
+                                        <span>Manage</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="create-new-package.html">
+                                        <span>Create New</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="booking-hisory.html">
+                                <img src="images/booking-history-icon.png" alt="" /><span>My Booking History</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="profile-settings.html">
+                                <img src="images/profile-setting-icon.png" alt="" /><span>Profile Settings</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="payment-settings.html">
+                                <img src="images/payment-settings-icon.png" alt="" /><span>Payment Settings</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="gallery.html">
+                                <img src="images/gallery-icon.png" alt="" /><span>Gallery</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="login.html">
+                                <img src="images/logout-icon.png" alt="" /><span>Logout</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+            <!-- /sidebar menu -->
+
+            <!-- main content -->
+            <section class="main-content">
+                <div class="header-fixed title-header">
+                    <h2>Payment Settings</h2>
+                </div>
+                <div class="content-wrap spacer">
+                    <div class="payment-setting-holder">
+                        <div class="tabs-links">
+                            <ul class="tabs">
+                                <li class="tab-link current" data-tab="tab-1">Credit Card</li>
+                                <li class="tab-link" data-tab="tab-2">Paypal</li>
+                            </ul>
+                        </div>
+                        <div class="tabs-content">
+                            <div id="tab-1" class="tab-content current">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="input-container">
+                                                <input type="text" name="" id="" required="required"/>
+                                                <label>Card Type</label>
+                                                <div class="bar"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="input-container">
+                                                <input type="text" name="" id="" required="required"/>
+                                                <label>Card Number</label>
+                                                <div class="bar"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="input-container">
+                                                <input type="text" name="" id="" required="required"/>
+                                                <label>CVV Code(CSC)</label>
+                                                <div class="bar"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="input-container">
+                                                <input type="text" name="" id="" required="required"/>
+                                                <label>Expiration Date</label>
+                                                <div class="bar"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="custom-btn"><button type="submit"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button></div>
+                                </form>
+                            </div>
+                            <div id="tab-2" class="tab-content">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="input-container">
+                                                <input type="text" name="" id="" required="required"/>
+                                                <label>Card Type</label>
+                                                <div class="bar"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="input-container">
+                                                <input type="text" name="" id="" required="required"/>
+                                                <label>Card Number</label>
+                                                <div class="bar"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="input-container">
+                                                <input type="text" name="" id="" required="required"/>
+                                                <label>CVV Code(CSC)</label>
+                                                <div class="bar"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="input-container">
+                                                <input type="text" name="" id="" required="required"/>
+                                                <label>Expiration Date</label>
+                                                <div class="bar"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="input-container">
+                                                <input type="text" name="" id="" required="required"/>
+                                                <label>Label Name Here</label>
+                                                <div class="bar"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="custom-btn"><button type="submit"><i class="fa fa-refresh" aria-hidden="true"></i> Update</button></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </section>
+
+        </section>
+
+    </div>
+
+
+
+    
+<!-- JS   -->
+<script src="js/jquery-3.2.0.min.js"></script>
+<script src="js/main.min.js"></script>
+<script src="js/lightbox-plus-jquery.min.js"></script>
+<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="js/imagesloaded.pkgd.min.js"></script>
+<script src="js/justified.min.js"></script>
+<script src="js/custom.js"></script>
+
+
+</body>
+</html>

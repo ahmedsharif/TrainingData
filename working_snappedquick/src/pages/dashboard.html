@@ -1,0 +1,682 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+<title>Dashboard</title>
+
+<!--   Bootstrap CSS   -->
+<link href='css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+
+<!--    Theme CSS   -->
+<link rel="stylesheet" href="css/main.min.css">
+   
+<!--    Font Awesome CSS   -->
+<link href='css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+ 
+<!-- Custom scrollbar stylesheet -->
+<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
+
+<!-- Gallery CSS -->
+<link href="css/justified.css" rel="stylesheet">
+<link rel="stylesheet" href="css/lightbox.min.css">
+
+<!--    Custome CSS   -->
+<link href='css/styles.css' rel='stylesheet' type='text/css'>
+
+<!-- load modernizer -->
+<script src="js/modernizr.js"></script>
+	
+</head>
+
+
+<body>
+
+    <div class="app" data-sidebar="locked">
+        <header class="header header-fixed navbar top-header">
+            <div class="brand">
+                <a href="dashboard.html" class="fa fa-bars off-left visible-xs" data-toggle="off-canvas" data-move="ltr"></a>
+            </div>
+            <ul class="nav navbar-nav navbar-right off-right">
+                <li class="hidden-xs">
+                    <a href="javascript:void(0);">John Deo</a>
+                </li>
+                <li class="notifications dropdown hidden-xs">
+                    <a href="#" data-toggle="dropdown">
+                        <i class="fa fa-envelope-o"></i>
+                        <div class="badge">4</div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right animated slideInRight">
+                        <div class="panel bg-white no-border no-margin">
+                            <div class="panel-heading no-radius">
+                                <small>
+                                    <b>Messages</b>
+                                </small>
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-1.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>just now</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-2.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>2 mins ago</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-3.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>20 mins ago</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-4.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>1 day ago</small>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-footer no-border">
+                            <a href="messages.html">See all Messages</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="notifications dropdown hidden-xs">
+                    <a href="#" data-toggle="dropdown">
+                        <i class="fa fa-bell"></i>
+                        <div class="badge">2</div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right animated slideInRight">
+                        <div class="panel bg-white no-border no-margin">
+                            <div class="panel-heading no-radius">
+                                <small>
+                                    <b>Notifications</b>
+                                </small>
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-5.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>just now</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-6.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>2 mins ago</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-7.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>20 mins ago</small>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-footer no-border">
+                            <a href="notifications.html">See all notifications</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="quickmenu mg-r-md dropdown">
+                    <a href="#" data-toggle="dropdown" class="">
+                        <img src="images/users/img-5.png" class="avatar pull-left img-circle" alt="user" title="user"> 
+                        <i class="caret mg-l-xs hidden-xs no-margin"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right mg-r-xs">
+                        <li>
+                            <a href="login.html">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </header>
+
+        <section class="layout">
+            <aside class="sidebar collapsible canvas-left bg-dark">
+                <div class="small-logo"><a href="dashboard.html"><img src="images/logo@2x.png" alt="logo" /></a></div>
+                <nav class="main-navigation">
+                    <ul>
+                        <li class="active">
+                            <a href="dashboard.html">
+                                <img src="images/home-icon.png" alt="" /><span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="dropdown show-on-hover">
+                            <a href="#" data-toggle="dropdown">
+                                <img src="images/package-icon.png" alt="" /><span>Packages</span>
+                                <i class="toggle-accordion"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="manage-package.html">
+                                        <span>Manage</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="create-new-package.html">
+                                        <span>Create New</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="booking-hisory.html">
+                                <img src="images/booking-history-icon.png" alt="" /><span>My Booking History</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="profile-settings.html">
+                                <img src="images/profile-setting-icon.png" alt="" /><span>Profile Settings</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="payment-settings.html">
+                                <img src="images/payment-settings-icon.png" alt="" /><span>Payment Settings</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="gallery.html">
+                                <img src="images/gallery-icon.png" alt="" /><span>Gallery</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="login.html">
+                                <img src="images/logout-icon.png" alt="" /><span>Logout</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+            <!-- /sidebar menu -->
+
+            <!-- main content -->
+            <section class="main-content">
+                <div class="content-wrap">
+                    <div class="states">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="state-col">
+                                    <div class="small-box red-bg">
+                                        <div class="inner">
+                                          <h3>$5000</h3>
+                                          <p>In Esscrow Payment</p>
+                                        </div>
+                                        <div class="icon">
+                                          <i class="fa fa-usd" aria-hidden="true"></i>
+                                        </div>
+                                        <a href="#" class="small-box-footer">Results</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="state-col">
+                                    <div class="small-box green-bg">
+                                        <div class="inner">
+                                          <h3>$10,5200</h3>
+                                          <p>Total Earned</p>
+                                        </div>
+                                        <div class="icon">
+                                          <i class="fa fa-usd" aria-hidden="true"></i>
+                                        </div>
+                                        <a href="#" class="small-box-footer">Results</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="state-col">
+                                    <div class="small-box yellow-bg">
+                                        <div class="inner">
+                                          <h3>15</h3>
+                                          <p>Total Booking Counts</p>
+                                        </div>
+                                        <div class="icon">
+                                          <i class="fa fa-flask" aria-hidden="true"></i>
+                                        </div>
+                                        <a href="#" class="small-box-footer">Results</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="no-record">
+                        <span>No Record Show</span>
+                    </div> -->
+                    <div class="two-cols">
+                        <div class="row">
+                            <div class="col-md-6 full-width-col">
+                                <div class="bookings-holder">
+                                    <h3>Today's Bookings</h3>
+                                    <div class="scroll-content">
+                                        <div class="booking-col">
+                                            <h4><a href="#" data-toggle="modal" data-target=".booking-detail">Wedding Photography</a></h4>
+                                            <h5>-with <span><img src="images/users/img-1.png" alt="" /></span> Client Name Here</h5>
+                                            <ul>
+                                                <li>
+                                                    <img src="images/clock.png" alt="" />
+                                                    <strong>Time:</strong>
+                                                    <span>10:00 AM - 2:00 PM</span>
+                                                </li>
+                                                <li>|</li>
+                                                <li>
+                                                    <img src="images/location-icon.png" alt="" />
+                                                    <strong>Location:</strong>
+                                                    <span>Tampa Florida, USA</span>
+                                                </li>
+                                            </ul>
+                                            <div class="cost">
+                                                <span>Cost in USD</span>
+                                                <strong>8000.0</strong>
+                                            </div>
+                                        </div>
+                                        <div class="booking-col">
+                                            <h4><a href="#" data-toggle="modal" data-target=".booking-detail">Wedding Photography</a></h4>
+                                            <h5>-with <span><img src="images/users/img-2.png" alt="" /></span> Client Name Here</h5>
+                                            <ul>
+                                                <li>
+                                                    <img src="images/clock.png" alt="" />
+                                                    <strong>Time:</strong>
+                                                    <span>10:00 AM - 2:00 PM</span>
+                                                </li>
+                                                <li>|</li>
+                                                <li>
+                                                    <img src="images/location-icon.png" alt="" />
+                                                    <strong>Location:</strong>
+                                                    <span>Tampa Florida, USA</span>
+                                                </li>
+                                            </ul>
+                                            <div class="cost">
+                                                <span>Cost in USD</span>
+                                                <strong>8000.0</strong>
+                                            </div>
+                                        </div>
+                                        <div class="booking-col">
+                                            <h4><a href="#" data-toggle="modal" data-target=".booking-detail">Wedding Photography</a></h4>
+                                            <h5>-with <span><img src="images/users/img-3.png" alt="" /></span> Client Name Here</h5>
+                                            <ul>
+                                                <li>
+                                                    <img src="images/clock.png" alt="" />
+                                                    <strong>Time:</strong>
+                                                    <span>10:00 AM - 2:00 PM</span>
+                                                </li>
+                                                <li>|</li>
+                                                <li>
+                                                    <img src="images/location-icon.png" alt="" />
+                                                    <strong>Location:</strong>
+                                                    <span>Tampa Florida, USA</span>
+                                                </li>
+                                            </ul>
+                                            <div class="cost">
+                                                <span>Cost in USD</span>
+                                                <strong>8000.0</strong>
+                                            </div>
+                                        </div>
+                                        <div class="booking-col">
+                                            <h4><a href="#" data-toggle="modal" data-target=".booking-detail">Wedding Photography</a></h4>
+                                            <h5>-with <span><img src="images/users/img-4.png" alt="" /></span> Client Name Here</h5>
+                                            <ul>
+                                                <li>
+                                                    <img src="images/clock.png" alt="" />
+                                                    <strong>Time:</strong>
+                                                    <span>10:00 AM - 2:00 PM</span>
+                                                </li>
+                                                <li>|</li>
+                                                <li>
+                                                    <img src="images/location-icon.png" alt="" />
+                                                    <strong>Location:</strong>
+                                                    <span>Tampa Florida, USA</span>
+                                                </li>
+                                            </ul>
+                                            <div class="cost">
+                                                <span>Cost in USD</span>
+                                                <strong>8000.0</strong>
+                                            </div>
+                                        </div>
+                                        <div class="booking-col">
+                                            <h4><a href="#" data-toggle="modal" data-target=".booking-detail">Wedding Photography</a></h4>
+                                            <h5>-with <span><img src="images/users/img-4.png" alt="" /></span> Client Name Here</h5>
+                                            <ul>
+                                                <li>
+                                                    <img src="images/clock.png" alt="" />
+                                                    <strong>Time:</strong>
+                                                    <span>10:00 AM - 2:00 PM</span>
+                                                </li>
+                                                <li>|</li>
+                                                <li>
+                                                    <img src="images/location-icon.png" alt="" />
+                                                    <strong>Location:</strong>
+                                                    <span>Tampa Florida, USA</span>
+                                                </li>
+                                            </ul>
+                                            <div class="cost">
+                                                <span>Cost in USD</span>
+                                                <strong>8000.0</strong>
+                                            </div>
+                                        </div>
+                                        <div class="booking-col">
+                                            <h4><a href="#" data-toggle="modal" data-target=".booking-detail">Wedding Photography</a></h4>
+                                            <h5>-with <span><img src="images/users/img-4.png" alt="" /></span> Client Name Here</h5>
+                                            <ul>
+                                                <li>
+                                                    <img src="images/clock.png" alt="" />
+                                                    <strong>Time:</strong>
+                                                    <span>10:00 AM - 2:00 PM</span>
+                                                </li>
+                                                <li>|</li>
+                                                <li>
+                                                    <img src="images/location-icon.png" alt="" />
+                                                    <strong>Location:</strong>
+                                                    <span>Tampa Florida, USA</span>
+                                                </li>
+                                            </ul>
+                                            <div class="cost">
+                                                <span>Cost in USD</span>
+                                                <strong>8000.0</strong>
+                                            </div>
+                                        </div>
+                                        <div class="booking-col">
+                                            <h4><a href="#" data-toggle="modal" data-target=".booking-detail">Wedding Photography</a></h4>
+                                            <h5>-with <span><img src="images/users/img-4.png" alt="" /></span> Client Name Here</h5>
+                                            <ul>
+                                                <li>
+                                                    <img src="images/clock.png" alt="" />
+                                                    <strong>Time:</strong>
+                                                    <span>10:00 AM - 2:00 PM</span>
+                                                </li>
+                                                <li>|</li>
+                                                <li>
+                                                    <img src="images/location-icon.png" alt="" />
+                                                    <strong>Location:</strong>
+                                                    <span>Tampa Florida, USA</span>
+                                                </li>
+                                            </ul>
+                                            <div class="cost">
+                                                <span>Cost in USD</span>
+                                                <strong>8000.0</strong>
+                                            </div>
+                                        </div>
+                                        <div class="booking-col">
+                                            <h4><a href="#" data-toggle="modal" data-target=".booking-detail">Wedding Photography</a></h4>
+                                            <h5>-with <span><img src="images/users/img-4.png" alt="" /></span> Client Name Here</h5>
+                                            <ul>
+                                                <li>
+                                                    <img src="images/clock.png" alt="" />
+                                                    <strong>Time:</strong>
+                                                    <span>10:00 AM - 2:00 PM</span>
+                                                </li>
+                                                <li>|</li>
+                                                <li>
+                                                    <img src="images/location-icon.png" alt="" />
+                                                    <strong>Location:</strong>
+                                                    <span>Tampa Florida, USA</span>
+                                                </li>
+                                            </ul>
+                                            <div class="cost">
+                                                <span>Cost in USD</span>
+                                                <strong>8000.0</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 full-width-col">
+                                <div class="bookings-holder">
+                                    <h3>Upcomings Bookings</h3>
+                                    <div class="scroll-content">
+                                        <div class="booking-col">
+                                            <h4><a href="#" data-toggle="modal" data-target=".booking-detail">Wedding Photography</a></h4>
+                                            <h5>-with <span><img src="images/users/img-5.png" alt="" /></span> Client Name Here</h5>
+                                            <ul>
+                                                <li>
+                                                    <img src="images/clock.png" alt="" />
+                                                    <strong>Time:</strong>
+                                                    <span>10:00 AM - 2:00 PM</span>
+                                                </li>
+                                                <li>|</li>
+                                                <li>
+                                                    <img src="images/location-icon.png" alt="" />
+                                                    <strong>Location:</strong>
+                                                    <span>Tampa Florida, USA</span>
+                                                </li>
+                                            </ul>
+                                            <div class="cost">
+                                                <span>Cost in USD</span>
+                                                <strong>8000.0</strong>
+                                            </div>
+                                        </div>
+                                        <div class="booking-col">
+                                            <h4><a href="#" data-toggle="modal" data-target=".booking-detail">Wedding Photography</a></h4>
+                                            <h5>-with <span><img src="images/users/img-6.png" alt="" /></span> Client Name Here</h5>
+                                            <ul>
+                                                <li>
+                                                    <img src="images/clock.png" alt="" />
+                                                    <strong>Time:</strong>
+                                                    <span>10:00 AM - 2:00 PM</span>
+                                                </li>
+                                                <li>|</li>
+                                                <li>
+                                                    <img src="images/location-icon.png" alt="" />
+                                                    <strong>Location:</strong>
+                                                    <span>Tampa Florida, USA</span>
+                                                </li>
+                                            </ul>
+                                            <div class="cost">
+                                                <span>Cost in USD</span>
+                                                <strong>8000.0</strong>
+                                            </div>
+                                        </div>
+                                        <div class="booking-col">
+                                            <h4><a href="#" data-toggle="modal" data-target=".booking-detail">Wedding Photography</a></h4>
+                                            <h5>-with <span><img src="images/users/img-6.png" alt="" /></span> Client Name Here</h5>
+                                            <ul>
+                                                <li>
+                                                    <img src="images/clock.png" alt="" />
+                                                    <strong>Time:</strong>
+                                                    <span>10:00 AM - 2:00 PM</span>
+                                                </li>
+                                                <li>|</li>
+                                                <li>
+                                                    <img src="images/location-icon.png" alt="" />
+                                                    <strong>Location:</strong>
+                                                    <span>Tampa Florida, USA</span>
+                                                </li>
+                                            </ul>
+                                            <div class="cost">
+                                                <span>Cost in USD</span>
+                                                <strong>8000.0</strong>
+                                            </div>
+                                        </div>
+                                        <div class="booking-col">
+                                            <h4><a href="#" data-toggle="modal" data-target=".booking-detail">Wedding Photography</a></h4>
+                                            <h5>-with <span><img src="images/users/img-6.png" alt="" /></span> Client Name Here</h5>
+                                            <ul>
+                                                <li>
+                                                    <img src="images/clock.png" alt="" />
+                                                    <strong>Time:</strong>
+                                                    <span>10:00 AM - 2:00 PM</span>
+                                                </li>
+                                                <li>|</li>
+                                                <li>
+                                                    <img src="images/location-icon.png" alt="" />
+                                                    <strong>Location:</strong>
+                                                    <span>Tampa Florida, USA</span>
+                                                </li>
+                                            </ul>
+                                            <div class="cost">
+                                                <span>Cost in USD</span>
+                                                <strong>8000.0</strong>
+                                            </div>
+                                        </div>
+                                        <div class="booking-col">
+                                            <h4><a href="#" data-toggle="modal" data-target=".booking-detail">Wedding Photography</a></h4>
+                                            <h5>-with <span><img src="images/users/img-6.png" alt="" /></span> Client Name Here</h5>
+                                            <ul>
+                                                <li>
+                                                    <img src="images/clock.png" alt="" />
+                                                    <strong>Time:</strong>
+                                                    <span>10:00 AM - 2:00 PM</span>
+                                                </li>
+                                                <li>|</li>
+                                                <li>
+                                                    <img src="images/location-icon.png" alt="" />
+                                                    <strong>Location:</strong>
+                                                    <span>Tampa Florida, USA</span>
+                                                </li>
+                                            </ul>
+                                            <div class="cost">
+                                                <span>Cost in USD</span>
+                                                <strong>8000.0</strong>
+                                            </div>
+                                        </div>
+                                        <div class="booking-col">
+                                            <h4><a href="#" data-toggle="modal" data-target=".booking-detail">Wedding Photography</a></h4>
+                                            <h5>-with <span><img src="images/users/img-6.png" alt="" /></span> Client Name Here</h5>
+                                            <ul>
+                                                <li>
+                                                    <img src="images/clock.png" alt="" />
+                                                    <strong>Time:</strong>
+                                                    <span>10:00 AM - 2:00 PM</span>
+                                                </li>
+                                                <li>|</li>
+                                                <li>
+                                                    <img src="images/location-icon.png" alt="" />
+                                                    <strong>Location:</strong>
+                                                    <span>Tampa Florida, USA</span>
+                                                </li>
+                                            </ul>
+                                            <div class="cost">
+                                                <span>Cost in USD</span>
+                                                <strong>8000.0</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </section>
+
+        </section>
+
+    </div>
+
+    <!-- Booking Detail Modal -->
+    <div class="modal fade booking-detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="close-ico"><img src="images/close-icon.png" alt="" data-dismiss="modal" aria-label="Close" /></div>
+            <h4 class="title">Booking Detail</h4>
+            <div class="detail-holder">
+                <div class="booking-col">
+                    <h4><a href="#">Wedding Photography</a></h4>
+                    <h5>-with <span><img src="images/users/img-1.png" alt="" /></span> Client Name Here</h5>
+                    <ul>
+                        <li>
+                            <img src="images/clock.png" alt="" />
+                            <strong>Time:</strong>
+                            <span>10:00 AM - 2:00 PM</span>
+                        </li>
+                        <li>|</li>
+                        <li>
+                            <img src="images/location-icon.png" alt="" />
+                            <strong>Location:</strong>
+                            <span>Tampa Florida, USA</span>
+                        </li>
+                    </ul>
+                    <div class="cost">
+                        <span>Cost in USD</span>
+                        <strong>8000.0</strong>
+                    </div>
+                </div>
+                <div class="included">
+                    <h4>What's Included?</h4>
+                    <ul>
+                        <li><i class="fa fa-circle" aria-hidden="true"></i> 200 Highly professional pictures</li>
+                        <li><i class="fa fa-circle" aria-hidden="true"></i> 80 Frames pictures</li>
+                        <li><i class="fa fa-circle" aria-hidden="true"></i> Another item detail go here....</li>
+                        <li><i class="fa fa-circle" aria-hidden="true"></i> Lorem Ipsum is simply dummy text of the printing.</li>
+                    </ul>
+                </div>
+                <div class="booking-actions">
+                    <ul>
+                        <li class="green">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            <span>Complete</span>
+                        </li>
+                        <li class="red">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                            <span>Cancel</span>
+                        </li>
+                        <li class="blue">
+                            <i class="fa fa-history" aria-hidden="true"></i>
+                            <span>Reschedule</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    
+<!-- JS   -->
+<script src="js/jquery-3.2.0.min.js"></script>
+<script src="js/main.min.js"></script>
+<script src="js/lightbox-plus-jquery.min.js"></script>
+<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="js/imagesloaded.pkgd.min.js"></script>
+<script src="js/justified.min.js"></script>
+<script src="js/custom.js"></script>
+ 
+
+</body>
+</html>

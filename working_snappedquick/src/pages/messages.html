@@ -1,0 +1,398 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+<title>Messages</title>
+
+<!--   Bootstrap CSS   -->
+<link href='css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+
+<!--    Theme CSS   -->
+<link rel="stylesheet" href="css/main.min.css">
+   
+<!--    Font Awesome CSS   -->
+<link href='css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+ 
+<!-- Custom scrollbar stylesheet -->
+<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
+
+<!-- Gallery CSS -->
+<link href="css/justified.css" rel="stylesheet">
+<link rel="stylesheet" href="css/lightbox.min.css">
+
+<!--    Custome CSS   -->
+<link href='css/styles.css' rel='stylesheet' type='text/css'>
+
+<!-- load modernizer -->
+<script src="js/modernizr.js"></script>
+    
+</head>
+
+
+<body>
+
+    <div class="app" data-sidebar="locked">
+        <header class="header header-fixed navbar top-header">
+            <div class="brand">
+                <a href="dashboard.html" class="fa fa-bars off-left visible-xs" data-toggle="off-canvas" data-move="ltr"></a>
+            </div>
+            <ul class="nav navbar-nav navbar-right off-right">
+                <li class="hidden-xs">
+                    <a href="javascript:void(0);">John Deo</a>
+                </li>
+                <li class="notifications dropdown hidden-xs">
+                    <a href="#" data-toggle="dropdown">
+                        <i class="fa fa-envelope-o"></i>
+                        <div class="badge">4</div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right animated slideInRight">
+                        <div class="panel bg-white no-border no-margin">
+                            <div class="panel-heading no-radius">
+                                <small>
+                                    <b>Messages</b>
+                                </small>
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-1.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>just now</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-2.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>2 mins ago</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-3.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>20 mins ago</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-4.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>1 day ago</small>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-footer no-border">
+                            <a href="messages.html">See all Messages</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="notifications dropdown hidden-xs">
+                    <a href="#" data-toggle="dropdown">
+                        <i class="fa fa-bell"></i>
+                        <div class="badge">2</div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right animated slideInRight">
+                        <div class="panel bg-white no-border no-margin">
+                            <div class="panel-heading no-radius">
+                                <small>
+                                    <b>Notifications</b>
+                                </small>
+                            </div>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-5.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>just now</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-6.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>2 mins ago</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <span class="pull-left mg-t-xs mg-r-md">
+                                        <img src="images/users/img-7.png" class="avatar avatar-sm img-circle" alt="">
+                                    </span>
+                                    <div class="m-body show pd-t-xs">
+                                        <span>Message text goes here</span>
+                                        <small>20 mins ago</small>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-footer no-border">
+                            <a href="notifications.html">See all notifications</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="quickmenu mg-r-md dropdown">
+                    <a href="#" data-toggle="dropdown" class="">
+                        <img src="images/users/img-5.png" class="avatar pull-left img-circle" alt="user" title="user"> 
+                        <i class="caret mg-l-xs hidden-xs no-margin"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right mg-r-xs">
+                        <li>
+                            <a href="login.html">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </header>
+
+        <section class="layout">
+            <aside class="sidebar collapsible canvas-left bg-dark">
+                <div class="small-logo"><a href="dashboard.html"><img src="images/logo@2x.png" alt="logo" /></a></div>
+                <nav class="main-navigation">
+                    <ul>
+                        <li class="active">
+                            <a href="dashboard.html">
+                                <img src="images/home-icon.png" alt="" /><span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="dropdown show-on-hover">
+                            <a href="#" data-toggle="dropdown">
+                                <img src="images/package-icon.png" alt="" /><span>Packages</span>
+                                <i class="toggle-accordion"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="manage-package.html">
+                                        <span>Manage</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="create-new-package.html">
+                                        <span>Create New</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="booking-hisory.html">
+                                <img src="images/booking-history-icon.png" alt="" /><span>My Booking History</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="profile-settings.html">
+                                <img src="images/profile-setting-icon.png" alt="" /><span>Profile Settings</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="payment-settings.html">
+                                <img src="images/payment-settings-icon.png" alt="" /><span>Payment Settings</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="gallery.html">
+                                <img src="images/gallery-icon.png" alt="" /><span>Gallery</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="login.html">
+                                <img src="images/logout-icon.png" alt="" /><span>Logout</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+            <!-- /sidebar menu -->
+
+            <!-- main content -->
+            <section class="main-content">
+                <div class="header-fixed title-header">
+                    <h2>Messages</h2>
+                </div>
+                <div class="content-wrap spacer">
+                    <div class="messages-holder">
+                        <ul>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target=".message-detail">
+                                    <div class="user-profile-pic">
+                                        <img src="images/users/img-1.png" class="img-circle" alt="">
+                                    </div>
+                                    <div class="user-message">
+                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                                        <small>just now</small>
+                                    </div>
+                                    <div class="clear"></div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target=".message-detail">
+                                    <div class="user-profile-pic">
+                                        <img src="images/users/img-2.png" class="img-circle" alt="">
+                                    </div>
+                                    <div class="user-message">
+                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                                        <small>just now</small>
+                                    </div>
+                                    <div class="clear"></div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target=".message-detail">
+                                    <div class="user-profile-pic">
+                                        <img src="images/users/img-3.png" class="img-circle" alt="">
+                                    </div>
+                                    <div class="user-message">
+                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                                        <small>just now</small>
+                                    </div>
+                                    <div class="clear"></div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target=".message-detail">
+                                    <div class="user-profile-pic">
+                                        <img src="images/users/img-4.png" class="img-circle" alt="">
+                                    </div>
+                                    <div class="user-message">
+                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                                        <small>just now</small>
+                                    </div>
+                                    <div class="clear"></div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target=".message-detail">
+                                    <div class="user-profile-pic">
+                                        <img src="images/users/img-5.png" class="img-circle" alt="">
+                                    </div>
+                                    <div class="user-message">
+                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                                        <small>just now</small>
+                                    </div>
+                                    <div class="clear"></div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target=".message-detail">
+                                    <div class="user-profile-pic">
+                                        <img src="images/users/img-6.png" class="img-circle" alt="">
+                                    </div>
+                                    <div class="user-message">
+                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                                        <small>just now</small>
+                                    </div>
+                                    <div class="clear"></div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target=".message-detail">
+                                    <div class="user-profile-pic">
+                                        <img src="images/users/img-7.png" class="img-circle" alt="">
+                                    </div>
+                                    <div class="user-message">
+                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                                        <small>just now</small>
+                                    </div>
+                                    <div class="clear"></div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target=".message-detail">
+                                    <div class="user-profile-pic">
+                                        <img src="images/users/img-8.png" class="img-circle" alt="">
+                                    </div>
+                                    <div class="user-message">
+                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                                        <small>just now</small>
+                                    </div>
+                                    <div class="clear"></div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target=".message-detail">
+                                    <div class="user-profile-pic">
+                                        <img src="images/users/img-9.png" class="img-circle" alt="">
+                                    </div>
+                                    <div class="user-message">
+                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                                        <small>just now</small>
+                                    </div>
+                                    <div class="clear"></div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>  
+            </section>
+        </section>
+
+    </div>
+
+
+
+<!-- Message Detail Modal -->
+    <div class="modal fade message-detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="close-ico"><img src="images/close-icon.png" alt="" data-dismiss="modal" aria-label="Close" /></div>
+            <h4 class="title">Message Detail</h4>
+            <div class="detail-holder">
+                 <div class="user-profile-pic">
+                    <img src="images/users/img-1.png" class="img-circle" alt="">
+                </div>
+                <div class="user-message">
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                    It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). 
+                    There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
+                </div>
+                <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+<!-- JS   -->
+<script src="js/jquery-3.2.0.min.js"></script>
+<script src="js/main.min.js"></script>
+<script src="js/lightbox-plus-jquery.min.js"></script>
+<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="js/imagesloaded.pkgd.min.js"></script>
+<script src="js/justified.min.js"></script>
+<script src="js/custom.js"></script>
+
+
+</body>
+</html>

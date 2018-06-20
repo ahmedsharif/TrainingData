@@ -1,22 +1,10 @@
 import React, { Component } from "react";
-import { Redirect, Link } from "react-router-dom";
-
-import "./css/bootstrap.min.css";
-import "./css/main.min.css";
-import "./images/favicon.ico";
-import "./images/favicon.ico";
-import "./css/font-awesome.min.css";
-import "./css/jquery.mCustomScrollbar.css";
-import "./css/justified.css";
-import "./css/styles.css";
+import { Redirect } from "react-router-dom";
 import "./Login.js";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
-import validator from "validator";
-
-const byPropKey = (propertyName, value) => () => ({
-  [propertyName]: value
-});
+import { byPropKey } from "./Base.js";
+import * as validation from "./Validation.js";
 
 const url = "http://54.213.158.63/snapped_quick_api_and_admin/public/api/users";
 
@@ -45,37 +33,6 @@ const userRequest = state => {
     .then(json => {
       console.log(json);
     });
-};
-
-const EMAIL = value => {
-  if (!validator.isEmail(value)) {
-    return `${value} is not a valid email.`;
-  }
-};
-
-const required = value => {
-  if (!value.toString().trim().length) {
-    // We can return string or jsx as the 'error' prop for the validated Component
-    return "require";
-  }
-};
-
-const mesasge = value => {
-  return "Field values are not correct";
-}
-
-var initial_password = "";
-const PASSWORD = value => {
-  if (value.toString().trim.length < 6) {
-    return "password should be >=  6 digits";
-  }
-  initial_password = value;
-};
-
-const CONFIRMPASSWORD = value => {
-  if (initial_password !== value) {
-    return "password does not match";
-  }
 };
 
 class RegisterUser extends Component {
@@ -129,19 +86,19 @@ class RegisterUser extends Component {
       password,
       confirmPassword,
       address,
-      phoneNumber,
-  } = this.state;
+      phoneNumber
+    } = this.state;
 
-  const isInvalid =
-            password !== confirmPassword ||
-            password === "" ||
-            userName === "" ||
-            dateOfBirth === "" ||
-            phoneNumber === "" ||
-            address === "";
+    const isInvalid =
+      password !== confirmPassword ||
+      password === "" ||
+      userName === "" ||
+      dateOfBirth === "" ||
+      phoneNumber === "" ||
+      address === "";
 
     return this.state.redirect ? (
-      <Redirect to="/login" />
+      <Redirect to="/companysignup" />
     ) : (
       <div className="cover-banner">
         <div className="tabels">
@@ -156,7 +113,8 @@ class RegisterUser extends Component {
                 >
                   <div>
                     <label>
-                      <Input required="required"
+                      <Input
+                        required="required"
                         onChange={event =>
                           this.setState(
                             byPropKey("userName", event.target.value)
@@ -171,7 +129,7 @@ class RegisterUser extends Component {
                         type="text"
                         name="userName"
                         id="userName"
-                        validations={[required]}
+                        validations={[validation.required]}
                       />
                     </label>
                   </div>
@@ -193,7 +151,7 @@ class RegisterUser extends Component {
                         type="text"
                         name="dateOfBirth"
                         id="dateOfBirth"
-                        validations={[required]}
+                        validations={[validation.required]}
                       />
                     </label>
                   </div>
@@ -207,7 +165,7 @@ class RegisterUser extends Component {
                         }}
                         placeholder="Email"
                         name="email"
-                        validations={[required, EMAIL]}
+                        validations={[validation.required, validation.EMAIL]}
                         className="input-field email"
                         id="email"
                         onChange={event =>
@@ -216,6 +174,7 @@ class RegisterUser extends Component {
                       />
                     </label>
                   </div>
+
                   <div>
                     <label>
                       <Input
@@ -226,7 +185,7 @@ class RegisterUser extends Component {
                         placeholder="Password"
                         name="password"
                         type="password"
-                        validations={[required, PASSWORD]}
+                        validations={[validation.required, validation.PASSWORD]}
                         className="input-field password"
                         id="password"
                         onChange={event =>
@@ -237,6 +196,7 @@ class RegisterUser extends Component {
                       />
                     </label>
                   </div>
+
                   <div>
                     <label>
                       <Input
@@ -247,7 +207,7 @@ class RegisterUser extends Component {
                         placeholder="Comfirm Password"
                         name="confirmPassword"
                         type="password"
-                        validations={[required]}
+                        validations={[validation.required]}
                         className="input-field password"
                         id="comfirmPassword"
                         onChange={event =>
@@ -276,7 +236,7 @@ class RegisterUser extends Component {
                         type="text"
                         name="address"
                         id="address"
-                        validations={[required]}
+                        validations={[validation.required]}
                       />
                     </label>
                   </div>
@@ -298,23 +258,22 @@ class RegisterUser extends Component {
                         type="text"
                         name="phoneNumber"
                         id="phoneNumber"
-                        validations={[required]}
+                        validations={[validation.required]}
                       />
                     </label>
                   </div>
-                  <Link to="/login">
-                    <button
-                      type="submit"
-                      // disabled={isInvalid}
-                      value="register"
-                      className="register"
-                      onClick={this.onSubmit}
-                      validations={[mesasge]}
-                    >
-                      Search
-                    </button>
-                  </Link>
+
+                  <button
+                    type="submit"
+                    // disabled={isInvalid}
+                    value="register"
+                    className="register"
+                    onClick={this.onSubmit}
+                  >
+                    Search
+                  </button>
                 </Form>
+
                 <p className="forgot">
                   Already Have an Account? <a href="login.html">Login Here</a>
                 </p>

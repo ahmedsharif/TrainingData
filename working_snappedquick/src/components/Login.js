@@ -1,10 +1,8 @@
 import React from "react";
+import { byPropKey } from "./Base.js";
 
-const byPropKey = (propertyName, value) => () => ({
-  [propertyName]: value
-});
-
-const url = "http://54.213.158.63/snapped_quick_api_and_admin/public/api/users/login";
+const url =
+  "http://54.213.158.63/snapped_quick_api_and_admin/public/api/users/login";
 
 const getUserData = state => {
   fetch(url, {
@@ -21,21 +19,22 @@ const getUserData = state => {
       device_token: "13243984"
     })
   })
-  .then(response => response.json())
+    .then(response => response.json())
     .catch(error => console.error("Error:", error))
     .then(json => {
       console.log(json);
+      localStorage.setItem("key",json);
     });
 };
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       userName: "",
       password: "",
       error: null
-     };
+    };
   }
 
   onSubmit = event => {
