@@ -164,6 +164,7 @@ class MainCentent extends Component {
 
       redirect: false
     };
+    this.handleChange = this.handleChange.bind(this);
   }
 
   onSubmit = event => {
@@ -173,6 +174,17 @@ class MainCentent extends Component {
       redirect: true
     });
   };
+
+  handleChange= event => { this.setState(byPropKey(event.propKey, event.state))}
+
+  // // handleChange=event => {
+  // //   this.setState(byPropKey(event.propKey, event))
+  // // }
+
+  // handleChange(props) {
+  //   this.setState(
+  //     byPropKey(props.state))
+  // }
 
   handleSubmit = event => {
     event.preventDefault();
@@ -423,8 +435,7 @@ class MainCentent extends Component {
                   name="mon_work_start_time"
                   selected={this.state.mon_work_start_time}
                   onChange={event =>
-                    this.setState(byPropKey("mon_work_start_time", event))
-                  }
+                    this.setState(byPropKey("mon_work_end_time", event))}
                   showTimeSelect
                   showTimeSelectOnly
                   timeIntervals={15}
@@ -650,6 +661,8 @@ class MainCentent extends Component {
                   dateFormat="LT"
                   timeCaption="Time"
                 />
+                <h1> Ha Ha ha </h1>
+                <SetDate propKey="mon_work_start_time" state={this.state.mon_work_start_time} handleChange={this.handleChange.bind(this)}/>
               </section>
 
               <div className="custom-btn">
@@ -669,6 +682,23 @@ class MainCentent extends Component {
     );
   }
 }
+
+function SetDate(props) {
+  return (
+    <DatePicker
+      id={props.propKey}
+      name={props.propKey}
+      onChange={props.handleChange}
+      selected={props.state}
+      showTimeSelect
+      showTimeSelectOnly
+      timeIntervals={15}
+      dateFormat="LT"
+      timeCaption="Time"
+    />
+  );
+}
+
 
 class CompanyProfile extends Component {
   render() {
