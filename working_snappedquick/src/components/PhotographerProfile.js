@@ -11,11 +11,13 @@ import "./Login.js";
 import Header from "./Header.js";
 import "./Payment.js";
 
-// import SetDate from "./DatePicker.js";
+// import SetDate from "./Datepicker.js";
 
 const url = "http://54.213.158.63/snapped_quick_api_and_admin/public/api/pgs";
 
+
 const companyRequest = state => {
+  var data = JSON.parse(localStorage.getItem('data'));
   fetch(url, {
     method: "POST",
     headers: {
@@ -24,12 +26,12 @@ const companyRequest = state => {
       mode: 'no-cors',
     },
     body: JSON.stringify({
-      user_id: "026",
+      user_id: data['response']['user']['id'],
       company_name: state.company_name,
       primary_contact: state.primary_contact,
       secondary_contact: state.secondary_contact,
       logo_image: state.logo_image,
-      api_token: "39427348979",
+      api_token: data['response']['user']['api_token'],
       company_st_address: state.company_st_address,
       company_city: state.company_city,
       company_state: "Pakistan",
@@ -40,8 +42,8 @@ const companyRequest = state => {
       redirect: false,
 
       is_mon_on: state.is_mon_on,
-      mon_work_start_time: state.mon_work_start_time.format("H:mm:ss"),
-      mon_work_end_time: state.mon_work_end_time.format("H:mm:ss"),
+      mon_work_start_time: state.mon_work_start_time.format("HH:mm:ss"),
+      mon_work_end_time: state.mon_work_end_time.format("HH:mm:ss"),
       is_mon_break_on: state.is_mon_break_on,
       mon_break_start_time: state.mon_break_start_time.format("H:mm:ss"),
       mon_break_end_time: state.mon_break_end_time.format("H:mm:ss"),
@@ -420,6 +422,9 @@ class MainCentent extends Component {
                   }
                 />
                 <br />
+                <h1> this is new tag </h1>
+                {/* <SetDate propKey="mon_work_start_time" state={this.state.mon_work_start_time} /> */}
+
                 <label> Mon start work time </label>
                 <DatePicker
                   id="mon_work_start_time"
@@ -431,6 +436,7 @@ class MainCentent extends Component {
                   showTimeSelect
                   showTimeSelectOnly
                   timeIntervals={15}
+                  timeFormat="H:mm:ss"
                   dateFormat="LT"
                   timeCaption="Time"
                 />
@@ -671,6 +677,22 @@ class MainCentent extends Component {
       </section>
     );
   }
+}
+
+function SetDate(props) {
+  return (
+    <DatePicker
+      id={props.propKey}
+      name={props.propKey}
+      selected={props.state}
+      onChange={event => this.setState(byPropKey(props.propKey, event))}
+      showTimeSelect
+      showTimeSelectOnly
+      timeIntervals={15}
+      dateFormat="LT"
+      timeCaption="Time"
+    />
+  );
 }
 
 class CompanyProfile extends Component {

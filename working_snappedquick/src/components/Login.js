@@ -1,5 +1,6 @@
 import React from "react";
 import { byPropKey } from "./Base.js";
+import { Redirect } from "react-router-dom";
 
 const url =
   "http://54.213.158.63/snapped_quick_api_and_admin/public/api/users/login";
@@ -9,7 +10,8 @@ const getUserData = state => {
     method: "POST",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      mode: "no-cors"
     },
     body: JSON.stringify({
       username: state.userName,
@@ -20,11 +22,11 @@ const getUserData = state => {
     })
   })
     .then(response => response.json())
-    .catch(error => console.error("Error:", error))
-    .then(json => {
-      console.log(json);
-      localStorage.setItem("key",json);
-    });
+    .then(responseData => {
+      console.log(responseData);
+      localStorage.setItem("data", JSON.stringify(responseData));
+    })
+    .catch(error => console.log(error));
 };
 
 class Login extends React.Component {
@@ -33,17 +35,22 @@ class Login extends React.Component {
     this.state = {
       userName: "",
       password: "",
-      error: null
+      redirect: false
     };
   }
 
   onSubmit = event => {
     event.preventDefault();
     getUserData(this.state);
+    this.setState({
+      redirect: true
+    });
   };
 
   render() {
-    return (
+    return this.state.redirect ? (
+      <Redirect to="/companysignup" />
+    ) : (
       <div className="cover-banner">
         <div className="tabels">
           <div className="tabel-cell">

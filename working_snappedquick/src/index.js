@@ -32,24 +32,9 @@ class Main extends Component {
             </div>
           )}
         />
-        <Route
-          exact
-          path="/login"
-          render={() => (
-              <Login />
-          )}
-        />
-        <Route
-          exact
-          path="/companysignup"
-          render={() => (
-              <CompanyProfile />
-          )}
-        />
-         <Route
-          exact
-          path="/payment"
-        />
+        <Route exact path="/login" render={() => <Login />} />
+        <Route exact path="/companysignup" render={() => <CompanyProfile />} />
+        <Route exact path="/payment" render={() => <Payment />} />
       </div>
     );
   }
