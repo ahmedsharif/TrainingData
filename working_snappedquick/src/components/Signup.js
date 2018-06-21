@@ -265,7 +265,7 @@ class RegisterUser extends Component {
 
                   <button
                     type="submit"
-                    // disabled={isInvalid}
+                    disabled={isInvalid}
                     value="register"
                     className="register"
                     onClick={this.onSubmit}

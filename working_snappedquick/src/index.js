@@ -17,6 +17,7 @@ import Login from "./components/Login.js";
 import CompanyProfile from "./components/PhotographerProfile";
 import Payment from "./components/Payment";
 
+
 registerServiceWorker();
 
 class Main extends Component {
