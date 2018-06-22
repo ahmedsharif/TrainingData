@@ -9,6 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import SideBar from "./Sidebar.js";
 import "./Login.js";
 import Header from "./Header.js";
+import ImageUploader from "react-images-upload";
 
 const url = "http://54.213.158.63/snapped_quick_api_and_admin/public/api/pgs";
 
@@ -103,7 +104,7 @@ class MainCentent extends Component {
       company_name: "",
       primary_contact: "",
       secondary_contact: "",
-      logo_image: "",
+      logo_image: [],
       api_token: "",
       company_st_address: "",
       company_city: "",
@@ -164,6 +165,7 @@ class MainCentent extends Component {
 
       redirect: false
     };
+    this.onDrop = this.onDrop.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -175,16 +177,15 @@ class MainCentent extends Component {
     });
   };
 
-  handleChange= event => { this.setState(byPropKey(event.propKey, event.state))}
+  onDrop(picture) {
+    this.setState({
+      logo_image: this.state.logo_image.concat(picture)
+    });
+  }
 
-  // // handleChange=event => {
-  // //   this.setState(byPropKey(event.propKey, event))
-  // // }
-
-  // handleChange(props) {
-  //   this.setState(
-  //     byPropKey(props.state))
-  // }
+  handleChange = (propKey, event) => {
+    this.setState(byPropKey(propKey, event));
+  };
 
   handleSubmit = event => {
     event.preventDefault();
@@ -211,21 +212,24 @@ class MainCentent extends Component {
               <div className="row">
                 <div className="col-md-6 col-sm-12">
                   <div className="box">
-                    <input
+                    <ImageUploader
+                      id="logo_image"
+                      withIcon={true}
+                      buttonText="Choose images"
+                      onChange={this.onDrop}
+                      imgExtension={[".jpg", ".gif", ".png", ".gif"]}
+                      maxFileSize={5242880}
+                    />
+                    {/* <input
                       type="file"
                       id="logo_image"
                       className="inputfile inputfile-4"
-                    />
+                    /> */}
                     <label htmlFor="file-1">
                       <figure className="main-image">
                         <img
                           src={images["upload-to-cloud-large.png"]}
                           className="img-responsive"
-                          onChange={event =>
-                            this.setState(
-                              byPropKey("logo_image", event.target.value)
-                            )
-                          }
                           alt=""
                         />
                       </figure>
@@ -400,27 +404,28 @@ class MainCentent extends Component {
                     <div className="bar" />
                   </div>
                 </div>
-              </div>
-              <div className="col-md-6 col-sm-12">
-                <div className="input-container">
-                  <input
-                    type="text"
-                    id="company_city"
-                    onChange={event =>
-                      this.setState(
-                        byPropKey("company_city", event.target.value)
-                      )
-                    }
-                    required="required"
-                  />
-                  <label>City</label>
-                  <div className="bar" />
+                <div className="col-md-6 col-sm-12">
+                  <div className="input-container">
+                    <input
+                      type="text"
+                      id="company_city"
+                      onChange={event =>
+                        this.setState(
+                          byPropKey("company_city", event.target.value)
+                        )
+                      }
+                      required="required"
+                    />
+                    <label>City</label>
+                    <div className="bar" />
+                  </div>
                 </div>
               </div>
 
               {/* new section for dates */}
-              <section className="mondaydata">
+              <div className="row spacer">
                 <label> Monday </label>
+
                 <input
                   type="checkbox"
                   defaultChecked={this.state.is_mon_on}
@@ -429,79 +434,55 @@ class MainCentent extends Component {
                   }
                 />
                 <br />
-                <label> Mon start work time </label>
-                <DatePicker
-                  id="mon_work_start_time"
-                  name="mon_work_start_time"
-                  selected={this.state.mon_work_start_time}
-                  onChange={event =>
-                    this.setState(byPropKey("mon_work_end_time", event))}
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeIntervals={15}
-                  timeFormat="HH:mm:ss"
-                  dateFormat="LT"
-                  timeCaption="Time"
-                />
-                <label> Mon end work time </label>
-                <DatePicker
-                  selected={this.state.mon_work_end_time}
-                  onChange={event =>
-                    this.setState(byPropKey("mon_work_end_time", event))
-                  }
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeIntervals={15}
-                  dateFormat="LT"
-                  timeCaption="Time"
-                />
 
-                {/* break time */}
-                <label> Break </label>
-                <input
-                  type="checkbox"
-                  defaultChecked={this.state.is_mon_break_on}
-                  onChange={event =>
-                    this.setState(
-                      byPropKey(
-                        "mon_break_start_time",
-                        !this.state.is_mon_break_on
-                      )
-                    )
-                  }
-                />
-                <br />
-                <label> Mon break start time </label>
-                <DatePicker
-                  id="mon_break_start_time"
-                  name="mon_break_start_time"
-                  selected={this.state.mon_break_start_time}
-                  onChange={event =>
-                    this.setState(byPropKey("mon_break_start_time", event))
-                  }
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeIntervals={15}
-                  dateFormat="LT"
-                  timeCaption="Time"
-                />
-                <label> Mon break end time </label>
-                <DatePicker
-                  selected={this.state.mon_break_end_time}
-                  onChange={event =>
-                    this.setState(byPropKey("mon_break_end_time", event))
-                  }
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeIntervals={15}
-                  dateFormat="LT"
-                  timeCaption="Time"
-                />
-              </section>
+                <div className="col-md-6 col-sm-12">
+                  <label> Monday Work Start Time </label>
+                  <SetDate
+                    propKey="mon_work_start_time"
+                    state={this.state.mon_work_start_time}
+                    handleChange={e =>
+                      this.handleChange("mon_work_start_time", e)
+                    }
+                  />
+                </div>
 
-              {/* For tuesday datepickers */}
-              <section className="tuesdaydata">
+                <div className="col-md-6 col-sm-12">
+                  <label> Monday Work End Time </label>
+                  <SetDate
+                    propKey="mon_work_end_time"
+                    state={this.state.mon_work_end_time}
+                    handleChange={e =>
+                      this.handleChange("mon_work_end_time", e)
+                    }
+                  />
+                </div>
+
+                <div className="col-md-6 col-sm-12">
+                  <label> Mon Break Start Time </label>
+                  <SetDate
+                    propKey="mon_break_start_time"
+                    state={this.state.mon_break_start_time}
+                    handleChange={e =>
+                      this.handleChange("mon_break_start_time", e)
+                    }
+                  />
+                </div>
+
+                <div className="col-md-6 col-sm-12">
+                  <label> Monday Break End Time </label>
+                  <SetDate
+                    propKey="mon_break_end_time"
+                    state={this.state.mon_break_end_time}
+                    handleChange={e =>
+                      this.handleChange("mon_break_end_time", e)
+                    }
+                  />
+                </div>
+              </div>
+              {/* Tuesday */}
+              <div className="row spacer">
                 <label> Tuesday </label>
+
                 <input
                   type="checkbox"
                   defaultChecked={this.state.is_tue_on}
@@ -510,80 +491,55 @@ class MainCentent extends Component {
                   }
                 />
                 <br />
-                <label> Tue start work time </label>
-                <DatePicker
-                  id="tue_work_start_time"
-                  name="tue_work_start_time"
-                  selected={this.state.tue_work_start_time}
-                  onChange={event =>
-                    this.setState(byPropKey("tue_work_start_time", event))
-                  }
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeIntervals={15}
-                  dateFormat="LT"
-                  timeCaption="Time"
-                />
-                <label> Tue end work time </label>
-                <DatePicker
-                  selected={this.state.tue_work_end_time}
-                  onChange={event =>
-                    this.setState(byPropKey("tue_work_end_time", event))
-                  }
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeIntervals={15}
-                  dateFormat="LT"
-                  timeCaption="Time"
-                />
 
-                {/* break time */}
-                <label> Break </label>
-                <input
-                  type="checkbox"
-                  defaultChecked={this.state.is_tue_break_on}
-                  onChange={event =>
-                    this.setState(
-                      byPropKey(
-                        "tue_break_start_time",
-                        !this.state.is_tue_break_on
-                      )
-                    )
-                  }
-                />
-                <br />
+                <div className="col-md-6 col-sm-12">
+                  <label> Tue Work Start Time </label>
+                  <SetDate
+                    propKey="tue_work_start_time"
+                    state={this.state.tue_work_start_time}
+                    handleChange={e =>
+                      this.handleChange("tue_work_start_time", e)
+                    }
+                  />
+                </div>
 
-                <label> Tue break start time </label>
-                <DatePicker
-                  id="tue_break_start_time"
-                  name="tue_break_start_time"
-                  selected={this.state.tue_break_start_time}
-                  onChange={event =>
-                    this.setState(byPropKey("tue_break_start_time", event))
-                  }
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeIntervals={15}
-                  dateFormat="LT"
-                  timeCaption="Time"
-                />
-                <label> Tue break end time </label>
-                <DatePicker
-                  selected={this.state.tue_break_end_time}
-                  onChange={event =>
-                    this.setState(byPropKey("tue_break_end_time", event))
-                  }
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeIntervals={15}
-                  dateFormat="LT"
-                  timeCaption="Time"
-                />
-              </section>
+                <div className="col-md-6 col-sm-12">
+                  <label> Tue Work End Time </label>
+                  <SetDate
+                    propKey="tue_work_end_time"
+                    state={this.state.tue_work_end_time}
+                    handleChange={e =>
+                      this.handleChange("tue_work_end_time", e)
+                    }
+                  />
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <label> Tue Break Start Time </label>
+                  <SetDate
+                    propKey="tue_break_start_time"
+                    state={this.state.tue_break_start_time}
+                    handleChange={e =>
+                      this.handleChange("tue_break_start_time", e)
+                    }
+                  />
+                </div>
 
-              {/* For Wednesday datepickers */}
-              <section className="wednesdaydata">
+                <div className="col-md-6 col-sm-12">
+                  <label> Tue Break End Time </label>
+                  <SetDate
+                    propKey="tue_break_end_time"
+                    state={this.state.tue_break_end_time}
+                    handleChange={e =>
+                      this.handleChange("tue_break_end_time", e)
+                    }
+                  />
+                </div>
+              </div>
+
+              {/* Wednesday */}
+              <div className="row spacer">
                 <label> Wednesday </label>
+
                 <input
                   type="checkbox"
                   defaultChecked={this.state.is_wed_on}
@@ -592,78 +548,264 @@ class MainCentent extends Component {
                   }
                 />
                 <br />
-                <label> Wed start work time </label>
-                <DatePicker
-                  id="wed_work_start_time"
-                  name="wed_work_start_time"
-                  selected={this.state.wed_work_start_time}
-                  onChange={event =>
-                    this.setState(byPropKey("wed_work_start_time", event))
-                  }
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeIntervals={15}
-                  dateFormat="LT"
-                  timeCaption="Time"
-                />
-                <label> Wed end work time </label>
-                <DatePicker
-                  selected={this.state.wed_work_end_time}
-                  onChange={event =>
-                    this.setState(byPropKey("wed_work_end_time", event))
-                  }
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeIntervals={15}
-                  dateFormat="LT"
-                  timeCaption="Time"
-                />
+                <div className="col-md-6 col-sm-12">
+                  <label> Wed Work Start Time </label>
+                  <SetDate
+                    propKey="wed_work_start_time"
+                    state={this.state.wed_work_start_time}
+                    handleChange={e =>
+                      this.handleChange("wed_work_start_time", e)
+                    }
+                  />
+                </div>
 
-                {/* break time */}
-                <label> Break </label>
+                <div className="col-md-6 col-sm-12">
+                  <label> Wed Work End Time </label>
+                  <SetDate
+                    propKey="wed_work_end_time"
+                    state={this.state.wed_work_end_time}
+                    handleChange={e =>
+                      this.handleChange("wed_work_end_time", e)
+                    }
+                  />
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <label> Wed Break Start Time </label>
+                  <SetDate
+                    propKey="wed_break_start_time"
+                    state={this.state.wed_break_start_time}
+                    handleChange={e =>
+                      this.handleChange("wed_break_start_time", e)
+                    }
+                  />
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <label> Wed Break End Time </label>
+                  <SetDate
+                    propKey="wed_break_end_time"
+                    state={this.state.wed_break_end_time}
+                    handleChange={e =>
+                      this.handleChange("wed_break_end_time", e)
+                    }
+                  />
+                </div>
+              </div>
+
+              {/* Thursday */}
+              <div className="row spacer">
+                <label> Thursday </label>
+
                 <input
                   type="checkbox"
-                  defaultChecked={this.state.is_wed_break_on}
+                  defaultChecked={this.state.is_thu_on}
                   onChange={event =>
-                    this.setState(
-                      byPropKey(
-                        "wed_break_start_time",
-                        !this.state.is_wed_break_on
-                      )
-                    )
+                    this.setState(byPropKey("is_thu_on", !this.state.is_thu_on))
                   }
                 />
                 <br />
+                <div className="col-md-6 col-sm-12">
+                  <label> Thu Work Start Time </label>
+                  <SetDate
+                    propKey="thu_work_start_time"
+                    state={this.state.thu_work_start_time}
+                    handleChange={e =>
+                      this.handleChange("thu_work_start_time", e)
+                    }
+                  />
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <label> Thu Work End Time </label>
+                  <SetDate
+                    propKey="thu_work_end_time"
+                    state={this.state.thu_work_end_time}
+                    handleChange={e =>
+                      this.handleChange("thu_work_end_time", e)
+                    }
+                  />
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <label> Thu Break Start Time </label>
+                  <SetDate
+                    propKey="thu_break_start_time"
+                    state={this.state.thu_break_start_time}
+                    handleChange={e =>
+                      this.handleChange("thu_break_start_time", e)
+                    }
+                  />
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <label> Thu Break End Time </label>
+                  <SetDate
+                    propKey="thu_break_end_time"
+                    state={this.state.thu_break_end_time}
+                    handleChange={e =>
+                      this.handleChange("thu_break_end_time", e)
+                    }
+                  />
+                </div>
+              </div>
 
-                <label> Wed break start time </label>
-                <DatePicker
-                  id="wed_break_start_time"
-                  name="wed_break_start_time"
-                  selected={this.state.wed_break_start_time}
+              {/* Friday */}
+              <div className="row spacer">
+                <label> Friday </label>
+
+                <input
+                  type="checkbox"
+                  defaultChecked={this.state.is_fri_on}
                   onChange={event =>
-                    this.setState(byPropKey("wed_break_start_time", event))
+                    this.setState(byPropKey("is_fri_on", !this.state.is_fri_on))
                   }
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeIntervals={15}
-                  dateFormat="LT"
-                  timeCaption="Time"
                 />
-                <label> Wed break end time </label>
-                <DatePicker
-                  selected={this.state.wed_break_end_time}
+                <br />
+                <div className="col-md-6 col-sm-12">
+                  <label> Fri Work Start Time </label>
+                  <SetDate
+                    propKey="fri_work_start_time"
+                    state={this.state.fri_work_start_time}
+                    handleChange={e =>
+                      this.handleChange("fri_work_start_time", e)
+                    }
+                  />
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <label> Fri Work End Time </label>
+                  <SetDate
+                    propKey="fri_work_end_time"
+                    state={this.state.fri_work_end_time}
+                    handleChange={e =>
+                      this.handleChange("fri_work_end_time", e)
+                    }
+                  />
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <label> Fri Break Start Time </label>
+                  <SetDate
+                    propKey="fri_break_start_time"
+                    state={this.state.fri_break_start_time}
+                    handleChange={e =>
+                      this.handleChange("fri_break_start_time", e)
+                    }
+                  />
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <label> Fri Break End Time </label>
+                  <SetDate
+                    propKey="fri_break_end_time"
+                    state={this.state.fri_break_end_time}
+                    handleChange={e =>
+                      this.handleChange("fri_break_end_time", e)
+                    }
+                  />
+                </div>
+              </div>
+
+              {/* Sat */}
+              <div className="row spacer">
+                <label> Saturday </label>
+
+                <input
+                  type="checkbox"
+                  defaultChecked={this.state.is_sat_on}
                   onChange={event =>
-                    this.setState(byPropKey("wed_break_end_time", event))
+                    this.setState(byPropKey("is_sat_on", !this.state.is_sat_on))
                   }
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeIntervals={15}
-                  dateFormat="LT"
-                  timeCaption="Time"
                 />
-                <h1> Ha Ha ha </h1>
-                <SetDate propKey="mon_work_start_time" state={this.state.mon_work_start_time} handleChange={this.handleChange.bind(this)}/>
-              </section>
+                <br />
+                <div className="col-md-6 col-sm-12">
+                  <label> Sat Work Start Time </label>
+                  <SetDate
+                    propKey="sat_work_start_time"
+                    state={this.state.sat_work_start_time}
+                    handleChange={e =>
+                      this.handleChange("sat_work_start_time", e)
+                    }
+                  />
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <label> Sat Work End Time </label>
+                  <SetDate
+                    propKey="sat_work_end_time"
+                    state={this.state.sat_work_end_time}
+                    handleChange={e =>
+                      this.handleChange("sat_work_end_time", e)
+                    }
+                  />
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <label> Sat Break Start Time </label>
+                  <SetDate
+                    propKey="sat_break_start_time"
+                    state={this.state.sat_break_start_time}
+                    handleChange={e =>
+                      this.handleChange("sat_break_start_time", e)
+                    }
+                  />
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <label> Sat Break End Time </label>
+                  <SetDate
+                    propKey="sat_break_end_time"
+                    state={this.state.sat_break_end_time}
+                    handleChange={e =>
+                      this.handleChange("sat_break_end_time", e)
+                    }
+                  />
+                </div>
+              </div>
+
+              {/* Sun */}
+              <div className="row spacer">
+                <label> Sunday </label>
+
+                <input
+                  type="checkbox"
+                  defaultChecked={this.state.is_sun_on}
+                  onChange={event =>
+                    this.setState(byPropKey("is_sun_on", !this.state.is_sun_on))
+                  }
+                />
+                <br />
+                <div className="col-md-6 col-sm-12">
+                  <label> Sun Work Start Time </label>
+                  <SetDate
+                    propKey="sun_work_start_time"
+                    state={this.state.sun_work_start_time}
+                    handleChange={e =>
+                      this.handleChange("sun_work_start_time", e)
+                    }
+                  />
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <label> Sun Work End Time </label>
+                  <SetDate
+                    propKey="sun_work_end_time"
+                    state={this.state.sun_work_end_time}
+                    handleChange={e =>
+                      this.handleChange("sun_work_end_time", e)
+                    }
+                  />
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <label> Sun Break Start Time </label>
+                  <SetDate
+                    propKey="sun_break_start_time"
+                    state={this.state.sun_break_start_time}
+                    handleChange={e =>
+                      this.handleChange("sun_break_start_time", e)
+                    }
+                  />
+                </div>
+                <div className="col-md-6 col-sm-12">
+                  <label> Sun Break End Time </label>
+                  <SetDate
+                    propKey="sun_break_end_time"
+                    state={this.state.sun_break_end_time}
+                    handleChange={e =>
+                      this.handleChange("sun_break_end_time", e)
+                    }
+                  />
+                </div>
+              </div>
 
               <div className="custom-btn">
                 <button
@@ -698,7 +840,6 @@ function SetDate(props) {
     />
   );
 }
-
 
 class CompanyProfile extends Component {
   render() {
