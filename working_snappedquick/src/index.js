@@ -16,6 +16,7 @@ import RegisterUser from "./components/Signup";
 import Login from "./components/Login.js";
 import CompanyProfile from "./components/PhotographerProfile";
 import Payment from "./components/Payment";
+import Dashboard from "./components/Dashboard";
 
 registerServiceWorker();
 
@@ -31,10 +32,11 @@ class Main extends Component {
               <RegisterUser />
             </div>
           )}
-        />
+        />  
         <Route exact path="/login" render={() => <Login />} />
         <Route exact path="/companysignup" render={() => <CompanyProfile />} />
         <Route exact path="/payment" render={() => <Payment />} />
+        <Route exact path="/dashboard" render={() => <Dashboard />} />
       </div>
     );
   }

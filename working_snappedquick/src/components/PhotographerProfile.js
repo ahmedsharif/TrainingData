@@ -12,6 +12,7 @@ import Header from "./Header.js";
 import ImageUploader from "react-images-upload";
 
 const url = "http://54.213.158.63/snapped_quick_api_and_admin/public/api/pgs";
+var flag = false;
 
 const companyRequest = state => {
   var data = JSON.parse(localStorage.getItem("data"));
@@ -23,12 +24,12 @@ const companyRequest = state => {
       mode: "no-cors"
     },
     body: JSON.stringify({
-      user_id: data["response"]["user"]["id"],
+      user_id: data["response"]['user']["id"],
       company_name: state.company_name,
       primary_contact: state.primary_contact,
       secondary_contact: state.secondary_contact,
       logo_image: state.logo_image,
-      api_token: data["response"]["user"]["api_token"],
+      api_token: data["response"]['user']["api_token"],
       company_st_address: state.company_st_address,
       company_city: state.company_city,
       company_state: "Pakistan",
@@ -88,11 +89,18 @@ const companyRequest = state => {
       sun_break_end_time: state.sun_break_end_time.format("HH:mm:ss")
     })
   })
-    .then(response => response.json())
-    .catch(error => console.error("Error:", error))
-    .then(json => {
-      console.log(json);
-    });
+    // .then(response => response.json())
+    // .catch(error => console.error("Error:", error))
+    // .then(json => {
+    //   console.log(json);
+    //   flag = true;
+    // });
+    .then(responseData => {
+      console.log(responseData);
+      localStorage.setItem('company_name',state.company_name);
+      flag = true;
+    })
+    .catch(error => console.log(error));
 };
 
 class MainCentent extends Component {
@@ -172,13 +180,15 @@ class MainCentent extends Component {
   onSubmit = event => {
     event.preventDefault();
     companyRequest(this.state);
-    this.setState({
-      redirect: true
-    });
+    if (flag) {
+      this.setState({
+        redirect: true
+      });
+    }
   };
 
   onDrop(picture) {
-    this.setState({
+      this.setState({
       logo_image: this.state.logo_image.concat(picture)
     });
   }
@@ -213,18 +223,14 @@ class MainCentent extends Component {
                 <div className="col-md-6 col-sm-12">
                   <div className="box">
                     <ImageUploader
+                      withPreview={true}
                       id="logo_image"
                       withIcon={true}
-                      buttonText="Choose images"
+                      buttonText="Upload Profile Photo…"
                       onChange={this.onDrop}
                       imgExtension={[".jpg", ".gif", ".png", ".gif"]}
                       maxFileSize={5242880}
                     />
-                    {/* <input
-                      type="file"
-                      id="logo_image"
-                      className="inputfile inputfile-4"
-                    /> */}
                     <label htmlFor="file-1">
                       <figure className="main-image">
                         <img
@@ -343,6 +349,7 @@ class MainCentent extends Component {
                 <div className="col-md-6 col-sm-12">
                   <div className="input-container">
                     <input
+                      required="required"
                       type="text"
                       id="primary_contact"
                       onChange={event =>
@@ -350,7 +357,7 @@ class MainCentent extends Component {
                           byPropKey("primary_contact", event.target.value)
                         )
                       }
-                      required="required"
+                      
                     />
                     <label>Primary Contact</label>
                     <div className="bar" />
@@ -457,6 +464,19 @@ class MainCentent extends Component {
                   />
                 </div>
 
+                <label> Monday Break </label>
+
+                <input
+                  type="checkbox"
+                  defaultChecked={this.state.is_mon_break_on}
+                  onChange={event =>
+                    this.setState(
+                      byPropKey("is_mon_break_on", !this.state.is_mon_break_on)
+                    )
+                  }
+                />
+                <br />
+
                 <div className="col-md-6 col-sm-12">
                   <label> Mon Break Start Time </label>
                   <SetDate
@@ -513,6 +533,19 @@ class MainCentent extends Component {
                     }
                   />
                 </div>
+
+                <label> Tuesday Break </label>
+
+                <input
+                  type="checkbox"
+                  defaultChecked={this.state.is_tue_break_on}
+                  onChange={event =>
+                    this.setState(
+                      byPropKey("is_tue_break_on", !this.state.is_tue_break_on)
+                    )
+                  }
+                />
+                <br />
                 <div className="col-md-6 col-sm-12">
                   <label> Tue Break Start Time </label>
                   <SetDate
@@ -569,6 +602,19 @@ class MainCentent extends Component {
                     }
                   />
                 </div>
+
+                <label> Wedesday Break </label>
+
+                <input
+                  type="checkbox"
+                  defaultChecked={this.state.is_wed_break_on}
+                  onChange={event =>
+                    this.setState(
+                      byPropKey("is_wed_break_on", !this.state.is_wed_break_on)
+                    )
+                  }
+                />
+                <br />
                 <div className="col-md-6 col-sm-12">
                   <label> Wed Break Start Time </label>
                   <SetDate
@@ -623,6 +669,19 @@ class MainCentent extends Component {
                     }
                   />
                 </div>
+
+                <label> Thursday Break </label>
+
+                <input
+                  type="checkbox"
+                  defaultChecked={this.state.is_thu_break_on}
+                  onChange={event =>
+                    this.setState(
+                      byPropKey("is_thu_break_on", !this.state.is_thu_break_on)
+                    )
+                  }
+                />
+                <br />
                 <div className="col-md-6 col-sm-12">
                   <label> Thu Break Start Time </label>
                   <SetDate
@@ -677,6 +736,19 @@ class MainCentent extends Component {
                     }
                   />
                 </div>
+
+                <label> Friday Break </label>
+
+                <input
+                  type="checkbox"
+                  defaultChecked={this.state.is_fri_break_on}
+                  onChange={event =>
+                    this.setState(
+                      byPropKey("is_fri_break_on", !this.state.is_fri_break_on)
+                    )
+                  }
+                />
+                <br />
                 <div className="col-md-6 col-sm-12">
                   <label> Fri Break Start Time </label>
                   <SetDate
@@ -731,6 +803,19 @@ class MainCentent extends Component {
                     }
                   />
                 </div>
+
+                <label> Saturday Break </label>
+
+                <input
+                  type="checkbox"
+                  defaultChecked={this.state.is_sat_break_on}
+                  onChange={event =>
+                    this.setState(
+                      byPropKey("is_sat_break_on", !this.state.is_sat_break_on)
+                    )
+                  }
+                />
+                <br />
                 <div className="col-md-6 col-sm-12">
                   <label> Sat Break Start Time </label>
                   <SetDate
@@ -785,6 +870,19 @@ class MainCentent extends Component {
                     }
                   />
                 </div>
+
+                <label> Sun Break </label>
+
+                <input
+                  type="checkbox"
+                  defaultChecked={this.state.is_sun_break_on}
+                  onChange={event =>
+                    this.setState(
+                      byPropKey("is_sun_break_on", !this.state.is_sun_break_on)
+                    )
+                  }
+                />
+                <br />
                 <div className="col-md-6 col-sm-12">
                   <label> Sun Break Start Time </label>
                   <SetDate

@@ -5,6 +5,8 @@ import { Redirect } from "react-router-dom";
 const url =
   "http://54.213.158.63/snapped_quick_api_and_admin/public/api/users/login";
 
+var flag = false;
+
 const getUserData = state => {
   fetch(url, {
     method: "POST",
@@ -25,6 +27,7 @@ const getUserData = state => {
     .then(responseData => {
       console.log(responseData);
       localStorage.setItem("data", JSON.stringify(responseData));
+      flag = true;
     })
     .catch(error => console.log(error));
 };
@@ -42,9 +45,11 @@ class Login extends React.Component {
   onSubmit = event => {
     event.preventDefault();
     getUserData(this.state);
-    this.setState({
-      redirect: true
-    });
+    if (flag) {
+      this.setState({
+        redirect: true
+      });
+    }
   };
 
   render() {
@@ -60,6 +65,7 @@ class Login extends React.Component {
                   <input
                     type="text"
                     name="userName"
+                    required="required"
                     className="input-field username"
                     onChange={event =>
                       this.setState(byPropKey("userName", event.target.value))
@@ -70,6 +76,7 @@ class Login extends React.Component {
                   <input
                     type="password"
                     name="password"
+                    required="required"
                     className="input-field password"
                     onChange={event =>
                       this.setState(byPropKey("password", event.target.value))

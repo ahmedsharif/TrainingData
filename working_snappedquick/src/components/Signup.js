@@ -30,10 +30,11 @@ const userRequest = state => {
     })
   })
     .then(response => response.json())
-    .catch(error => console.error("Error:", error))
-    .then(json => {
-      console.log(json);
-    });
+    .then(responseData => {
+      console.log(responseData);
+      localStorage.setItem("data", JSON.stringify(responseData));
+    })
+    .catch(error => console.log(error));
 };
 
 class RegisterUser extends Component {
