@@ -7,8 +7,6 @@ import { Redirect } from "react-router-dom";
 const url =
   "http://54.213.158.63/snapped_quick_api_and_admin/public/api/pgs/saveba";
 
-var flag = false;
-
 const getPaymentData = (token_data, account_number) => {
   var data = JSON.parse(localStorage.getItem("data"));
 
@@ -69,12 +67,14 @@ class MainContent extends Component {
         // token_data = JSON.stringify(result);
         // token_data = JSON.parse(token_data);
         // console.log(token_data['token']['bank_account']['id']);
-        flag = true;
         console.log("bank_token", result);
 
         getPaymentData(result, account_number);
       });
-    this.state.redirect = true;
+
+    this.setState({
+      redirect: true
+    });
     // var bank_token = JSON.parse(token_data);
   };
 
