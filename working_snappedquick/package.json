@@ -16,6 +16,7 @@
     "react-scripts": "1.1.4",
     "react-stripe-elements": "^2.0.0",
     "react-validation": "^3.0.7",
+    "reactjs-popup": "^1.1.1",
     "validator": "^10.4.0"
   },
   "scripts": {
